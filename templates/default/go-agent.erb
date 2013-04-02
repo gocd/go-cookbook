@@ -1,0 +1,9 @@
+export GO_SERVER=<%= @go_server_host %>
+export GO_SERVER_PORT=<%= @go_server_port %>
+export JAVA_HOME=<%= node[:java][:home] %>
+export AGENT_WORK_DIR=<%= node[:go][:installer_dir] %>
+source /etc/profile.d/rvm.sh
+export PATH
+DAEMON=Y
+VNC=N
+
