@@ -18,3 +18,6 @@ TODO, automate Go Server installation.
 
 TODO, automate Go Agent installation, and make sure it can point to the relevant server.
 
+# Authors
+Author:: Chris Kozak (<ckozak@thoughtwors.com>)
+Author:: Tim Brown (<tpbrown@gmail.com>)
