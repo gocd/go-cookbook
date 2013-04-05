@@ -19,7 +19,7 @@ Vagrant::Config.run do |config|
     }
 
     chef.run_list = [
-      "recipe[go::server]","recipe[go::agent]"
+      "recipe[apt]", "recipe[go::server]","recipe[go::agent]"
     ]
   end
 end
