@@ -1,4 +1,0 @@
-cookbook 'go', :path => '/Users/tpbrown/checkout/go-cookbook'
-cookbook 'java', :locked_version => '1.9.6'
-cookbook 'windows', :locked_version => '1.8.4'
-cookbook 'chef_handler', :locked_version => '1.1.4'
