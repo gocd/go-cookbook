@@ -1,0 +1,4 @@
+
+# No need to keep my local .vagrant diretory around
+.vagrant/
+
