@@ -1,7 +1,6 @@
 include_recipe 'java'
 
 package 'unzip' 
-package 'subversion'
 
 # Only re-download the remote file if it changes.  http_request HEAD detects the change and triggers the download
 remote_file "#{Chef::Config[:file_cache_path]}/go-server-#{node[:go][:build]}.deb" do
@@ -157,7 +156,7 @@ ruby_block "publish_autoregister_key" do
     else
       server_autoregister_key=""
     end
-    
+
     Chef::Log.warn("Enabling automatic agent registration.  Any configured agent will be configured to build without authorization.")
     node.set[:go][:autoregister_key]=server_autoregister_key
     node.save
@@ -177,5 +176,4 @@ ruby_block "remove_autoregister_key" do
   not_if {node[:go][:auto_register_agents]}
   not_if {Chef::Config[:solo]}
 end
-
 
