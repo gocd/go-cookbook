@@ -2,8 +2,8 @@ include_recipe 'java'
 
 package 'unzip'
 
-package_url = node['go']['server']['package_url']
-package_checksum = node['go']['server']['package_cheksum']
+package_url       = node[:go][:server][:package_url]
+package_checksum  = node[:go][:server][:package_checksum]
 
 remote_file "/tmp/go-server.deb" do
   source package_url

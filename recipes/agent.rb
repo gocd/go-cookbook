@@ -1,7 +1,10 @@
 include_recipe 'java'
 
-package_url = node['go']['agent']['package_url']
-package_checksum = node['go']['agent']['package_cheksum']
+go_server               = node[:go][:server]
+package_url             = node[:go][:agent][:package_url]
+package_checksum        = node[:go][:agent][:package_checksum]
+go_server_autoregister  = node[:go][:agent][:auto_register]
+autoregister_key        = node[:go][:agent][:auto_register_key]
 
 remote_file "/tmp/go-agent.deb" do
   source package_url
@@ -16,9 +19,6 @@ end
 
 if Chef::Config[:solo]
   Chef::Log.warn("Chef-solo invocation detected.  node[:go][:server] attribute used for server instance configuration.")
-  go_server = node[:go][:server]
-  go_server_autoregister = node[:go][:agent][:auto_register]
-  autoregister_key = node[:go][:agent][:auto_register_key]
 else
   go_servers = search(:node, "chef_environment:#{node.chef_environment} AND recipes:go-server")
   go_server = "#{go_servers[0][:ipaddress]}"
