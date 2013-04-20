@@ -1,6 +1,6 @@
 include_recipe 'java'
 
-go_server               = node[:go][:server]
+go_server               = node[:go][:agent][:server_host]
 package_url             = node[:go][:agent][:package_url]
 package_checksum        = node[:go][:agent][:package_checksum]
 go_server_autoregister  = node[:go][:agent][:auto_register]
