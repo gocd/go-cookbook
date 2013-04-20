@@ -1,29 +1,17 @@
-
 include_recipe 'java'
 
-# Only re-download the remote file if it changes.  http_request HEAD detects the change and triggers the download
-remote_file "#{Chef::Config[:file_cache_path]}/go-agent-#{node[:go][:build]}.deb" do
-  source node[:go][:agent_download_url]
-  mode 0644
-  action :nothing
-  notifies :install, 'dpkg_package[install-go-agent]', :immediately
-end
+package_url = node['go']['agent']['package_url']
+package_checksum = node['go']['agent']['package_cheksum']
 
-http_request "HEAD #{node[:go][:agent_download_url]}" do
-  message ""
-  url node[:go][:agent_download_url]
-  action :head
-  if File.exists?("#{Chef::Config[:file_cache_path]}/go-agent-#{node[:go][:build]}.deb")
-    headers "If-Modified-Since" => File.mtime("#{Chef::Config[:file_cache_path]}/go-agent-#{node[:go][:build]}.deb").httpdate
-  end
-  # notifies :create, resources(:remote_file => "#{Chef::Config[:file_cache_path]}/go-agent-#{node[:go][:build]}.deb"), :immediately
-  notifies :create, "remote_file[#{Chef::Config[:file_cache_path]}/go-agent-#{node[:go][:build]}.deb]", :immediately
+remote_file "/tmp/go-agent.deb" do
+  source package_url
+  mode '0644'
+  checksum package_checksum
 end
 
 dpkg_package "install-go-agent" do
-  action :nothing
-  version node[:go][:release]
-  source "#{Chef::Config[:file_cache_path]}/go-agent-#{node[:go][:build]}.deb"
+  source "/tmp/go-agent.deb"
+  notifies :start, 'service[go-agent]', :immediately
 end
 
 if Chef::Config[:solo]
@@ -68,7 +56,7 @@ template '/var/lib/go-agent/config/autoregister.properties' do
 end
 
 service 'go-agent' do
-  supports :status => true, :restart => true, :reload => true
+  supports :status => true, :restart => true, :reload => true, :start => true
   action [:enable]
 end
 
