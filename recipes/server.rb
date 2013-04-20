@@ -1,30 +1,19 @@
 include_recipe 'java'
 
-package 'unzip' 
+package 'unzip'
 
-# Only re-download the remote file if it changes.  http_request HEAD detects the change and triggers the download
-remote_file "#{Chef::Config[:file_cache_path]}/go-server-#{node[:go][:build]}.deb" do
-  source node[:go][:server_download_url]
-  mode 0644
-  action :nothing
-  notifies :install, 'dpkg_package[install-go-server]', :immediately
-end
+package_url = node['go']['server']['package_url']
+package_checksum = node['go']['server']['package_cheksum']
 
-http_request "HEAD #{node[:go][:server_download_url]}" do
-  message ""
-  url node[:go][:server_download_url]
-  action :head
-  if File.exists?("#{Chef::Config[:file_cache_path]}/go-server-#{node[:go][:build]}.deb")
-    headers "If-Modified-Since" => File.mtime("#{Chef::Config[:file_cache_path]}/go-server-#{node[:go][:build]}.deb").httpdate
-  end
-  notifies :create, "remote_file[#{Chef::Config[:file_cache_path]}/go-server-#{node[:go][:build]}.deb]", :immediately
+remote_file "/tmp/go-server.deb" do
+  source package_url
+  mode '0644'
+  checksum package_checksum
 end
 
 dpkg_package "install-go-server" do
-  action :nothing
-  version node[:go][:release]
-  source "#{Chef::Config[:file_cache_path]}/go-server-#{node[:go][:build]}.deb"
-
+  source "/tmp/go-server.deb"
+  notifies :start, 'service[go-server]', :immediately
 end
 
 # If we're upgrading an existing Go Server then leave the configuration and such intact. 
@@ -129,7 +118,7 @@ end
 
 # Used for the lasting service config
 service 'go-server' do
-  supports :status => true, :restart => true, :reload => true
+  supports :status => true, :restart => true, :reload => true, :start => true
   action [:enable, :nothing]
   notifies :get, 'http_request[verify_go-server_comes_up]', :immediately
 end
