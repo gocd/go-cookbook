@@ -5,3 +5,5 @@
 # Berkshelf's lock file contains local pathes when running vagrant
 Berksfile.lock
 
+.kitchen/
+.kitchen.local.yml
