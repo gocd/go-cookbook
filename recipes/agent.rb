@@ -1,3 +1,4 @@
+include_recipe 'apt'
 include_recipe 'java'
 
 go_server               = node[:go][:agent][:server_host]
@@ -6,17 +7,17 @@ package_checksum        = node[:go][:agent][:package_checksum]
 go_server_autoregister  = node[:go][:agent][:auto_register]
 autoregister_key        = node[:go][:agent][:auto_register_key]
 
-remote_file "/tmp/go-agent.deb" do
-  source package_url
-  mode '0644'
-  checksum package_checksum
+apt_repository "thoughtworks" do
+  uri "http://download01.thoughtworks.com/go/debian"
+  components ["contrib/"]
 end
 
-dpkg_package "install-go-agent" do
-  source "/tmp/go-agent.deb"
+package "go-agent" do
+  version node[:go][:version]
+  options "--force-yes"
   notifies :start, 'service[go-agent]', :immediately
 end
-
+  
 if Chef::Config[:solo]
   Chef::Log.warn("Chef-solo invocation detected.  node[:go][:server] attribute used for server instance configuration.")
 else
