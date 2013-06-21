@@ -18,9 +18,10 @@ package "go-agent" do
   notifies :start, 'service[go-agent]', :immediately
 end
   
-if Chef::Config[:solo]
-  Chef::Log.warn("Chef-solo invocation detected.  node[:go][:server] attribute used for server instance configuration.")
+if Chef::Config[:solo] || node.attribute.go?(:server)
+  Chef::Log.warn("Chef-solo invocation detected or node[:go][:server attribute specified].  node[:go][:server] attribute will be used for server instance configuration.")
 else
+  if node
   go_servers = search(:node, "chef_environment:#{node.chef_environment} AND recipes:go-server")
   go_server = "#{go_servers[0][:ipaddress]}"
   go_server_autoregister = "#{go_servers[0][:go][:auto_register_agents]}"

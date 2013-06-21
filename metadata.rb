@@ -1,6 +1,6 @@
 name             "go"
 description      "Installs/Configures Go servers and agents"
-version          "0.0.5"
+version          "0.0.7"
 
 supports "ubuntu" "12.04"
 

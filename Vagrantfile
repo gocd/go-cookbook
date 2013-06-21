@@ -14,7 +14,7 @@ Vagrant::configure(api_version) do |config|
   config.vm.network :private_network, ip: "192.168.192.2"
 
   config.vm.provision :chef_solo do |chef|
-    chef.log_level = "debug"
+    chef.log_level = "info"
     chef.json = {
       "go" => {
         "server" => {
@@ -31,7 +31,6 @@ Vagrant::configure(api_version) do |config|
 
     chef.run_list = [
       "recipe[go::default]"
-      # "recipe[apt]", "recipe[go::server]","recipe[go::agent]"
     ]
   end
 end
