@@ -15,7 +15,6 @@ end
 package "go-agent" do
   version node[:go][:version]
   options "--force-yes"
-  notifies :start, 'service[go-agent]', :immediately
 end
   
 if Chef::Config[:solo] || node.attribute.go?(:server)
@@ -34,31 +33,91 @@ else
   end
 end
 
-template '/etc/default/go-agent' do
-  Chef::Log.warn("Configuring agent for Go server at #{go_server}:8153 ")
-  source 'go-agent.erb'
-  mode '0644'
-  owner 'go'
-  group 'go'
-  variables(:go_server_host => go_server, :go_server_port => '8153')
-  notifies :restart, 'service[go-agent]', :immediately
-  action :nothing
+# Install & configure the initial (default) Go agent as it comes from the binary distribution
+# Then install any additional agents with -COUNT addition.
+# i.e.
+# /etc/default/go-agent
+#             /go-agent-2
+#             /go-agent-3
+# /var/lib/go-agent
+#         /go-agent-2
+#         /go-agent-3
+#
+# default[:go][:agent][:instance_count] = node[:cpu][:total]
+
+(1..node[:go][:agent][:instance_count]).each do |i|
+  log "Configuring Go agent # #{i} of #{node[:go][:agent][:instance_count]} for Go server at #{go_server}:8153 "
+  if (i < 2)
+    suffix = ""
+  else
+    suffix = "-#{i}"
+  end
+  
+  template "/etc/init.d/go-agent#{suffix}" do
+    # <%= @go_agent_instance -%>
+    source 'go-agent-service.erb'
+    mode '0755'
+    owner 'root'
+    group 'root'
+    variables(:go_agent_instance => suffix)
+    subscribes :create, "package[go-agent]"
+    action :nothing
+  end
+
+  template "/etc/default/go-agent#{suffix}" do
+    source 'go-agent-defaults.erb'
+    mode '0644'
+    owner 'go'
+    group 'go'
+    variables(:go_server_host => go_server, 
+      :go_server_port => '8153', 
+      :go_agent_instance => suffix,
+      # TODO - Fix Java Home
+      :java_home => "/usr/lib/jvm/default-java",
+      :work_dir => "/var/lib/go-agent#{suffix}")
+    subscribes :create, "template[/etc/init.d/go-agent#{suffix}]"
+    action :nothing
+  end
+  
+  template "/usr/share/go-agent/agent#{suffix}.sh" do
+    source 'go-agent-sh.erb'
+    mode '0755'
+    owner 'go'
+    group 'go'
+    variables(:go_agent_instance => suffix)
+    subscribes :create, "template[/etc/init.d/go-agent#{suffix}]"
+    action :nothing
+  end
+
+  log "Registering agent#{suffix} with autoregister key of " + autoregister_key
+  directory "/var/lib/go-agent#{suffix}/config" do
+    mode '0755'
+    owner 'go'
+    group 'go'
+    subscribes :create, "template[/etc/init.d/go-agent#{suffix}]"
+    recursive true
+    action :nothing
+  end
+  template "/var/lib/go-agent#{suffix}/config/autoregister.properties" do
+    source 'autoregister.properties.erb'
+    group 'go'
+    owner 'go'
+    mode 0644
+    variables(:autoregister_key => autoregister_key,
+            :agent_resources => "#{node[:os]}, #{node[:platform]},#{node[:platform]}-#{node[:platform_version]}")
+    subscribes :create, "directory[/var/lib/go-agent#{suffix}/config]"
+    action :nothing
+  end
+  
+
+  service "go-agent#{suffix}" do
+    supports :status => true, :restart => true, :reload => true, :start => true
+    action [:enable, :nothing]
+    subscribes :restart, "template[/etc/init.d/go-agent#{suffix}]"
+    subscribes :restart, "template[/var/lib/go-agent#{suffix}/config/autoregister.properties]"
+    subscribes :restart, "template[/etc/default/go-agent#{suffix}]"
+  end
+  
 end
 
-template '/var/lib/go-agent/config/autoregister.properties' do
-  Chef::Log.warn("Registering agent with autoregister key of " + autoregister_key)
-  source 'autoregister.properties.erb'
-  group 'go'
-  owner 'go'
-  mode 0644
-  variables(:autoregister_key => autoregister_key,
-          :agent_resources => "#{node[:os]}, #{node[:platform]},#{node[:platform]}-#{node[:platform_version]}")
-  action :nothing
-  notifies :restart, 'service[go-agent]', :immediately
-end
-
-service 'go-agent' do
-  supports :status => true, :restart => true, :reload => true, :start => true
-  action [:enable]
-end
 
