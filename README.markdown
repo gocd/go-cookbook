@@ -12,11 +12,14 @@ from a humble beginning, does it not?
 
 # Go Server
 
-TODO, automate Go Server installation.
+go::server will install and start an empty Go server.
 
 # Go Agent
 
-TODO, automate Go Agent installation, and make sure it can point to the relevant server.
+go::agent will install and configure a Go agent, and associate it with an existing Go server.
+
+# Single Node
+go::default will install both on the same node.
 
 # Authors
 Author:: Chris Kozak (<ckozak@thoughtwors.com>)

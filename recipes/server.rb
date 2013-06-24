@@ -1,18 +1,16 @@
+include_recipe 'apt'
 include_recipe 'java'
 
 package 'unzip'
 
-package_url       = node[:go][:server][:package_url]
-package_checksum  = node[:go][:server][:package_checksum]
-
-remote_file "/tmp/go-server.deb" do
-  source package_url
-  mode '0644'
-  checksum package_checksum
+apt_repository "thoughtworks" do
+  uri "http://download01.thoughtworks.com/go/debian"
+  components ["contrib/"]
 end
 
-dpkg_package "install-go-server" do
-  source "/tmp/go-server.deb"
+package "go-server" do
+  version node[:go][:version]
+  options "--force-yes"
   notifies :start, 'service[go-server]', :immediately
 end
 
@@ -46,7 +44,7 @@ subversion "restore-go-config" do
   only_if {restore_go_config}
 end
 
-# Trash and restore teh H2 Database
+# Trash and restore the H2 Database
 file "/var/lib/go-server/db/h2db/cruise.h2.db" do
   action :delete
   not_if {skip_backup}
