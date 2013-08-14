@@ -61,6 +61,7 @@ end
     group 'root'
     variables(:go_agent_instance => suffix)
     subscribes :create, "package[go-agent]"
+    notifies :enable, "service[go-agent#{suffix}]", :delayed
     action :nothing
   end
 
@@ -90,12 +91,18 @@ end
   end
 
   log "Registering agent#{suffix} with autoregister key of " + autoregister_key
-  directory "/var/lib/go-agent#{suffix}/config" do
+  directory "/var/lib/go-agent#{suffix}" do
     mode '0755'
     owner 'go'
     group 'go'
     subscribes :create, "template[/etc/init.d/go-agent#{suffix}]"
-    recursive true
+    action :nothing
+  end
+  directory "/var/lib/go-agent#{suffix}/config" do
+    mode '0755'
+    owner 'go'
+    group 'go'
+    subscribes :create, "Directory[/var/lib/go-agent#{suffix}]"
     action :nothing
   end
   template "/var/lib/go-agent#{suffix}/config/autoregister.properties" do
@@ -112,7 +119,7 @@ end
 
   service "go-agent#{suffix}" do
     supports :status => true, :restart => true, :reload => true, :start => true
-    action [:enable, :nothing]
+    action :nothing
     subscribes :restart, "template[/etc/init.d/go-agent#{suffix}]"
     subscribes :restart, "template[/var/lib/go-agent#{suffix}/config/autoregister.properties]"
     subscribes :restart, "template[/etc/default/go-agent#{suffix}]"
