@@ -17,20 +17,16 @@ Vagrant::configure(api_version) do |config|
     chef.log_level = "info"
     chef.json = {
       "go" => {
-        "server" => {
-        #  you can make a local cache and expose them to the vm via
-        #  `python -m SimpleHTTPServer` in the location where you downloaded the packages
-        #  "package_url" => "http://10.0.2.2:8000/go-server-13.1.1-16714.deb"
-        },
+        "server" => "127.0.0.1",
         "agent" => {
-        #  "package_url" => "http://10.0.2.2:8000/go-agent-13.1.1-16714.deb",
-          "auto_register" => true
+          "auto_register" => true,
+          "instance_count" => 3
         }
       }
     }
 
     chef.run_list = [
-      "recipe[go::default]"
+      "recipe[go]"
     ]
   end
 end
