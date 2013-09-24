@@ -22,5 +22,5 @@ go::agent will install and configure a Go agent, and associate it with an existi
 go::default will install both on the same node.
 
 # Authors
-Author:: Chris Kozak (<ckozak@thoughtwors.com>)
+Author:: Chris Kozak (<ckozak@gmail.com>)
 Author:: Tim Brown (<tpbrown@gmail.com>)
