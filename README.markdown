@@ -16,7 +16,7 @@ go::server will install and start an empty Go server.
 
 # Go Agent
 
-go::agent will install and configure a Go agent, and associate it with an existing Go server.
+go::agent will install and configure a Go agent, and associate it with an existing Go server.  By default it will install one agent per CPU.  You can override this via node[:go][:agent][:instance_count].
 
 # Single Node
 go::default will install both on the same node.
