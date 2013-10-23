@@ -73,8 +73,7 @@ end
     variables(:go_server_host => go_server, 
       :go_server_port => '8153', 
       :go_agent_instance => suffix,
-      # TODO - Fix Java Home
-      :java_home => "/usr/lib/jvm/default-java",
+      :java_home => node[:java][:java_home],
       :work_dir => "/var/lib/go-agent#{suffix}")
     subscribes :create, "template[/etc/init.d/go-agent#{suffix}]"
     action :nothing
