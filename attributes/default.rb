@@ -1,4 +1,5 @@
 default[:go][:backup_path] = ""
+default[:go][:backup_retrieval_type] = "subversion"
 
 default[:go][:agent][:server_host]           = '127.0.0.1'
 default[:go][:agent][:auto_register]         = false

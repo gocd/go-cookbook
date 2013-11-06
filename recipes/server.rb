@@ -33,15 +33,37 @@ else
   end
 end
 
+if node[:go][:backup_retrieval_type] =~ /subversion|svn/i
 # Grab the backup out of Subversion
-subversion "restore-go-config" do
-  Chef::Log.info("Restoring configuration from #{node[:go][:backup_path]}")
-  repository node[:go][:backup_path]
-  destination "#{Chef::Config[:file_cache_path]}/go-config-restore"
-  action :force_export
-  notifies :stop, 'service[go-server-control]', :immediately
-  not_if {skip_backup}
-  only_if {restore_go_config}
+  subversion "restore-go-config" do
+    Chef::Log.info("Restoring configuration from #{node[:go][:backup_path]}")
+    repository node[:go][:backup_path]
+    destination "#{Chef::Config[:file_cache_path]}/go-config-restore"
+    action :force_export
+    notifies :stop, 'service[go-server-control]', :immediately
+    not_if {skip_backup}
+    only_if {restore_go_config}
+  end
+elsif node[:go][:backup_retrieval_type] =~ /local/i and ::File.directory?("#{node[:go][:backup_path]}")
+  directory "#Chef::Config[:file_cache_path]}/go-config-restore/go-config/current" do
+    mode 0755
+    recursive true
+    action :create
+  end
+
+  ruby_block "copy_local_file" do
+    block do
+      if ::File.exists?("#{node[:go][:backup_path]}/db.zip")
+        ::FileUtils.cp "#{node[:go][:backup_path]}/db.zip", "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current"
+      end
+      if ::File.exists?("#{node[:go][:backup_path]}/config-dir.zip")
+        ::FileUtils.cp "#{node[:go][:backup_path]}/config-dir.zip", "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current"
+      end
+      if ::File.exists?("#{node[:go][:backup_path]}/config-repo.zip")
+        ::FileUtils.cp "#{node[:go][:backup_path]}/config-repo.zip", "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current"
+      end
+    end
+  end
 end
 
 # Trash and restore the H2 Database
