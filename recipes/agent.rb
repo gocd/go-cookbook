@@ -17,7 +17,7 @@ package "go-agent" do
   options "--force-yes"
 end
   
-if Chef::Config[:solo] || node.attribute.go?(:server)
+if Chef::Config[:solo] || node.attribute?('go') && node['go'].attribute?('server')
   Chef::Log.warn("Chef-solo invocation detected.  node[:go][:server] attribute will be used for server instance configuration.")
   Chef::Log.info("Using #{node[:go][:server]} for server instance configuration, as specified in node[:go][:server].")
 else
