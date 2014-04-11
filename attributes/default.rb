@@ -8,4 +8,3 @@ default[:go][:agent][:auto_register_key]     = 'default_auto_registration_key'
 default[:go][:agent][:instance_count] = node[:cpu][:total]
 
 default[:go][:version]                       = '13.4.1-18342'
-

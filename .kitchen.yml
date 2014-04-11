@@ -1,14 +1,23 @@
 ---
 driver_plugin: vagrant
+driver:
+  customize:
+    memory: 1024
 
 platforms:
 - name: ubuntu-12.04
-  driver_config:
-    box: precise64
-    box_url: http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box
-    require_chef_omnibus: true
+  driver:
+    network:
+      - [ 'private_network', { ip: '33.33.33.10' } ]
+- name: ubuntu-13.10
+  driver:
+    network:
+      - [ 'private_network', { ip: '33.33.33.11' } ]
+- name: centos-6.4
+  driver:
+    network:
+      - [ 'private_network', { ip: '33.33.33.12' } ]
 
 suites:
 - name: default
-  run_list: ["recipe[go]"]
-  attributes: {}
+  run_list: ['recipe[go]']

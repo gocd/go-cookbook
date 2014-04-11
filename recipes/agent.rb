@@ -1,4 +1,22 @@
-include_recipe 'apt'
+case node['platform_family']
+when 'debian'
+  include_recipe 'apt'
+
+  apt_repository 'thoughtworks' do
+    uri 'http://download01.thoughtworks.com/go/debian'
+    components ['contrib/']
+  end
+
+  package_options = '--force-yes'
+when 'rhel'
+  include_recipe 'yum'
+
+  yum_repository 'thoughtworks' do
+    baseurl 'http://download01.thoughtworks.com/go/yum/no-arch'
+    gpgcheck false
+  end
+end
+
 include_recipe 'java'
 
 go_server               = node[:go][:agent][:server_host]
@@ -7,14 +25,9 @@ package_checksum        = node[:go][:agent][:package_checksum]
 go_server_autoregister  = node[:go][:agent][:auto_register]
 autoregister_key        = node[:go][:agent][:auto_register_key]
 
-apt_repository "thoughtworks" do
-  uri "http://download01.thoughtworks.com/go/debian"
-  components ["contrib/"]
-end
-
 package "go-agent" do
   version node[:go][:version]
-  options "--force-yes"
+  options package_options
 end
   
 if Chef::Config[:solo] || node.attribute?('go') && node['go'].attribute?('server')

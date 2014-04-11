@@ -1,16 +1,29 @@
-include_recipe 'apt'
+case node['platform_family']
+when 'debian'
+  include_recipe 'apt'
+
+  apt_repository 'thoughtworks' do
+    uri 'http://download01.thoughtworks.com/go/debian'
+    components ['contrib/']
+  end
+
+  package_options = '--force-yes'
+when 'rhel'
+  include_recipe 'yum'
+
+  yum_repository 'thoughtworks' do
+    baseurl 'http://download01.thoughtworks.com/go/yum/no-arch'
+    gpgcheck false
+  end
+end
+
 include_recipe 'java'
 
 package 'unzip'
 
-apt_repository "thoughtworks" do
-  uri "http://download01.thoughtworks.com/go/debian"
-  components ["contrib/"]
-end
-
 package "go-server" do
   version node[:go][:version]
-  options "--force-yes"
+  options package_options
   notifies :start, 'service[go-server]', :immediately
 end
 
@@ -185,4 +198,3 @@ ruby_block "remove_autoregister_key" do
   not_if {node[:go][:auto_register_agents]}
   not_if {Chef::Config[:solo]}
 end
-
