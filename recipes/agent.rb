@@ -35,12 +35,12 @@ if Chef::Config[:solo] || node.attribute?('go') && node['go'].attribute?('server
   Chef::Log.info("Using #{node[:go][:server]} for server instance configuration, as specified in node[:go][:server].")
 else
   go_servers = search(:node, "chef_environment:#{node.chef_environment} AND run_list:recipe\[go\:\:server\]")
-  go_server = "#{go_servers[0][:ipaddress]}"
-  go_server_autoregister = "#{go_servers[0][:go][:auto_register_agents]}"
+  go_server = go_servers[0][:ipaddress]
+  go_server_autoregister = go_servers[0][:go][:auto_register_agents]
   Chef::Log.info("Found Go server at ip address #{go_server} with automatic agent registration=#{go_server_autoregister}")
   if (go_server_autoregister)
     Chef::Log.warn("Agent auto-registration enabled.  This agent will not require approval to become active.")
-    autoregister_key = "#{go_servers[0][:go][:autoregister_key]}"
+    autoregister_key = go_servers[0][:go][:autoregister_key]
   else
     autoregister_key = ""
   end

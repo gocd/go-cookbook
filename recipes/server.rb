@@ -57,7 +57,7 @@ if node[:go][:backup_retrieval_type] =~ /subversion|svn/i
     not_if {skip_backup}
     only_if {restore_go_config}
   end
-elsif node[:go][:backup_retrieval_type] =~ /local/i and ::File.directory?("#{node[:go][:backup_path]}")
+elsif node[:go][:backup_retrieval_type] =~ /local/i and ::File.directory?(node[:go][:backup_path])
   directory "#Chef::Config[:file_cache_path]}/go-config-restore/go-config/current" do
     mode 0755
     recursive true
