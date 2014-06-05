@@ -19,32 +19,53 @@ end
 
 include_recipe 'java'
 
-go_server               = node[:go][:agent][:server_host]
 package_url             = node[:go][:agent][:package_url]
 package_checksum        = node[:go][:agent][:package_checksum]
 go_server_autoregister  = node[:go][:agent][:auto_register]
 autoregister_key        = node[:go][:agent][:auto_register_key]
+server_search_query     = node[:go][:agent][:server_search_query]
 
 package "go-agent" do
   version node[:go][:version]
   options package_options
 end
-  
-if Chef::Config[:solo] || node.attribute?('go') && node['go'].attribute?('server')
-  Chef::Log.warn("Chef-solo invocation detected.  node[:go][:server] attribute will be used for server instance configuration.")
-  Chef::Log.info("Using #{node[:go][:server]} for server instance configuration, as specified in node[:go][:server].")
+
+# If running under solo or user specifed the server host, try and use that
+if Chef::Config[:solo] || node['go']['agent'].attribute?('server_host')
+  Chef::Log.info("Attempting to use node['go']['agent']['server_host'] attribute " +
+    "for server host")
+  go_server_host = node[:go][:agent][:server_host]
 else
-  go_servers = search(:node, "chef_environment:#{node.chef_environment} AND run_list:recipe\[go\:\:server\]")
-  go_server = "#{go_servers[0][:ipaddress]}"
-  go_server_autoregister = "#{go_servers[0][:go][:auto_register_agents]}"
-  Chef::Log.info("Found Go server at ip address #{go_server} with automatic agent registration=#{go_server_autoregister}")
-  if (go_server_autoregister)
-    Chef::Log.warn("Agent auto-registration enabled.  This agent will not require approval to become active.")
-    autoregister_key = "#{go_servers[0][:go][:autoregister_key]}"
+  # Running under client and user didn't specify a server_host attribute
+  Chef::Log.info("Search query: #{server_search_query}")
+  go_servers = search(:node, server_search_query)
+  if go_servers.count == 0
+    Chef::Log.warn("No Go servers found on Chef server.")
   else
-    autoregister_key = ""
+    go_server = go_servers[0]
+    go_server_host = "#{go_server[:ipaddress]}"
+    if go_servers.count > 1
+      Chef::Log.warn("Multiple Go servers found on Chef server. Using first returned server " +
+        "'#{go_server_host}' for server instance configuration.")
+    end
+    go_server_autoregister = "#{go_server[:go][:auto_register_agents]}"
+    Chef::Log.info("Found Go server at ip address #{go_server_host} with automatic agent registration=#{go_server_autoregister}")
+    if (go_server_autoregister)
+      Chef::Log.warn("Agent auto-registration enabled.  This agent will not require approval to become active.")
+      autoregister_key = "#{go_server[:go][:autoregister_key]}"
+    else
+      autoregister_key = ""
+    end
   end
 end
+
+# Ensure we have a Go server host set to a sensible default
+if go_server_host.nil?
+  go_server_host = '127.0.0.1'
+  Chef::Log.warn("Go server not found on Chef server or not specifed via " +
+    "node['go']['agent']['server_host'] attribute, defaulting Go server to #{go_server_host}")
+end
+
 
 # Install & configure the initial (default) Go agent as it comes from the binary distribution
 # Then install any additional agents with -COUNT addition.
@@ -59,7 +80,7 @@ end
 # default[:go][:agent][:instance_count] = node[:cpu][:total]
 
 (1..node[:go][:agent][:instance_count]).each do |i|
-  log "Configuring Go agent # #{i} of #{node[:go][:agent][:instance_count]} for Go server at #{go_server}:8153 "
+  log "Configuring Go agent # #{i} of #{node[:go][:agent][:instance_count]} for Go server at #{go_server_host}:8153 "
   if (i < 2)
     suffix = ""
   else
@@ -83,7 +104,7 @@ end
     mode '0644'
     owner 'go'
     group 'go'
-    variables(:go_server_host => go_server, 
+    variables(:go_server_host => go_server_host, 
       :go_server_port => '8153', 
       :go_agent_instance => suffix,
       :java_home => node[:java][:java_home],
