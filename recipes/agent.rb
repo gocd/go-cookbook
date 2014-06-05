@@ -73,9 +73,6 @@ end
     owner 'root'
     group 'root'
     variables(:go_agent_instance => suffix)
-    subscribes :create, "package[go-agent]"
-    notifies :enable, "service[go-agent#{suffix}]", :delayed
-    action :nothing
   end
 
   template "/etc/default/go-agent#{suffix}" do
@@ -88,8 +85,6 @@ end
       :go_agent_instance => suffix,
       :java_home => node[:java][:java_home],
       :work_dir => "/var/lib/go-agent#{suffix}")
-    subscribes :create, "template[/etc/init.d/go-agent#{suffix}]"
-    action :nothing
   end
   
   template "/usr/share/go-agent/agent#{suffix}.sh" do
@@ -98,34 +93,30 @@ end
     owner 'go'
     group 'go'
     variables(:go_agent_instance => suffix)
-    subscribes :create, "template[/etc/init.d/go-agent#{suffix}]"
-    action :nothing
   end
 
   log "Registering agent#{suffix} with autoregister key of " + autoregister_key
+
   directory "/var/lib/go-agent#{suffix}" do
     mode '0755'
     owner 'go'
     group 'go'
-    subscribes :create, "template[/etc/init.d/go-agent#{suffix}]"
-    action :nothing
   end
+
   directory "/var/lib/go-agent#{suffix}/config" do
     mode '0755'
     owner 'go'
     group 'go'
-    subscribes :create, "Directory[/var/lib/go-agent#{suffix}]"
-    action :nothing
   end
+
   template "/var/lib/go-agent#{suffix}/config/autoregister.properties" do
     source 'autoregister.properties.erb'
+    mode '0644'
     group 'go'
     owner 'go'
-    mode 0644
-    variables(:autoregister_key => autoregister_key,
-            :agent_resources => "#{node[:os]}, #{node[:platform]},#{node[:platform]}-#{node[:platform_version]}")
-    subscribes :create, "directory[/var/lib/go-agent#{suffix}/config]"
-    action :nothing
+    variables(
+      :autoregister_key => autoregister_key,
+      :agent_resources => "#{node[:os]}, #{node[:platform]},#{node[:platform]}-#{node[:platform_version]}")
   end
   
 
