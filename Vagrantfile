@@ -1,7 +1,7 @@
 ubuntu_box_name = 'opscode_ubuntu-12.04_chef-11.2.0'
 ubuntu_box_url  = "https://opscode-vm.s3.amazonaws.com/vagrant/#{ubuntu_box_name}.box"
 windows_box_name = 'vagrant-windows2008r2'
-windows_box_url = "http://vagrantboxes.hq.daptiv.com/vagrant/boxes/#{windows_box_name}.box"
+windows_box_url = "http://PUTINYOURBOXSERVERHERE/vagrant/boxes/#{windows_box_name}.box"
 api_version = '2'
 
 Vagrant::configure(api_version) do |config|
