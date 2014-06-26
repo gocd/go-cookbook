@@ -34,7 +34,7 @@ if Chef::Config[:solo] || node.attribute?('go') && node['go'].attribute?('server
   Chef::Log.warn("Chef-solo invocation detected.  node[:go][:server] attribute will be used for server instance configuration.")
   Chef::Log.info("Using #{node[:go][:server]} for server instance configuration, as specified in node[:go][:server].")
 else
-  go_servers = search(:node, "chef_environment:#{node.chef_environment} AND run_list:recipe\[go\:\:server\]")
+  go_servers = search(:node, "chef_environment:#{node.chef_environment} AND recipes:go\\:\\:server")
   go_server = go_servers[0][:ipaddress]
   go_server_autoregister = go_servers[0][:go][:auto_register_agents]
   Chef::Log.info("Found Go server at ip address #{go_server} with automatic agent registration=#{go_server_autoregister}")
