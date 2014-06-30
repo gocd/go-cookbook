@@ -4,9 +4,9 @@ case node['platform']
   when 'windows'
     include_recipe "go::agent_windows"
   else
-    node.default[:go][:server] = '127.0.0.1'
+    node.default['go]'['server'] = '127.0.0.1'
     include_recipe "go::server"
     include_recipe "go::agent"
 end
 
-Chef::Log.info("Node has #{node[:cpu][:total]} CPUs")
+Chef::Log.info("Node has #{node['cpu']['total']} CPUs")
