@@ -143,6 +143,9 @@ end
   service "go-agent#{suffix}" do
     supports :status => true, :restart => true, :reload => true, :start => true
     action :nothing
+    subscribes :enable, "template[/etc/init.d/go-agent#{suffix}]"
+    subscribes :enable, "template[/var/lib/go-agent#{suffix}/config/autoregister.properties]"
+    subscribes :enable, "template[/etc/default/go-agent#{suffix}]"
     subscribes :restart, "template[/etc/init.d/go-agent#{suffix}]"
     subscribes :restart, "template[/var/lib/go-agent#{suffix}/config/autoregister.properties]"
     subscribes :restart, "template[/etc/default/go-agent#{suffix}]"
