@@ -2,7 +2,7 @@ server_ip = node['go']['agent']['server_host']
 install_path = node['go']['agent']['install_path']
 
 opts = ""
-opts << "/SERVERIP #{server_ip}" if node['go']['agent']['server_host']
+opts << "/SERVERIP=#{server_ip}" if node['go']['agent']['server_host']
 opts << "/D=#{install_path}" if node['go']['agent']['install_path']
 
 download_url = node['go']['agent']['download_url']
