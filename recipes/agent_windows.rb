@@ -1,3 +1,4 @@
+
 server_ip = node['go']['agent']['server_host']
 install_path = node['go']['agent']['install_path']
 

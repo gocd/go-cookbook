@@ -1,6 +1,6 @@
 name             "go"
 description      "Installs/Configures Go servers and agents"
-version          "0.0.11"
+version          "0.1.0"
 
 supports "ubuntu", ">= 12.04"
 supports "centos"
@@ -10,6 +10,7 @@ recipe "go::server", "Installs and configures a Go server"
 recipe "go::agent", "Installs and configures a Go agent"
 recipe "go::default", "Installs and configures a Go server and agent on the same node, for windows just agent"
 recipe "go::agent_windows", "Installs and configures Windows Go agent"
+recipe "go::agent_linux", "Install and configures Linux Go agent"
 
 depends "apt", ">= 1.9.2"
 depends "java", ">= 1.10.0"
