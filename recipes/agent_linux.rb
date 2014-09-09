@@ -131,6 +131,15 @@ end
     owner 'go'
     group 'go'
   end
+  
+  autoregister_resources = []
+  node['go']['agent']['auto_register_resources'].each do |resource_key|
+    autoregister_resources.push(resource_key)
+  end
+
+  autoregister_resources.push(node['os'], node['platform'], "#{node['platform']}-#{node['platform_version']}")
+
+  log "Registering agent with resource tags: #{autoregister_resources}"
 
   template "/var/lib/go-agent#{suffix}/config/autoregister.properties" do
     source 'autoregister.properties.erb'
@@ -139,7 +148,7 @@ end
     owner 'go'
     variables(
       :autoregister_key => autoregister_key,
-      :agent_resources => "#{node['os']}, #{node['platform']},#{node['platform']}-#{node['platform_version']}")
+      :agent_resources => autoregister_resources.join(","))
   end
   
 

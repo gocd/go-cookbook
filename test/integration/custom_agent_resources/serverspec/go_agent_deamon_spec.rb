@@ -1,6 +1,7 @@
 require 'serverspec'
 
 include Serverspec::Helper::Exec
+include Serverspec::Helper::DetectOS
 
 describe "Go Agent Daemon" do
 
@@ -14,6 +15,7 @@ describe "GO Agent Config" do
   	it {should be_file}
   	it {should be_readable}
   	it { should contain 'agent.auto.register.key=default_auto_registration_key' }
+  	it { should contain 'agent.auto.register.resources=a,b,c,linux,ubuntu,ubuntu-' }
   end
 
 end
