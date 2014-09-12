@@ -58,7 +58,7 @@ if node['go']['backup_retrieval_type'] =~ /subversion|svn/i
     only_if {restore_go_config}
   end
 elsif node['go']['backup_retrieval_type'] =~ /local/i and ::File.directory?(node['go']['backup_path'])
-  directory "#Chef::Config[:file_cache_path]}/go-config-restore/go-config/current" do
+  directory "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current" do
     mode 0755
     recursive true
     action :create
