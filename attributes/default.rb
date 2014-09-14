@@ -3,6 +3,7 @@ default['go']['backup_retrieval_type'] = 'subversion'
 
 default['go']['agent']['auto_register']         = false
 default['go']['agent']['auto_register_key']     = 'default_auto_registration_key'
+default['go']['agent']['auto_register_resources'] = []
 
 # Install this many agent instances on a box - default is one per CPU
 
