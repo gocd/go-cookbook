@@ -1,11 +1,14 @@
-ubuntu_box_name = 'opscode_ubuntu-12.04_chef-11.2.0'
-ubuntu_box_url  = "https://opscode-vm.s3.amazonaws.com/vagrant/#{ubuntu_box_name}.box"
+# linux_box_name = 'opscode_centos-5.9_chef-11.4.4'
+# linux_box_name = 'opscode-fedora-20'
+linux_box_name = 'opscode_ubuntu-12.04_chef-11.2.0'
+linux_box_url  = "https://opscode-vm.s3.amazonaws.com/vagrant/#{linux_box_name}.box"
 windows_box_name = 'vagrant-windows2008r2'
 windows_box_url = "http://PUTINYOURBOXSERVERHERE/vagrant/boxes/#{windows_box_name}.box"
 api_version = '2'
 
 Vagrant::configure(api_version) do |config|
-  config.berkshelf.enabled    = false
+  config.berkshelf.enabled    = true
+  config.omnibus.chef_version = :latest
   
   if Vagrant.has_plugin?("vagrant-cachier")
       # Configure cached packages to be shared between instances of the same base box.
@@ -26,17 +29,17 @@ Vagrant::configure(api_version) do |config|
       # For more information please check http://docs.vagrantup.com/v2/synced-folders/basic_usage.html
   end
   
-  config.vm.define 'ubuntu', primary: true do |ubuntu|
-    ubuntu.vm.box               = ubuntu_box_name
-    ubuntu.vm.box_url           = ubuntu_box_url
+  config.vm.define 'linux', primary: true do |linux|
+    linux.vm.box               = linux_box_name
+    linux.vm.box_url           = linux_box_url
 
-    ubuntu.vm.provider :virtualbox do |v|
+    linux.vm.provider :virtualbox do |v|
       v.customize ['modifyvm', :id, '--memory', '1024']
     end
 
-    ubuntu.vm.network :private_network, ip: '192.168.192.2'
+    linux.vm.network :private_network, ip: '192.168.192.2'
 
-    ubuntu.vm.provision :chef_solo do |chef|
+    linux.vm.provision :chef_solo do |chef|
       chef.log_level = 'info'
       chef.json = {
           'go' => {
@@ -86,3 +89,4 @@ Vagrant::configure(api_version) do |config|
 
 end
 
+  
