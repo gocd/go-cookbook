@@ -3,16 +3,16 @@ when 'debian'
   include_recipe 'apt'
 
   apt_repository 'thoughtworks' do
-    uri 'http://download01.thoughtworks.com/go/debian'
-    components ['contrib/']
+    uri 'http://download.go.cd/gocd-deb/'
+    components ['/']
   end
 
   package_options = '--force-yes'
-when 'rhel'
+when 'rhel','fedora'
   include_recipe 'yum'
 
   yum_repository 'thoughtworks' do
-    baseurl 'http://download01.thoughtworks.com/go/yum/no-arch'
+    baseurl 'http://download.go.cd/gocd-rpm'
     gpgcheck false
   end
 end
