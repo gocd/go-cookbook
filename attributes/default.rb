@@ -9,7 +9,7 @@ default['go']['agent']['auto_register_resources'] = []
 
 default['go']['agent']['instance_count'] = node['cpu']['total']
 default['go']['agent']['server_search_query'] =
-  "chef_environment:#{node.chef_environment} AND recipes'go'\\:\\:server"
+  "chef_environment:#{node.chef_environment} AND recipes:go\\:\\:server"
   
 
 default['go']['version']                       = '14.2.0-377'
