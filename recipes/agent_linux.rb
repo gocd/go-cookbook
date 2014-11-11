@@ -6,7 +6,7 @@ when 'debian'
   include_recipe 'apt'
 
   apt_repository 'thoughtworks' do
-    uri 'http://download.go.cd/gocd-deb/'
+    uri 'http://dl.bintray.com/gocd/gocd-deb/'
     components ['/']
   end
 
@@ -15,7 +15,7 @@ when 'rhel','fedora'
   include_recipe 'yum'
 
   yum_repository 'thoughtworks' do
-    baseurl 'http://download.go.cd/gocd-rpm'
+    baseurl 'http://dl.bintray.com/gocd/gocd-rpm/'
     gpgcheck false
   end
 end
@@ -119,6 +119,13 @@ end
   end
 
   log "Registering agent#{suffix} with autoregister key of " + autoregister_key
+
+  directory "/var/log/go-agent#{suffix}" do
+    mode '0755'
+    owner 'go'
+    group 'go'
+  end
+
 
   directory "/var/lib/go-agent#{suffix}" do
     mode '0755'

@@ -12,7 +12,7 @@ default['go']['agent']['server_search_query'] =
   "chef_environment:#{node.chef_environment} AND recipes:go\\:\\:server"
   
 
-default['go']['version']                       = '14.2.0-377'
+default['go']['version']                       = '14.3.0-1186'
 
 unless platform?('windows')
   default['go']['agent']['java_home']             = '/usr/bin/java'
