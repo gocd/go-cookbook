@@ -37,7 +37,7 @@ Vagrant::configure(api_version) do |config|
       v.customize ['modifyvm', :id, '--memory', '1024']
     end
 
-    linux.vm.network :private_network, ip: '192.168.192.2'
+    linux.vm.network "forwarded_port", guest:8153, host: 8153
 
     linux.vm.provision :chef_solo do |chef|
       chef.log_level = 'info'
