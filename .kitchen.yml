@@ -17,12 +17,20 @@ platforms:
   driver:
     network:
       - [ 'private_network', { ip: '33.33.33.12' } ]
+- name: ubuntu-14.04
+  driver:
+    network:
+      - [ 'private_network', { ip: '33.33.33.13' } ]
 
 suites:
 - name: default
   run_list: ['recipe[go]']
 - name: custom_agent_resources
   run_list: ['recipe[go::agent]']
-  attributes: {"go":{"agent":{"auto_register_resources":["a", "b", "c"]}}}
+  attributes: 
+    go: 
+      agent:
+        auto_register_resources: ["a", "b", "c"]
+        auto_register_environments: ["x", "y", "z"]
   excludes:
     - centos-6.4

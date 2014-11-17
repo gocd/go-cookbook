@@ -16,6 +16,7 @@ describe "GO Agent Config" do
   	it {should be_readable}
   	it { should contain 'agent.auto.register.key=default_auto_registration_key' }
   	it { should contain 'agent.auto.register.resources=a,b,c,linux,ubuntu,ubuntu-' }
+  	it { should contain 'agent.auto.register.environments=x,y,z' }
   end
 
 end
