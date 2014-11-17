@@ -17,6 +17,10 @@ platforms:
   driver:
     network:
       - [ 'private_network', { ip: '33.33.33.12' } ]
+- name: ubuntu-14.04
+  driver:
+    network:
+      - [ 'private_network', { ip: '33.33.33.13' } ]
 
 suites:
 - name: default
