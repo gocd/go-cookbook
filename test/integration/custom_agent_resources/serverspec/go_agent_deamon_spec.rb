@@ -1,7 +1,7 @@
 require 'serverspec'
 
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
+# Required by serverspec
+set :backend, :exec
 
 describe "Go Agent Daemon" do
 
