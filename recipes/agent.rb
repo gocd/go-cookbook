@@ -1,3 +1,4 @@
+# Encoding: utf-8
 # Cookbook Name:: go
 # Recipe:: agent
 
