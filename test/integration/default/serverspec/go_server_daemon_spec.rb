@@ -1,6 +1,7 @@
 require 'serverspec'
 
-include Serverspec::Helper::Exec
+# Required by serverspec
+set :backend, :exec
 
 describe "Go Server Daemon" do
 
