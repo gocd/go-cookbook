@@ -30,6 +30,10 @@ windows_batch "cruisewrapper" do
   not_if { ::Win32::Service.exists? 'Go Server' }
 end
 
+windows_batch "open firewall" do
+  code 'netsh advfirewall firewall add rule name="Go Server" dir=in action=allow protocol=TCP localport=8153'
+end
+
 service "Go server" do
   action :start
 end
