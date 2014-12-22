@@ -18,6 +18,7 @@ the Vagrant driver by default.
 
 ```
 $ rake -T
+rake integration:cloud    # Run Test Kitchen cloud plugins
 rake integration:vagrant  # Run Test Kitchen with Vagrant
 rake style                # Run all style checks
 rake style:chef           # Lint Chef cookbooks
@@ -50,4 +51,36 @@ bundle exec kitchen test
 or
 ```
 rake integration:vagrant
+```
+
+Integration Testing using Cloud providers
+-----------------------------------------
+Integration tests can be performed on cloud providers using Test Kitchen plugins. This cookbook ships a .kitchen.cloud.yml that references environmental variables present in the shell that kitchen test is ran from. These usually contain authentication tokens for driving IaaS APIs, as well as the paths to ssh private keys needed for Test Kitchen log into them after they've been created.
+
+Examples of environment variables being set in ~/.bash_profile:
+
+```
+# digitalocean
+export DIGITALOCEAN_ACCESS_TOKEN='your_bits_here'
+export DIGITALOCEAN_SSH_KEY_IDS='your_bits_here'    #CSV String of IDs
+export DIGITALOCEAN_SSH_KEY_PATH='your_bits_here'
+
+#ec2
+export AWS_ACCESS_KEY='your_bits_here'
+export AWS_SECRET_KEY='your_bits_here'
+export AWS_SECURITY_GROUP='your_bits_here'
+export AWS_SSH_KEY_ID='your_bits_here'
+export AWS_SSH_KEY_PATH='your_bits_here'
+```
+
+**Note:** There is currently a bug in kitchen-digitalocean (0.8.2) which forces DIGITALOCEAN_SSH_KEY_IDS to require at least two entires. It is prefectly fine however to use the same key id twice.
+
+Integration tests using cloud drivers can be performed with either
+```
+export KITCHEN_YAML=.kitchen.cloud.yml
+bundle exec kitchen test
+```
+or
+```
+rake integration:cloud
 ```
