@@ -60,8 +60,9 @@ Integration tests can be performed on cloud providers using Test Kitchen plugins
 Examples of environment variables being set in ~/.bash_profile:
 
 ```
-# digitalocean
-export DIGITALOCEAN_ACCESS_TOKEN='your_bits_here'
+# digitalocean (APIv1)
+export DIGITALOCEAN_API_KEY='your_bits_here'
+export DIGITALOCEAN_CLIENT_ID='your_bits_here'
 export DIGITALOCEAN_SSH_KEY_IDS='your_bits_here'    #CSV String of IDs
 export DIGITALOCEAN_SSH_KEY_PATH='your_bits_here'
 

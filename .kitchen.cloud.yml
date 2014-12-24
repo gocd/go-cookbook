@@ -1,6 +1,7 @@
 ---
 driver_config:
-  digitalocean_access_token: <%= ENV['DIGITALOCEAN_ACCESS_TOKEN'] %>
+  digitalocean_api_key: <%= ENV['DIGITALOCEAN_API_KEY'] %>
+  digitalocean_client_id: <%= ENV['DIGITALOCEAN_CLIENT_ID'] %>
   aws_access_key_id: <%= ENV['AWS_ACCESS_KEY'] %>
   aws_secret_access_key: <%= ENV['AWS_SECRET_KEY'] %>
   aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
@@ -13,9 +14,9 @@ platforms:
 - name: ubuntu-12.04
   driver_plugin: digitalocean
   driver_config:
-    image: ubuntu-12-04-x32
-    region: nyc3
-    size: 1gb
+    image_id: 6374130
+    flavor_id: 63
+    region_id: 4
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEY_IDS'] %>
 
