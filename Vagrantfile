@@ -34,7 +34,7 @@ Vagrant::configure(api_version) do |config|
     linux.vm.box_url           = linux_box_url
 
     linux.vm.provider :virtualbox do |v|
-      v.customize ['modifyvm', :id, '--memory', '1024']
+      v.customize ['modifyvm', :id, '--memory', '2048']
     end
 
     linux.vm.network "forwarded_port", guest:8153, host: 8153
