@@ -7,6 +7,8 @@ when 'debian'
 
   apt_repository 'thoughtworks' do
     uri 'http://dl.bintray.com/gocd/gocd-deb/'
+    keyserver "pgp.mit.edu"
+    key "0x9149B0A6173454C7"
     components ['/']
   end
 
