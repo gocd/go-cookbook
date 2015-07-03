@@ -107,7 +107,7 @@ end
     variables(:go_server_host => go_server_host, 
       :go_server_port => '8153', 
       :java_home => node['java']['java_home'],
-      :work_dir => "/var/lib/go-agent#{suffix}")
+      :work_dir => "#{node['go']['agent']['work_dir_path']}/go-agent#{suffix}")
   end
   
   template "/usr/share/go-agent/agent#{suffix}.sh" do
@@ -125,7 +125,6 @@ end
     owner 'go'
     group 'go'
   end
-
 
   directory "/var/lib/go-agent#{suffix}" do
     mode '0755'
@@ -163,7 +162,6 @@ end
       :agent_resources => autoregister_resources.join(","),
       :agent_environments => autoregister_environments.join(","))
   end
-  
 
   service "go-agent#{suffix}" do
     supports :status => true, :restart => true, :reload => true, :start => true
@@ -175,7 +173,4 @@ end
     subscribes :restart, "template[/var/lib/go-agent#{suffix}/config/autoregister.properties]"
     subscribes :restart, "template[/etc/default/go-agent#{suffix}]"
   end
-  
 end
-
-

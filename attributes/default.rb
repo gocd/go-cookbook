@@ -17,6 +17,7 @@ default['go']['version']                       = '14.3.0-1186'
 
 unless platform?('windows')
   default['go']['agent']['java_home']             = '/usr/bin/java'
+  default['go']['agent']['work_dir_path']         = '/var/lib'
 end
 
 default['go']['server']['install_path'] = 'C:\Program Files (x86)\Go Server'
