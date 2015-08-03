@@ -22,7 +22,7 @@ include_recipe 'java'
 package 'unzip'
 
 package "go-server" do
-  version node['go']['version']
+  version node['gocd']['version']
   options package_options
   notifies :start, 'service[go-server]', :immediately
 end
@@ -40,24 +40,24 @@ else
   Chef::Log.warn("New install detected.")
   skip_backup = false
   restore_go_config = false
-  if (node['go']['backup_path'] && !node['go']['backup_path'].strip.empty?) 
+  if (node['gocd']['backup_path'] && !node['gocd']['backup_path'].strip.empty?) 
     Chef::Log.warn("Backup URL specified. Configuration will be restored.")
     restore_go_config = true
   end
 end
 
-if node['go']['backup_retrieval_type'] =~ /subversion|svn/i
+if node['gocd']['backup_retrieval_type'] =~ /subversion|svn/i
 # Grab the backup out of Subversion
   subversion "restore-go-config" do
-    Chef::Log.info("Restoring configuration from #{node['go']['backup_path']}")
-    repository node['go']['backup_path']
+    Chef::Log.info("Restoring configuration from #{node['gocd']['backup_path']}")
+    repository node['gocd']['backup_path']
     destination "#{Chef::Config[:file_cache_path]}/go-config-restore"
     action :force_export
     notifies :stop, 'service[go-server-control]', :immediately
     not_if {skip_backup}
     only_if {restore_go_config}
   end
-elsif node['go']['backup_retrieval_type'] =~ /local/i and ::File.directory?(node['go']['backup_path'])
+elsif node['gocd']['backup_retrieval_type'] =~ /local/i and ::File.directory?(node['gocd']['backup_path'])
   directory "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current" do
     mode 0755
     recursive true
@@ -66,14 +66,14 @@ elsif node['go']['backup_retrieval_type'] =~ /local/i and ::File.directory?(node
 
   ruby_block "copy_local_file" do
     block do
-      if ::File.exists?("#{node['go']['backup_path']}/db.zip")
-        ::FileUtils.cp "#{node['go']['backup_path']}/db.zip", "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current"
+      if ::File.exists?("#{node['gocd']['backup_path']}/db.zip")
+        ::FileUtils.cp "#{node['gocd']['backup_path']}/db.zip", "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current"
       end
-      if ::File.exists?("#{node['go']['backup_path']}/config-dir.zip")
-        ::FileUtils.cp "#{node['go']['backup_path']}/config-dir.zip", "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current"
+      if ::File.exists?("#{node['gocd']['backup_path']}/config-dir.zip")
+        ::FileUtils.cp "#{node['gocd']['backup_path']}/config-dir.zip", "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current"
       end
-      if ::File.exists?("#{node['go']['backup_path']}/config-repo.zip")
-        ::FileUtils.cp "#{node['go']['backup_path']}/config-repo.zip", "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current"
+      if ::File.exists?("#{node['gocd']['backup_path']}/config-repo.zip")
+        ::FileUtils.cp "#{node['gocd']['backup_path']}/config-repo.zip", "#{Chef::Config[:file_cache_path]}/go-config-restore/go-config/current"
       end
     end
   end
@@ -180,21 +180,21 @@ ruby_block "publish_autoregister_key" do
     end
 
     Chef::Log.warn("Enabling automatic agent registration.  Any configured agent will be configured to build without authorization.")
-    node.set['go']['autoregister_key']=server_autoregister_key
+    node.set['gocd']['autoregister_key']=server_autoregister_key
     node.save
   end
   action :create
-  only_if {node['go']['auto_register_agents']}
+  only_if {node['gocd']['auto_register_agents']}
   not_if {Chef::Config[:solo]}
 end
 
 ruby_block "remove_autoregister_key" do
   block do
     Chef::Log.warn("Disabling automatic agent registration.")
-    node.set['go']['autoregister_key']=""
+    node.set['gocd']['autoregister_key']=""
     node.save
   end
   action :create
-  not_if {node['go']['auto_register_agents']}
+  not_if {node['gocd']['auto_register_agents']}
   not_if {Chef::Config[:solo]}
 end

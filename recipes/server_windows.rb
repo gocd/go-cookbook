@@ -6,12 +6,12 @@ require 'win32/service'
 
 include_recipe 'java'
 
-install_path = node['go']['server']['install_path']
+install_path = node['gocd']['server']['install_path']
 opts = "/S /D=#{install_path}"
 
-download_url = node['go']['server']['download_url']
+download_url = node['gocd']['server']['download_url']
 if !download_url
-  download_url = "http://download.go.cd/gocd/go-server-#{node['go']['version']}-setup.exe"
+  download_url = "http://download.go.cd/gocd/go-server-#{node['gocd']['version']}-setup.exe"
 end
 
 windows_package 'Go Server' do

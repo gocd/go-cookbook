@@ -28,7 +28,7 @@ suites:
 - name: custom_agent_resources
   run_list: ['recipe[go::agent]']
   attributes: 
-    go: 
+    gocd: 
       agent:
         auto_register_resources: ["a", "b", "c"]
         auto_register_environments: ["x", "y", "z"]
