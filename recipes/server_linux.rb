@@ -27,20 +27,22 @@ package "go-server" do
   notifies :start, 'service[go-server]', :immediately
 end
 
-# If we're upgrading an existing Go Server then leave the configuration and such intact. 
+#TODO move away backup ops to separate recipe, refactor high complexity
+
+# If we're upgrading an existing Go Server then leave the configuration and such intact.
 # If it's a new node, and a SVN backup URL is specified then restore/overwrite any existing configuration.
 
-# Detection isn't based on the <license> element as Go-Community edition has no license. 
+# Detection isn't based on the <license> element as Go-Community edition has no license.
 # We look for at least one <pipelines> element, with the assumption that if you have a backup you have at least one pipeline.
 
-if (::File.exists?('/etc/go/cruise-config.xml') and ::File.readlines('/etc/go/cruise-config.xml').grep(/<pipelines/).length > 0) 
+if (::File.exists?('/etc/go/cruise-config.xml') and ::File.readlines('/etc/go/cruise-config.xml').grep(/<pipelines/).length > 0)
   skip_backup = true
   Chef::Log.warn("Existing configuration detected. Restore skipped.")
 else
   Chef::Log.warn("New install detected.")
   skip_backup = false
   restore_go_config = false
-  if (node['go']['backup_path'] && !node['go']['backup_path'].strip.empty?) 
+  if (node['go']['backup_path'] && !node['go']['backup_path'].strip.empty?)
     Chef::Log.warn("Backup URL specified. Configuration will be restored.")
     restore_go_config = true
   end

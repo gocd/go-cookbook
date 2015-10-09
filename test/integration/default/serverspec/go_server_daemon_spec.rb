@@ -13,4 +13,6 @@ describe "Go Server Daemon" do
     expect(service("go-server")).to be_running
   end
 
+  #TODO test that agent(s) are registered and enabled by quering api
+
 end

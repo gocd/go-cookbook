@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 ruby '1.9.3'
 
+# TODO we should run test on chef 11 and 12 + these dependencies are old and should be updated
 gem 'chef', '~> 11'
 gem 'foodcritic', '~> 4.0.0'
 gem 'berkshelf', '~> 3.1.1'

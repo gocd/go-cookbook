@@ -3,6 +3,7 @@ default['go']['backup_retrieval_type'] = 'subversion'
 
 default['go']['agent']['auto_register']         = false
 default['go']['agent']['auto_register_key']     = 'default_auto_registration_key'
+# TODO don't use arrays in attributes, use maps to boolean value instead to allow smooth overriding
 default['go']['agent']['auto_register_resources'] = []
 default['go']['agent']['auto_register_environments'] = []
 
@@ -11,8 +12,8 @@ default['go']['agent']['auto_register_environments'] = []
 default['go']['agent']['instance_count'] = node['cpu']['total']
 default['go']['agent']['server_search_query'] =
   "chef_environment:#{node.chef_environment} AND recipes:go\\:\\:server"
-  
 
+# This is old and needs constant updates, can we have stable or experimental as an option?
 default['go']['version']                       = '14.3.0-1186'
 
 unless platform?('windows')
