@@ -14,6 +14,7 @@ default['gocd']['agent']['server_search_query'] =
 
 
 default['gocd']['version']                          = '15.2.0-2248'
+force_default['java']['jdk_version']  = '7'
 
 unless platform?('windows')
   default['gocd']['agent']['java_home']             = '/usr/bin/java'
