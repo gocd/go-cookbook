@@ -4,4 +4,4 @@ wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chefd
 sudo dpkg -i "${HOME}/.chefdk_0.9.0-1_amd64.deb"
 eval "$(chef shell-init bash)"
 sudo $(which chef) gem install bundler
-sudo $(which chef) bundle install
+sudo $(which chef) exec bundle install
