@@ -24,11 +24,11 @@ platforms:
 
 suites:
 - name: default
-  run_list: ['recipe[go]']
+  run_list: ['recipe[gocd]']
 - name: custom_agent_resources
-  run_list: ['recipe[go::agent]']
-  attributes: 
-    gocd: 
+  run_list: ['recipe[gocd::agent]']
+  attributes:
+    gocd:
       agent:
         auto_register_resources: ["a", "b", "c"]
         auto_register_environments: ["x", "y", "z"]

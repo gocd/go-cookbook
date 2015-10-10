@@ -34,5 +34,5 @@ platforms:
 suites:
 - name: default
   run_list:
-  - recipe[go]
+  - recipe[gocd]
   attributes: {}

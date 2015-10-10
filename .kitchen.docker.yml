@@ -1,6 +1,18 @@
 ---
 driver:
   name: docker
+  privileged: true
+  provision_command:
+    - "apt-get install -y libfuse2"
+    - "mkdir -p /tmp/fuse"
+    - "cd /tmp/fuse ; apt-get download fuse"
+    - "cd /tmp/fuse ; dpkg-deb -x fuse_* ."
+    - "cd /tmp/fuse ; dpkg-deb -e fuse_*"
+    - "cd /tmp/fuse ; rm fuse_*.deb"
+    - "cd /tmp/fuse ; echo '#!/bin/bash\\nexit 0\\n' > DEBIAN/postinst"
+    - "cd /tmp/fuse ; cat DEBIAN/postinst"
+    - "cd /tmp/fuse ; dpkg-deb -b . /tmp/fuse.deb"
+    - "cd /tmp/fuse ; dpkg -i /tmp/fuse.deb"
 
 provisioner:
   name: chef_zero
@@ -13,5 +25,11 @@ platforms:
 suites:
 - name: default
   run_list:
-  - recipe[go]
-  attributes: {}
+  - recipe[gocd]
+  attributes:
+    java:
+      jdk_version: 7
+    gocd:
+      server:
+        max_mem: '1024m'
+        min_mem: '512m'

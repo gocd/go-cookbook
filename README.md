@@ -1,43 +1,50 @@
-# Go Cookbook
+# GoCD Cookbook
 
-Hello friend! This cookbook is here to help you setup Go servers and agents
-in an automated way. 
+This cookbook is here to help you setup Go servers and agents in an automated way.
 
-It's primarily tested on newer versions of Ubuntu, but should work on both Debian and Red Hat based distributions.  There is also basic support for agents on Windows (enhancements appreciated!).
+## Supported Platforms
 
+This cookbook has been tested on the following platforms:
 
-## Ideas
+* Ubuntu >= 12.04
+* Debian
+* CentOS >= 6
+* RedHat >= 6
+* Windows - primitive support, but enhancements welcome :)
 
-- How generic should we make this? All platforms or a handful?
-- Test it with [test-kitchen](https://github.com/opscode/test-kitchen)? (Basic elements there)
-- Can we enable pipeline configuration via chef?
+# GoCD Server
 
-# Go Server
+gocd::server will install and start a GoCD server.
 
-go::server will install and start an empty Go server.
+## Go Server attributes
 
-# Go Agent
+The cookbook provides the following attributes to configure the GoCD server:
 
-## Linux
-vagrant up command now requires ubuntu box name for older versions of vagrant (vagrant up ubuntu)
-ubuntu is the default for newer versions
+* `node['gocd']['server']['http_port']`    - The server HTTP port. Defaults to `8153`.
+* `node['gocd']['server']['https_port']`   - The server HTTPS port. Defaults to `8154`.
+* `node['gocd']['server']['max_mem']`      - The server maximum JVM heap space. Defaults to `2048m`.
+* `node['gocd']['server']['min_mem']`      - The server mimimum JVM heap space. Defaults to `1024m`.
+* `node['gocd']['server']['max_perm_gen']` - The server maximum JVM permgen space. Defaults to `400m`.
+* `node['gocd']['server']['work_dir']` - The server working directory. Defaults to `/var/lib/go-server`.
 
-go::agent will install and configure a Go agent, and associate it with an existing Go server.  By default it will install one agent per CPU.  You can override this via node[:gocd][:agent][:instance_count].
-### Single Node
-go::default will install both on the same node for Linux OS.
+# GoCD Agent
 
-## Windows
+gocd::agent will install and start a GoCD agent.
 
-You can use Vagrant and your own chef bootstrapped virtual box base image and vagrant up windows
+## Go Agent attributes
 
-go recipe will install and configure a Windows Go agent on a Windows os, and associate it with an existing Go server.  Does not automatically register agent.
+The cookbook provides the following attributes to configure the GoCD agent:
 
-Overrides available for go::agent_windows
-[:gocd][:agent][:server_host] - hostname or ip of Go server
-[:gocd][:agent][:install_path] - installation path for Go agent
-[:gocd][:agent][:java_home] - java home path if using existing java installation
-[:gocd][:agent][:download_url] - msi for agent install, if left empty will build download url using [:gocd][:version]
+* `node['gocd']['agent']['go_server_host']`               - The hostname of the go server (if left alone, will be autodetected). Defaults to `nil`.
+* `node['gocd']['agent']['go_server_port']`               - The port of the go server. Defaults to `8153`.
+* `node['gocd']['agent']['daemon']`                       - Whether the agent should be daemonized. Defaults to `true`.
+* `node['gocd']['agent']['vnc']['enabled']`               - Whether the agent should start with VNC. (Uses `DISPLAY=:3`). Defaults to `false`.
+* `node['gocd']['agent']['autoregister']['key']`          - The [agent autoregister](http://www.go.cd/documentation/user/current/advanced_usage/agent_auto_register.html) key. If left alone, will be autodetected. Defaults to `nil`.
+* `node['gocd']['agent']['autoregister']['environments']` - The environments for the agent. Defaults to `[]`.
+* `node['gocd']['agent']['autoregister']['resources']`    - The resources for the agent. Defaults to `[]`.
+* `node['gocd']['agent']['autoregister']['hostname']`     - The agent autoregister hostname. Defaults to `node['fqdn']`.
+* `node['gocd']['agent']['server_search_query']`          - The chef search query to find a server node. Defaults to `chef_environment:#{node.chef_environment} AND recipes:go-server\\:\\:default`.
 
-# Authors
-Author:: Chris Kozak (<ckozak@gmail.com>)
-Author:: Tim Brown (<tpbrown@gmail.com>)
+# License
+
+Apache License, Version 2.0

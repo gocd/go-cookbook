@@ -1,9 +1,6 @@
-# Cookbook Name:: go
-# Recipe:: agent
-
 case node['platform']
 when 'windows'
-  include_recipe 'go::agent_windows'
+  include_recipe 'gocd::agent_windows'
 else
-  include_recipe 'go::agent_linux'
+  include_recipe 'gocd::agent_linux'
 end

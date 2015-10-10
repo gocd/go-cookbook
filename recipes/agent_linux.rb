@@ -1,178 +1,78 @@
-# Cookbook Name:: go
-# Recipe:: agent_linux
-
-case node['platform_family']
-when 'debian'
-  include_recipe 'apt'
-
-  apt_repository 'thoughtworks' do
-    uri 'http://dl.bintray.com/gocd/gocd-deb/'
-    keyserver "pgp.mit.edu"
-    key "0x9149B0A6173454C7"
-    components ['/']
-  end
-
-  package_options = '--force-yes'
-when 'rhel','fedora'
-  include_recipe 'yum'
-
-  yum_repository 'thoughtworks' do
-    baseurl 'http://dl.bintray.com/gocd/gocd-rpm/'
-    gpgcheck false
-  end
-end
-
-include_recipe 'java'
-
-package_url             = node['gocd']['agent']['package_url']
-package_checksum        = node['gocd']['agent']['package_checksum']
-go_server_autoregister  = node['gocd']['agent']['auto_register']
-autoregister_key        = node['gocd']['agent']['auto_register_key']
-server_search_query     = node['gocd']['agent']['server_search_query']
+include_recipe 'gocd::repository'
+include_recipe "java"
 
 package "go-agent" do
-  version node['gocd']['version']
-  options package_options
+  notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately
 end
 
-# If running under solo or user specifed the server host, try and use that
-if Chef::Config['solo'] || node['gocd']['agent'].attribute?('server_host')
-  Chef::Log.info("Attempting to use node['gocd']['agent']['server_host'] attribute " +
-    "for server host")
-  go_server_host = node['gocd']['agent']['server_host']
+ohai 'reload_passwd_for_go_user' do
+  name 'reload_passwd'
+  action :nothing
+  plugin 'etc'
+end
+
+directory '/var/lib/go-agent/config' do
+  mode     "0700"
+  owner    "go"
+  group    "go"
+end
+
+if Chef::Config['solo'] || node['gocd']['agent']['go_server_host']
+  Chef::Log.info("Attempting to use node['gocd']['agent']['go_server_host'] attribute for server host")
+  go_server_host   = node['gocd']['agent']['go_server_host']
+  autoregister_key = node['gocd']['agent']['autoregister']['key']
 else
-  # Running under client and user didn't specify a server_host attribute
+  server_search_query = node['gocd']['agent']['server_search_query']
   Chef::Log.info("Search query: #{server_search_query}")
   go_servers = search(:node, server_search_query)
   if go_servers.count == 0
-    Chef::Log.warn("No Go servers found on Chef server.")
+    Chef::Log.warn("No Go servers found on any of the nodes running chef client.")
   else
-    go_server = go_servers[0]
+    go_server = go_servers.first
     go_server_host = go_server['ipaddress']
     if go_servers.count > 1
-      Chef::Log.warn("Multiple Go servers found on Chef server. Using first returned server " +
-        "'#{go_server_host}' for server instance configuration.")
+      Chef::Log.warn("Multiple Go servers found on Chef server. Using first returned server '#{go_server_host}' for server instance configuration.")
     end
-    go_server_autoregister = go_server['gocd']['auto_register_agents']
-    Chef::Log.info("Found Go server at ip address #{go_server_host} with automatic agent registration=#{go_server_autoregister}")
-    if (go_server_autoregister)
-      Chef::Log.warn("Agent auto-registration enabled.  This agent will not require approval to become active.")
-      autoregister_key = go_server['gocd']['autoregister_key']
-    else
-      autoregister_key = ""
+    Chef::Log.info("Found Go server at ip address #{go_server_host} with automatic agent registration")
+    if autoregister_key = go_server['gocd']['server']['autoregister_key']
+      Chef::Log.warn("Agent auto-registration enabled. This agent will not require approval to become active.")
     end
   end
 end
 
-# Ensure we have a Go server host set to a sensible default
 if go_server_host.nil?
   go_server_host = '127.0.0.1'
-  Chef::Log.warn("Go server not found on Chef server or not specifed via " +
-    "node['gocd']['agent']['server_host'] attribute, defaulting Go server to #{go_server_host}")
+  Chef::Log.warn("Go server not found on Chef server or not specifed via node['gocd']['agent']['go_server_host'] attribute, defaulting Go server to #{go_server_host}")
 end
 
+template "/etc/default/go-agent" do
+  source   "go-agent-default.erb"
+  mode     "0644"
+  owner    "root"
+  group    "root"
+  notifies :restart,      "service[go-agent]"
+  variables({
+    host: go_server_host
+  })
+end
 
-# Install & configure the initial (default) Go agent as it comes from the binary distribution
-# Then install any additional agents with -COUNT addition.
-# i.e.
-# /etc/default/go-agent
-#             /go-agent-2
-#             /go-agent-3
-# /var/lib/go-agent
-#         /go-agent-2
-#         /go-agent-3
-#
-# default['gocd']['agent'][:instance_count] = node[:cpu][:total]
-
-(1..node['gocd']['agent']['instance_count']).each do |i|
-  log "Configuring Go agent # #{i} of #{node['gocd']['agent']['instance_count']} for Go server at #{go_server_host}:8153 "
-  if (i < 2)
-    suffix = ""
-  else
-    suffix = "-#{i}"
+if autoregister_key
+  template '/var/lib/go-agent/config/autoregister.properties' do
+    mode     "0644"
+    owner    "go"
+    group    "go"
+    not_if { File.exists? ("/var/lib/go-agent/config/agent.jks") }
+    notifies :restart,      "service[go-agent]"
+    variables({
+                key:            autoregister_key,
+                hostname:       node['gocd']['agent']['autoregister']['hostname'],
+                environments:   node['gocd']['agent']['autoregister']['environments'],
+                resources:      node['gocd']['agent']['autoregister']['resources'],
+    })
   end
-  
-  template "/etc/init.d/go-agent#{suffix}" do
-    # <%= @go_agent_instance -%>
-    source 'go-agent-service.erb'
-    mode '0755'
-    owner 'root'
-    group 'root'
-    variables(:go_agent_instance => suffix)
-  end
+end
 
-  template "/etc/default/go-agent#{suffix}" do
-    source 'go-agent-defaults.erb'
-    mode '0644'
-    owner 'go'
-    group 'go'
-    variables(:go_server_host => go_server_host, 
-      :go_server_port => '8153', 
-      :java_home => node['java']['java_home'],
-      :work_dir => "#{node['gocd']['agent']['work_dir_path']}/go-agent#{suffix}")
-  end
-  
-  template "/usr/share/go-agent/agent#{suffix}.sh" do
-    source 'go-agent-sh.erb'
-    mode '0755'
-    owner 'go'
-    group 'go'
-    variables(:go_agent_instance => suffix)
-  end
-
-  log "Registering agent#{suffix} with autoregister key of " + autoregister_key
-
-  directory "/var/log/go-agent#{suffix}" do
-    mode '0755'
-    owner 'go'
-    group 'go'
-  end
-
-  directory "/var/lib/go-agent#{suffix}" do
-    mode '0755'
-    owner 'go'
-    group 'go'
-  end
-
-  directory "/var/lib/go-agent#{suffix}/config" do
-    mode '0755'
-    owner 'go'
-    group 'go'
-  end
-  
-  autoregister_resources = []
-  node['gocd']['agent']['auto_register_resources'].each do |resource_key|
-    autoregister_resources.push(resource_key)
-  end
-
-  autoregister_environments = []
-  node['gocd']['agent']['auto_register_environments'].each do |env_key|
-    autoregister_environments.push(env_key)
-  end
-
-  autoregister_resources.push(node['os'], node['platform'], "#{node['platform']}-#{node['platform_version']}")
-
-  log "Registering agent with resource tags: #{autoregister_resources} and environments: #{autoregister_environments}"
-
-  template "/var/lib/go-agent#{suffix}/config/autoregister.properties" do
-    source 'autoregister.properties.erb'
-    mode '0644'
-    group 'go'
-    owner 'go'
-    variables(
-      :autoregister_key => autoregister_key,
-      :agent_resources => autoregister_resources.join(","),
-      :agent_environments => autoregister_environments.join(","))
-  end
-
-  service "go-agent#{suffix}" do
-    supports :status => true, :restart => true, :reload => true, :start => true
-    action :nothing
-    subscribes :enable, "template[/etc/init.d/go-agent#{suffix}]"
-    subscribes :enable, "template[/var/lib/go-agent#{suffix}/config/autoregister.properties]"
-    subscribes :enable, "template[/etc/default/go-agent#{suffix}]"
-    subscribes :restart, "template[/etc/init.d/go-agent#{suffix}]"
-    subscribes :restart, "template[/var/lib/go-agent#{suffix}/config/autoregister.properties]"
-    subscribes :restart, "template[/etc/default/go-agent#{suffix}]"
-  end
+service "go-agent" do
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action [:enable, :start]
 end
