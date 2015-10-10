@@ -24,22 +24,22 @@ end
 
 include_recipe 'java'
 
-package_url             = node['go']['agent']['package_url']
-package_checksum        = node['go']['agent']['package_checksum']
-go_server_autoregister  = node['go']['agent']['auto_register']
-autoregister_key        = node['go']['agent']['auto_register_key']
-server_search_query     = node['go']['agent']['server_search_query']
+package_url             = node['gocd']['agent']['package_url']
+package_checksum        = node['gocd']['agent']['package_checksum']
+go_server_autoregister  = node['gocd']['agent']['auto_register']
+autoregister_key        = node['gocd']['agent']['auto_register_key']
+server_search_query     = node['gocd']['agent']['server_search_query']
 
 package "go-agent" do
-  version node['go']['version']
+  version node['gocd']['version']
   options package_options
 end
 
 # If running under solo or user specifed the server host, try and use that
-if Chef::Config['solo'] || node['go']['agent'].attribute?('server_host')
-  Chef::Log.info("Attempting to use node['go']['agent']['server_host'] attribute " +
+if Chef::Config['solo'] || node['gocd']['agent'].attribute?('server_host')
+  Chef::Log.info("Attempting to use node['gocd']['agent']['server_host'] attribute " +
     "for server host")
-  go_server_host = node['go']['agent']['server_host']
+  go_server_host = node['gocd']['agent']['server_host']
 else
   # Running under client and user didn't specify a server_host attribute
   Chef::Log.info("Search query: #{server_search_query}")
@@ -53,11 +53,11 @@ else
       Chef::Log.warn("Multiple Go servers found on Chef server. Using first returned server " +
         "'#{go_server_host}' for server instance configuration.")
     end
-    go_server_autoregister = go_server['go']['auto_register_agents']
+    go_server_autoregister = go_server['gocd']['auto_register_agents']
     Chef::Log.info("Found Go server at ip address #{go_server_host} with automatic agent registration=#{go_server_autoregister}")
     if (go_server_autoregister)
       Chef::Log.warn("Agent auto-registration enabled.  This agent will not require approval to become active.")
-      autoregister_key = go_server['go']['autoregister_key']
+      autoregister_key = go_server['gocd']['autoregister_key']
     else
       autoregister_key = ""
     end
@@ -68,7 +68,7 @@ end
 if go_server_host.nil?
   go_server_host = '127.0.0.1'
   Chef::Log.warn("Go server not found on Chef server or not specifed via " +
-    "node['go']['agent']['server_host'] attribute, defaulting Go server to #{go_server_host}")
+    "node['gocd']['agent']['server_host'] attribute, defaulting Go server to #{go_server_host}")
 end
 
 
@@ -82,10 +82,10 @@ end
 #         /go-agent-2
 #         /go-agent-3
 #
-# default['go']['agent'][:instance_count] = node[:cpu][:total]
+# default['gocd']['agent'][:instance_count] = node[:cpu][:total]
 
-(1..node['go']['agent']['instance_count']).each do |i|
-  log "Configuring Go agent # #{i} of #{node['go']['agent']['instance_count']} for Go server at #{go_server_host}:8153 "
+(1..node['gocd']['agent']['instance_count']).each do |i|
+  log "Configuring Go agent # #{i} of #{node['gocd']['agent']['instance_count']} for Go server at #{go_server_host}:8153 "
   if (i < 2)
     suffix = ""
   else
@@ -109,7 +109,7 @@ end
     variables(:go_server_host => go_server_host, 
       :go_server_port => '8153', 
       :java_home => node['java']['java_home'],
-      :work_dir => "#{node['go']['agent']['work_dir_path']}/go-agent#{suffix}")
+      :work_dir => "#{node['gocd']['agent']['work_dir_path']}/go-agent#{suffix}")
   end
   
   template "/usr/share/go-agent/agent#{suffix}.sh" do
@@ -141,12 +141,12 @@ end
   end
   
   autoregister_resources = []
-  node['go']['agent']['auto_register_resources'].each do |resource_key|
+  node['gocd']['agent']['auto_register_resources'].each do |resource_key|
     autoregister_resources.push(resource_key)
   end
 
   autoregister_environments = []
-  node['go']['agent']['auto_register_environments'].each do |env_key|
+  node['gocd']['agent']['auto_register_environments'].each do |env_key|
     autoregister_environments.push(env_key)
   end
 
