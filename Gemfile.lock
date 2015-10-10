@@ -205,6 +205,8 @@ GEM
     kitchen-digitalocean (0.7.3)
       fog
       test-kitchen (~> 1.0)
+    kitchen-docker (2.3.0)
+      test-kitchen (>= 1.0.0)
     kitchen-ec2 (0.8.0)
       fog
       test-kitchen (~> 1.0)
@@ -344,6 +346,7 @@ DEPENDENCIES
   chef
   foodcritic
   kitchen-digitalocean (~> 0.7.3)
+  kitchen-docker
   kitchen-ec2 (~> 0.8.0)
   kitchen-vagrant
   test-kitchen
