@@ -8,6 +8,4 @@ Berksfile.lock
 .kitchen/
 .kitchen.local.yml
 
-Gemfile.lock
-
 .bundle
