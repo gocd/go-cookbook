@@ -7,9 +7,9 @@ agent.auto.register.hostname     = <%= @hostname %>
 
 
 <% if @environments && @environments.count > 1 %>
-agent.auto.register.environments = <%= @environments.join(",") %>
+agent.auto.register.environments = <%= @environments.join(", ") %>
 <% end %>
 
 <% if @resources && @resources.count > 1 %>
-agent.auto.register.resources    = <%= @resources.join(",") %>
+agent.auto.register.resources    = <%= @resources.join(", ") %>
 <% end %>
