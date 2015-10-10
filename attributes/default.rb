@@ -11,9 +11,9 @@ default['gocd']['agent']['auto_register_environments'] = []
 default['gocd']['agent']['instance_count'] = node['cpu']['total']
 default['gocd']['agent']['server_search_query'] =
   "chef_environment:#{node.chef_environment} AND recipes:go\\:\\:server"
-  
 
-default['gocd']['version']                       = '14.3.0-1186'
+
+default['gocd']['version']                          = '15.2.0-2248'
 
 unless platform?('windows')
   default['gocd']['agent']['java_home']             = '/usr/bin/java'
