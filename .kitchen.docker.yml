@@ -9,7 +9,7 @@ provisioner:
 
 platforms:
 - name: centos-6.4
-- name: centos-7
+# - name: centos-7
 - name: ubuntu-12.04
   driver:
     provision_command:
