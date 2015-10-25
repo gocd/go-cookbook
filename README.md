@@ -73,6 +73,10 @@ The cookbook provides the following attributes to configure the GoCD server:
 # GoCD Agent
 
 gocd::agent will install and start a GoCD agent.
+You can change the number of agents in `node['gocd']['agent']['count']` - first
+agent is called `go-agent`, next ones are `go-agent-#`.
+
+`gocd::agent` recipe uses GoCD agent LWRP internally.
 
 ## Go Agent attributes
 
@@ -87,6 +91,38 @@ The cookbook provides the following attributes to configure the GoCD agent:
 * `node['gocd']['agent']['autoregister']['resources']`    - The resources for the agent. Defaults to `[]`.
 * `node['gocd']['agent']['autoregister']['hostname']`     - The agent autoregister hostname. Defaults to `node['fqdn']`.
 * `node['gocd']['agent']['server_search_query']`          - The chef search query to find a server node. Defaults to `chef_environment:#{node.chef_environment} AND recipes:go-server\\:\\:default`.
+
+# GoCD Agent LWRP
+
+If agent recipe + attributes is not flexible enough or if you prefer chef resources
+then you can add go-agent services with `gocd_agent` LWRP.
+
+### Example agents
+
+All resource attributes fall back to node attributes so agent can be defined
+in just one line:
+
+```ruby
+gocd_agent 'my-agent'
+```
+
+It would create `my-agent` service and if all node values are correct then it
+would also autoregister.
+
+A custom agent may look like this:
+```ruby
+gocd_agent 'my-go-agent' do
+  go_server_host 'go.example.com'
+  go_server_port 80
+  daemon true
+  vnc    true
+  autoregister_key 'bla-key'
+  autoregister_hostname 'my-lwrp-agent'
+  environments 'production'
+  resources     ['java-8','ruby-2.2']
+  workspace     '/mnt/big_drive'
+end
+```
 
 # License
 
