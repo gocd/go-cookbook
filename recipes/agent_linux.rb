@@ -35,4 +35,8 @@ else
   fail "Unknown install method - '#{node['gocd']['install_method']}'"
 end
 
-gocd_agent 'go-agent'
+for i in 0..(node['gocd']['agent']['count'] -1)
+  name = "go-agent-#{i}"
+  name = "go-agent" if i == 0
+  gocd_agent name
+end

@@ -15,6 +15,16 @@ action :create do
     owner    new_resource.user
     group    new_resource.group
   end
+  # package manages the init.d script so we will not
+  # and we will expect that init.d scripts are already installed
+  link "/etc/init.d/#{agent_name}" do
+    to "/etc/init.d/go-agent"
+    not_if { agent_name == 'go-agent' }
+  end
+  link "/usr/share/#{agent_name}" do
+    to "/usr/share/go-agent"
+    not_if { agent_name == 'go-agent' }
+  end
 
   autoregister_values = get_chefserver_autoregister_values
   autoregister_values[:go_server_host] = new_resource.go_server_host || autoregister_values[:go_server_host]

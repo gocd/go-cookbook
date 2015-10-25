@@ -73,6 +73,67 @@ describe 'gocd::agent' do
   end
   #TODO: agent on windows
 
+  context 'When many agents and all attributes are default and platform is debian' do
+    let(:chef_run) do
+      run = ChefSpec::SoloRunner.new(step_into: 'gocd_agent') do |node|
+        node.automatic['lsb']['id'] = 'Debian'
+        node.automatic['platform_family'] = 'debian'
+        node.automatic['platform'] = 'debian'
+        node.automatic['os'] = 'linux'
+        node.normal['gocd']['agent']['count'] = 2
+      end
+      run.converge(described_recipe)
+    end
+    it_behaves_like :agent_recipe
+    it_behaves_like :apt_repository_recipe
+    it 'installs go-agent package' do
+      expect(chef_run).to install_package('go-agent')
+    end
+    # https://github.com/gocd/gocd/blob/master/installers/agent/release/README.md
+    it 'creates additional gocd_agent chef resource' do
+      expect(chef_run).to create_gocd_agent('go-agent-1')
+    end
+    it 'creates init.d script to start additional agent' do
+      expect(chef_run).to create_link('/etc/init.d/go-agent-1').with(
+        to: '/etc/init.d/go-agent'
+      )
+    end
+    it 'links /usr/share/go-agent script' do
+      expect(chef_run).to create_link('/usr/share/go-agent-1').with(
+        to: '/usr/share/go-agent'
+      )
+    end
+    it 'creates go-agent-1 configuration' do
+      expect(chef_run).to render_file('/etc/default/go-agent-1')
+      #TODO check content
+    end
+    it 'creates additional go agent workspace directory' do
+      expect(chef_run).to create_directory('/var/lib/go-agent-1').with(
+        owner: 'go',
+        group: 'go',
+        mode:  0755
+      )
+    end
+    it 'creates additional go agent log directory' do
+      expect(chef_run).to create_directory('/var/log/go-agent-1').with(
+        owner: 'go',
+        group: 'go',
+        mode:  0755
+      )
+    end
+    it 'creates additional go agent config directory' do
+      expect(chef_run).to create_directory('/var/lib/go-agent-1/config').with(
+        owner: 'go',
+        group: 'go',
+        mode:  0700
+      )
+    end
+    it 'configures additional go-agent service' do
+      expect(chef_run).to enable_service('go-agent-1')
+      expect(chef_run).to start_service('go-agent-1')
+    end
+  end
+
   context 'When installing from package_file and platform is debian' do
     let(:chef_run) do
       run = ChefSpec::SoloRunner.new(step_into: 'gocd_agent') do |node|

@@ -10,3 +10,4 @@ default['gocd']['agent']['autoregister']['resources']    = %w()
 default['gocd']['agent']['autoregister']['hostname']     = node['fqdn']
 default['gocd']['agent']['server_search_query'] = "chef_environment:#{node.chef_environment} AND recipes:go-server\\:\\:default"
 default['gocd']['agent']['workspace'] = nil # '/var/lib/go-agent' on linux
+default['gocd']['agent']['count'] = 1
