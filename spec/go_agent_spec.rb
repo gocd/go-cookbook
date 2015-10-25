@@ -10,15 +10,39 @@ describe 'gocd::agent' do
         expect(content).to_not include('java-6')
       }
     end
+    it 'creates gocd_agent chef resource' do
+      expect(chef_run).to create_gocd_agent('go-agent')
+    end
     it 'configures go-agent service' do
       expect(chef_run).to enable_service('go-agent')
       expect(chef_run).to start_service('go-agent')
+    end
+    it 'creates go agent workspace directory' do
+      expect(chef_run).to create_directory('/var/lib/go-agent').with(
+        owner: 'go',
+        group: 'go',
+        mode:  0755
+      )
+    end
+    it 'creates go agent log directory' do
+      expect(chef_run).to create_directory('/var/log/go-agent').with(
+        owner: 'go',
+        group: 'go',
+        mode:  0755
+      )
+    end
+    it 'creates go agent config directory' do
+      expect(chef_run).to create_directory('/var/lib/go-agent/config').with(
+        owner: 'go',
+        group: 'go',
+        mode:  0700
+      )
     end
   end
 
   context 'When all attributes are default and platform is debian' do
     let(:chef_run) do
-      run = ChefSpec::SoloRunner.new do |node|
+      run = ChefSpec::SoloRunner.new(step_into: 'gocd_agent') do |node|
         node.automatic['lsb']['id'] = 'Debian'
         node.automatic['platform_family'] = 'debian'
         node.automatic['platform'] = 'debian'
@@ -34,7 +58,7 @@ describe 'gocd::agent' do
   end
   context 'When all attributes are default and platform is centos' do
     let(:chef_run) do
-      run = ChefSpec::SoloRunner.new do |node|
+      run = ChefSpec::SoloRunner.new(step_into: 'gocd_agent') do |node|
         node.automatic['platform_family'] = 'rhel'
         node.automatic['platform'] = 'centos'
         node.automatic['os'] = 'linux'
@@ -51,7 +75,7 @@ describe 'gocd::agent' do
 
   context 'When installing from package_file and platform is debian' do
     let(:chef_run) do
-      run = ChefSpec::SoloRunner.new do |node|
+      run = ChefSpec::SoloRunner.new(step_into: 'gocd_agent') do |node|
         node.automatic['lsb']['id'] = 'Debian'
         node.automatic['platform_family'] = 'debian'
         node.automatic['platform'] = 'debian'
@@ -71,7 +95,7 @@ describe 'gocd::agent' do
   end
   context 'When installing from package file and platform is centos' do
     let(:chef_run) do
-      run = ChefSpec::SoloRunner.new do |node|
+      run = ChefSpec::SoloRunner.new(step_into: 'gocd_agent') do |node|
         node.automatic['platform_family'] = 'rhel'
         node.automatic['platform'] = 'centos'
         node.automatic['os'] = 'linux'
@@ -91,7 +115,7 @@ describe 'gocd::agent' do
 
   context 'When installing from custom repository and platform is debian' do
     let(:chef_run) do
-      run = ChefSpec::SoloRunner.new do |node|
+      run = ChefSpec::SoloRunner.new(step_into: 'gocd_agent') do |node|
         node.automatic['lsb']['id'] = 'Debian'
         node.automatic['platform_family'] = 'debian'
         node.automatic['platform'] = 'debian'
@@ -122,7 +146,7 @@ describe 'gocd::agent' do
   end
   context 'When installing from custom repository and platform is centos' do
     let(:chef_run) do
-      run = ChefSpec::SoloRunner.new do |node|
+      run = ChefSpec::SoloRunner.new(step_into: 'gocd_agent') do |node|
         node.automatic['platform_family'] = 'rhel'
         node.automatic['platform'] = 'centos'
         node.automatic['os'] = 'linux'

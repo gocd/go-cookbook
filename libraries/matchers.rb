@@ -1,0 +1,8 @@
+if defined?(ChefSpec)
+  def create_gocd_agent(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:gocd_agent, :create, resource_name)
+  end
+  def delete_gocd_agent(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:gocd_agent, :delete, resource_name)
+  end
+end
