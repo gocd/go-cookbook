@@ -49,6 +49,7 @@ suites:
         max_mem: '1024m'
         min_mem: '512m'
       agent:
+        count: 2 # good test for agent lwrp
         autoregister:
           key: 'auto-register-key'
           environments: ['staging', 'perf']
