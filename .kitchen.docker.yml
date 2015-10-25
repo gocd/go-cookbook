@@ -24,20 +24,6 @@ platforms:
       - "cd /tmp/fuse ; cat DEBIAN/postinst"
       - "cd /tmp/fuse ; dpkg-deb -b . /tmp/fuse.deb"
       - "cd /tmp/fuse ; dpkg -i /tmp/fuse.deb"
-# - name: ubuntu-13.10
-#   driver:
-#     provision_command:
-#       - "apt-get install -y net-tools" # netstat, needed to run specs
-#       - "apt-get install -y libfuse2"
-#       - "mkdir -p /tmp/fuse"
-#       - "cd /tmp/fuse ; apt-get download fuse"
-#       - "cd /tmp/fuse ; dpkg-deb -x fuse_* ."
-#       - "cd /tmp/fuse ; dpkg-deb -e fuse_*"
-#       - "cd /tmp/fuse ; rm fuse_*.deb"
-#       - "cd /tmp/fuse ; echo '#!/bin/bash\\nexit 0\\n' > DEBIAN/postinst"
-#       - "cd /tmp/fuse ; cat DEBIAN/postinst"
-#       - "cd /tmp/fuse ; dpkg-deb -b . /tmp/fuse.deb"
-#       - "cd /tmp/fuse ; dpkg -i /tmp/fuse.deb"
 - name: ubuntu-14.04
   driver:
     provision_command:
@@ -52,28 +38,12 @@ platforms:
       - "cd /tmp/fuse ; cat DEBIAN/postinst"
       - "cd /tmp/fuse ; dpkg-deb -b . /tmp/fuse.deb"
       - "cd /tmp/fuse ; dpkg -i /tmp/fuse.deb"
-# - name: ubuntu-14.10
-#   driver:
-#     provision_command:
-#       - "apt-get install -y net-tools" # netstat, needed to run specs
-#       - "apt-get install -y libfuse2"
-#       - "mkdir -p /tmp/fuse"
-#       - "cd /tmp/fuse ; apt-get download fuse"
-#       - "cd /tmp/fuse ; dpkg-deb -x fuse_* ."
-#       - "cd /tmp/fuse ; dpkg-deb -e fuse_*"
-#       - "cd /tmp/fuse ; rm fuse_*.deb"
-#       - "cd /tmp/fuse ; echo '#!/bin/bash\\nexit 0\\n' > DEBIAN/postinst"
-#       - "cd /tmp/fuse ; cat DEBIAN/postinst"
-#       - "cd /tmp/fuse ; dpkg-deb -b . /tmp/fuse.deb"
-#       - "cd /tmp/fuse ; dpkg -i /tmp/fuse.deb"
 
 suites:
 - name: default
   run_list:
   - recipe[gocd]
   attributes:
-    java:
-      jdk_version: 7
     gocd:
       server:
         max_mem: '1024m'

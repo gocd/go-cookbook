@@ -1,5 +1,5 @@
 include_recipe 'gocd::repository'
-include_recipe "java"
+include_recipe "gocd::java"
 
 package "go-server" do
   notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately

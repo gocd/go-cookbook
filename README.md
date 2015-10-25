@@ -12,6 +12,13 @@ This cookbook has been tested on the following platforms:
 * RedHat >= 6
 * Windows - primitive support, but enhancements welcome :)
 
+### Java
+
+Please note that java (>= 7) is needed to run Go server and agents. This cookbook
+sets `node['java']['jdk_version']` at `force_default` level but it may not work properly
+when you include `java` in node run_list before `gocd` cookbook. The safest approach
+is to set java version in node attributes (in a role or environment).
+
 # GoCD Server
 
 gocd::server will install and start a GoCD server.
