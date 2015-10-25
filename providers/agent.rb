@@ -1,6 +1,8 @@
 use_inline_resources
 
 action :create do
+  run_context.include_recipe 'gocd::agent_linux_install'
+
   agent_name = new_resource.agent_name
   workspace = new_resource.workspace || "/var/lib/#{agent_name}"
   [workspace, "/var/log/#{agent_name}"].each do |d|
@@ -26,15 +28,20 @@ action :create do
     not_if { agent_name == 'go-agent' }
   end
 
-  autoregister_values = get_chefserver_autoregister_values
+  autoregister_values = get_agent_properties
   autoregister_values[:go_server_host] = new_resource.go_server_host || autoregister_values[:go_server_host]
+  autoregister_values[:go_server_port] = new_resource.go_server_port || autoregister_values[:go_server_port]
   autoregister_values[:key] =  new_resource.autoregister_key || autoregister_values[:key]
   autoregister_values[:hostname] = new_resource.autoregister_hostname || autoregister_values[:hostname]
   autoregister_values[:environments] = new_resource.environments || autoregister_values[:environments]
   autoregister_values[:resources] = new_resource.resources || autoregister_values[:resources]
+  autoregister_values[:vnc] = new_resource.vnc || autoregister_values[:vnc]
+  autoregister_values[:daemon] = new_resource.vnc || autoregister_values[:daemon]
+  autoregister_values[:workspace] = new_resource.workspace
 
   template "/etc/default/#{agent_name}" do
     source   "go-agent-default.erb"
+    cookbook 'gocd'
     mode     "0644"
     owner    "root"
     group    "root"
@@ -44,10 +51,12 @@ action :create do
 
   if autoregister_values[:key]
     template "/var/lib/#{agent_name}/config/autoregister.properties" do
+      source  'autoregister.properties.erb'
+      cookbook 'gocd'
       mode     "0644"
       owner    new_resource.user
       group    new_resource.group
-      not_if { File.exists? ("/var/lib/#{agent_name}/config/agent.jks") }
+      not_if { ::File.exists? ("/var/lib/#{agent_name}/config/agent.jks") }
       notifies :restart,      "service[#{agent_name}]"
       variables autoregister_values
     end

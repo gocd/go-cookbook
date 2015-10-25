@@ -2,9 +2,7 @@ require 'spec_helper'
 
 describe 'gocd::agent' do
   shared_examples_for :agent_recipe do
-    it 'includes java recipe' do
-      expect(chef_run).to include_recipe('java::default')
-    end
+    it_behaves_like :agent_linux_install
     it 'creates go agent configuration in /etc/default/go-agent' do
       expect(chef_run).to render_file('/etc/default/go-agent').with_content { |content|
         expect(content).to_not include('java-6')

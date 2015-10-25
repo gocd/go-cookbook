@@ -21,3 +21,11 @@ shared_examples_for :yum_repository_recipe do
     )
   end
 end
+shared_examples_for :agent_linux_install do
+  it 'includes java recipe' do
+    expect(chef_run).to include_recipe('java::default')
+  end
+  it 'includes gocd::agent_linux_install recipe' do
+    expect(chef_run).to include_recipe('gocd::agent_linux_install')
+  end
+end
