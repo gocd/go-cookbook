@@ -25,10 +25,6 @@ module Gocd
           end
         end
       end
-      if values[:go_server_host].nil?
-        values[:go_server_host] = '127.0.0.1'
-        Chef::Log.warn("Go server not found on Chef server or not specifed via node['gocd']['agent']['go_server_host'] attribute, defaulting Go server to #{values[:go_server_host]}")
-      end
       values[:hostname]     = node['gocd']['agent']['autoregister']['hostname']
       values[:environments] = node['gocd']['agent']['autoregister']['environments']
       values[:resources]    = node['gocd']['agent']['autoregister']['resources']

@@ -45,6 +45,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'debian'
         node.automatic['platform'] = 'debian'
         node.automatic['os'] = 'linux'
+        node.normal['gocd']['agent']['go_server_host'] = 'localhost'
       end
       run.converge(described_recipe)
     end
@@ -60,6 +61,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'rhel'
         node.automatic['platform'] = 'centos'
         node.automatic['os'] = 'linux'
+        node.normal['gocd']['agent']['go_server_host'] = 'localhost'
       end
       run.converge(described_recipe)
     end
@@ -78,6 +80,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'debian'
         node.automatic['platform'] = 'debian'
         node.automatic['os'] = 'linux'
+        node.normal['gocd']['agent']['go_server_host'] = 'localhost'
         node.normal['gocd']['agent']['count'] = 2
       end
       run.converge(described_recipe)
@@ -139,6 +142,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'debian'
         node.automatic['platform'] = 'debian'
         node.automatic['os'] = 'linux'
+        node.normal['gocd']['agent']['go_server_host'] = 'localhost'
         node.normal['gocd']['install_method'] = 'package_file'
       end
       run.converge(described_recipe)
@@ -158,6 +162,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'rhel'
         node.automatic['platform'] = 'centos'
         node.automatic['os'] = 'linux'
+        node.normal['gocd']['agent']['go_server_host'] = 'localhost'
         node.normal['gocd']['install_method'] = 'package_file'
       end
       run.converge(described_recipe)
@@ -179,6 +184,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'debian'
         node.automatic['platform'] = 'debian'
         node.automatic['os'] = 'linux'
+        node.normal['gocd']['agent']['go_server_host'] = 'localhost'
         node.normal['gocd']['install_method'] = 'repository'
         node.normal['gocd']['repository']['apt']['uri'] = 'http://mydeb/repo'
         node.normal['gocd']['repository']['apt']['components'] = [ '/' ]
@@ -209,6 +215,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'rhel'
         node.automatic['platform'] = 'centos'
         node.automatic['os'] = 'linux'
+        node.normal['gocd']['agent']['go_server_host'] = 'localhost'
         node.normal['gocd']['install_method'] = 'repository'
         node.normal['gocd']['repository']['yum']['baseurl'] = 'http://mycustom/gocd-rpm'
       end
