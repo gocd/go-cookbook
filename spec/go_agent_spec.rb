@@ -6,6 +6,11 @@ describe 'gocd::agent' do
     it 'creates go agent configuration in /etc/default/go-agent' do
       expect(chef_run).to render_file('/etc/default/go-agent').with_content { |content|
         expect(content).to_not include('java-6')
+        expect(content).to     include('GO_SERVER=localhost')
+        expect(content).to     include('GO_SERVER_PORT=8153')
+        expect(content).to     include('AGENT_WORK_DIR=/var/lib/go-agent')
+        expect(content).to     include('DAEMON=Y')
+        expect(content).to     include('VNC=N')
       }
     end
     it 'creates gocd_agent chef resource' do

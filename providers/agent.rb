@@ -37,7 +37,7 @@ action :create do
   autoregister_values[:resources] = new_resource.resources || autoregister_values[:resources]
   autoregister_values[:vnc] = new_resource.vnc || autoregister_values[:vnc]
   autoregister_values[:daemon] = new_resource.vnc || autoregister_values[:daemon]
-  autoregister_values[:workspace] = new_resource.workspace
+  autoregister_values[:workspace] = workspace
   if autoregister_values[:go_server_host].nil?
     autoregister_values[:go_server_host] = '127.0.0.1'
     Chef::Log.warn("Go server not found on Chef server or not specifed via node['gocd']['agent']['go_server_host'] attribute, defaulting Go server to #{autoregister_values[:go_server_host]}")
