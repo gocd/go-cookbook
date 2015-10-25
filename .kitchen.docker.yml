@@ -54,3 +54,18 @@ suites:
           environments: ['staging', 'perf']
           resources: ['foo', 'bar', 'baz']
           hostname: 'example-host'
+- name: package_file
+  run_list:
+  - recipe[gocd]
+  attributes:
+    gocd:
+      install_method: 'package_file'
+      server:
+        max_mem: '1024m'
+        min_mem: '512m'
+      agent:
+        autoregister:
+          key: 'auto-register-key'
+          environments: ['staging', 'perf']
+          resources: ['foo', 'bar', 'baz']
+          hostname: 'example-host'
