@@ -19,6 +19,42 @@ sets `node['java']['jdk_version']` at `force_default` level but it may not work 
 when you include `java` in node run_list before `gocd` cookbook. The safest approach
 is to set java version in node attributes (in a role or environment).
 
+## Install method
+
+### Repository
+
+By default installation source is done from apt or yum repositories from official sources at http://www.go.cd/download/.
+
+The **apt** repository can be overriden by changing any these attributes:
+```ruby
+default['gocd']['repository']['apt']['uri'] = 'http://download.go.cd/gocd-deb/'
+default['gocd']['repository']['apt']['components'] = [ '/' ]
+default['gocd']['repository']['apt']['package_options'] = '--force-yes'
+default['gocd']['repository']['apt']['keyserver'] = 'pgp.mit.edu'
+default['gocd']['repository']['apt']['key'] = '0x9149B0A6173454C7'
+```
+The **yum** repository can be overriden by changing any these attributes:
+```ruby
+default['gocd']['repository']['yum']['baseurl'] = 'http://download.go.cd/gocd-rpm'
+default['gocd']['repository']['yum']['gpgcheck'] = false
+```
+
+### From remote file
+
+Cookbook can skip adding repository and install Go server or agent by downloading a remote file and install it directly via `dpkg` or `rpm`.
+
+Change install method to 'package_file':
+```ruby
+node['gocd']['install_method'] = 'package_file'
+```
+
+And assign base url where packages are available for download
+```ruby
+node['gocd']['package_file']['baseurl'] = 'http://my/custom/url'
+```
+The final download URL of file is built based on platform and `node['gocd']['version']`. E.g. `http://my/custom/url/go-agent-15.2.0-2520.deb`
+
+
 # GoCD Server
 
 gocd::server will install and start a GoCD server.
