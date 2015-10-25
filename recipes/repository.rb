@@ -4,9 +4,9 @@ when 'debian'
 
   apt_repository 'gocd' do
     uri node['gocd']['repository']['apt']['uri']
-    keyserver node['gocd']['repository']['apt']['keyserver']
-    key node['gocd']['repository']['apt']['key']
     components node['gocd']['repository']['apt']['components']
+    keyserver node['gocd']['repository']['apt']['keyserver'] unless node['gocd']['repository']['apt']['keyserver'] == false
+    key node['gocd']['repository']['apt']['key'] unless node['gocd']['repository']['apt']['key'] == false
   end
 
 when 'rhel', 'fedora'

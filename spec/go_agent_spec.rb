@@ -88,4 +88,61 @@ describe 'gocd::agent' do
       expect(chef_run).to install_rpm_package('go-agent')
     end
   end
+
+  context 'When installing from custom repository and platform is debian' do
+    let(:chef_run) do
+      run = ChefSpec::SoloRunner.new do |node|
+        node.automatic['lsb']['id'] = 'Debian'
+        node.automatic['platform_family'] = 'debian'
+        node.automatic['platform'] = 'debian'
+        node.automatic['os'] = 'linux'
+        node.normal['gocd']['install_method'] = 'repository'
+        node.normal['gocd']['repository']['apt']['uri'] = 'http://mydeb/repo'
+        node.normal['gocd']['repository']['apt']['components'] = [ '/' ]
+        node.normal['gocd']['repository']['apt']['package_options'] = '--force-yes'
+        node.normal['gocd']['repository']['apt']['keyserver'] = false
+        node.normal['gocd']['repository']['apt']['key'] = false
+      end
+      run.converge(described_recipe)
+    end
+    it_behaves_like :agent_recipe
+    it 'includes apt recipe' do
+      expect(chef_run).to include_recipe('apt')
+    end
+    it 'adds my custom gocd apt repository' do
+      expect(chef_run).to add_apt_repository('gocd').with(
+        uri: 'http://mydeb/repo',
+        keyserver: nil,
+        key: nil,
+        components: ['/'])
+    end
+    it 'installs go-agent package' do
+      expect(chef_run).to install_package('go-agent')
+    end
+  end
+  context 'When installing from custom repository and platform is centos' do
+    let(:chef_run) do
+      run = ChefSpec::SoloRunner.new do |node|
+        node.automatic['platform_family'] = 'rhel'
+        node.automatic['platform'] = 'centos'
+        node.automatic['os'] = 'linux'
+        node.normal['gocd']['install_method'] = 'repository'
+        node.normal['gocd']['repository']['yum']['baseurl'] = 'http://mycustom/gocd-rpm'
+      end
+      run.converge(described_recipe)
+    end
+    it_behaves_like :agent_recipe
+    it 'includes yum recipe' do
+      expect(chef_run).to include_recipe('yum')
+    end
+    it 'adds my custom gocd yum repository' do
+      expect(chef_run).to create_yum_repository('gocd').with(
+        baseurl: 'http://mycustom/gocd-rpm',
+        gpgcheck: false
+      )
+    end
+    it 'installs go-agent package' do
+      expect(chef_run).to install_package('go-agent')
+    end
+  end
 end
