@@ -5,9 +5,6 @@ describe 'gocd::agent' do
     it 'includes java recipe' do
       expect(chef_run).to include_recipe('java::default')
     end
-    it 'installs go-agent package' do
-      expect(chef_run).to install_package('go-agent')
-    end
     it 'creates go agent configuration in /etc/default/go-agent' do
       expect(chef_run).to render_file('/etc/default/go-agent').with_content { |content|
         expect(content).to_not include('java-6')
@@ -31,6 +28,9 @@ describe 'gocd::agent' do
     end
     it_behaves_like :agent_recipe
     it_behaves_like :apt_repository_recipe
+    it 'installs go-agent package' do
+      expect(chef_run).to install_package('go-agent')
+    end
   end
   context 'When all attributes are default and platform is centos' do
     let(:chef_run) do
@@ -43,6 +43,49 @@ describe 'gocd::agent' do
     end
     it_behaves_like :agent_recipe
     it_behaves_like :yum_repository_recipe
+    it 'installs go-agent package' do
+      expect(chef_run).to install_package('go-agent')
+    end
   end
   #TODO: agent on windows
+
+  context 'When installing from package_file and platform is debian' do
+    let(:chef_run) do
+      run = ChefSpec::SoloRunner.new do |node|
+        node.automatic['lsb']['id'] = 'Debian'
+        node.automatic['platform_family'] = 'debian'
+        node.automatic['platform'] = 'debian'
+        node.automatic['os'] = 'linux'
+        node.normal['gocd']['install_method'] = 'package_file'
+      end
+      run.converge(described_recipe)
+    end
+    it_behaves_like :agent_recipe
+    it 'downloads go-agent .deb from remote URL' do
+      expect(chef_run).to create_remote_file('go-agent-15.2.0-2248.deb').with(
+        source: 'http://download.go.cd/gocd-deb/go-agent-15.2.0-2248.deb')
+    end
+    it 'installs go-agent package from file' do
+      expect(chef_run).to install_dpkg_package('go-agent')
+    end
+  end
+  context 'When installing from package file and platform is centos' do
+    let(:chef_run) do
+      run = ChefSpec::SoloRunner.new do |node|
+        node.automatic['platform_family'] = 'rhel'
+        node.automatic['platform'] = 'centos'
+        node.automatic['os'] = 'linux'
+        node.normal['gocd']['install_method'] = 'package_file'
+      end
+      run.converge(described_recipe)
+    end
+    it_behaves_like :agent_recipe
+    it 'downloads go-agent .rpm from remote URL' do
+      expect(chef_run).to create_remote_file('go-agent-15.2.0-2248.noarch.rpm').with(
+        source: 'http://download.go.cd/gocd-rpm/go-agent-15.2.0-2248.noarch.rpm')
+    end
+    it 'installs go-agent package from file' do
+      expect(chef_run).to install_rpm_package('go-agent')
+    end
+  end
 end
