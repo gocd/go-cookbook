@@ -12,7 +12,7 @@ action :create do
       group    new_resource.group
     end
   end
-  directory "/var/lib/#{agent_name}/config" do
+  directory "#{workspace}/config" do
     mode     0700
     owner    new_resource.user
     group    new_resource.group
