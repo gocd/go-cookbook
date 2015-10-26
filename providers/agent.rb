@@ -54,13 +54,13 @@ action :create do
   end
 
   if autoregister_values[:key]
-    template "/var/lib/#{agent_name}/config/autoregister.properties" do
+    template "#{workspace}/config/autoregister.properties" do
       source  'autoregister.properties.erb'
       cookbook 'gocd'
       mode     "0644"
       owner    new_resource.user
       group    new_resource.group
-      not_if { ::File.exists? ("/var/lib/#{agent_name}/config/agent.jks") }
+      not_if { ::File.exists? ("#{workspace}/config/agent.jks") }
       notifies :restart,      "service[#{agent_name}]"
       variables autoregister_values
     end
