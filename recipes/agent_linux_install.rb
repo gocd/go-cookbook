@@ -29,6 +29,7 @@ when 'package_file'
   when 'rhel','fedora'
     rpm_package 'go-agent' do
       source node['gocd']['agent']['package_file']['path']
+      notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately
     end
   end
 else
