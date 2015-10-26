@@ -37,7 +37,7 @@ describe 'gocd_test::single_agent_lwrp' do
   end
 
   it 'creates autoregister properties file' do
-    expect(chef_run).to render_file('/var/lib/my-go-agent/config/autoregister.properties').with_content { |content|
+    expect(chef_run).to render_file('/mnt/big_drive/config/autoregister.properties').with_content { |content|
       expect(content).to     include('bla-key')
       expect(content).to     include('production')
       expect(content).to     include('my-lwrp-agent')
