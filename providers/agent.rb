@@ -49,7 +49,7 @@ action :create do
     mode     "0644"
     owner    "root"
     group    "root"
-    notifies :restart,      "service[#{agent_name}]"
+    notifies :restart,      "service[#{agent_name}]" if autoregister_values[:daemon]
     variables autoregister_values
   end
 
@@ -61,13 +61,13 @@ action :create do
       owner    new_resource.user
       group    new_resource.group
       not_if { ::File.exists? ("#{workspace}/config/agent.jks") }
-      notifies :restart,      "service[#{agent_name}]"
+      notifies :restart, "service[#{agent_name}]" if autoregister_values[:daemon]
       variables autoregister_values
     end
   end
 
   service agent_name do
-    supports :status => true, :restart => true, :start => true, :stop => true
+    supports :status => true, :restart => autoregister_values[:daemon], :start => true, :stop => true
     action   new_resource.service_action
   end
 end
