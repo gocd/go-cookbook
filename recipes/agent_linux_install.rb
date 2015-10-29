@@ -1,7 +1,6 @@
 include_recipe "gocd::java"
 
 ohai 'reload_passwd_for_go_user' do
-  name 'reload_passwd'
   action :nothing
   plugin 'etc'
 end
