@@ -11,7 +11,7 @@ platforms:
       box:	'debian-7.8-bpk-chef-12.4.1'
       customize:
         server_name: 'kt-go'
-        flavor: 'v.c1.m1536.d5.e0'
+        flavor: 'v.c1.m2048.d5.e0'
         server_create_timeout: 540
         server_active_timeout: 540
 
@@ -19,6 +19,7 @@ suites:
 - name: default
   run_list:
   - recipe[gocd]
+  - recipe[gocd_test::plugin_lwrp]
   attributes:
     java:
       jdk_version: 7
