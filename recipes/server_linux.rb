@@ -5,7 +5,7 @@ template "/etc/default/go-server" do
   mode     "0644"
   owner    "root"
   group    "root"
-  notifies :restart, "service[go-server]", :immediately
+  notifies :restart, "service[go-server]", :delayed
 end
 
 service "go-server" do
