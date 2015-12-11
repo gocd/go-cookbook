@@ -70,6 +70,13 @@ The cookbook provides the following attributes to configure the GoCD server:
 * `node['gocd']['server']['max_perm_gen']` - The server maximum JVM permgen space. Defaults to `400m`.
 * `node['gocd']['server']['work_dir']` - The server working directory. Defaults to `/var/lib/go-server`.
 
+Chef cookbook waits for server to become responsive after restarting service.
+These attributes can be used to tune it:
+
+* `node['gocd']['server']['wait_up']['retry_delay']` - pause in seconds between failed attempts.
+* `node['gocd']['server']['wait_up']['retries']` - number of attempts before giving up.
+Set 0 to disable waiting at all. Defaults to 10
+
 # GoCD Agent
 
 gocd::agent will install and start a GoCD agent.

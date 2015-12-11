@@ -11,13 +11,15 @@ end
 service "go-server" do
   supports :status => true, :restart => true, :start => true, :stop => true
   action [:enable, :start]
-  notifies :get, 'http_request[verify_go-server_comes_up]', :immediately
+  if node['gocd']['server']['wait_up']['retries'] != 0
+    notifies :get, 'http_request[verify_go-server_comes_up]', :immediately
+  end
 end
 
 http_request 'verify_go-server_comes_up' do
   url         "http://localhost:#{node['gocd']['server']['http_port']}/go/home"
-  retry_delay 10
-  retries     10
+  retry_delay node['gocd']['server']['wait_up']['retry_delay']
+  retries     node['gocd']['server']['wait_up']['retries']
   action      :nothing
 end
 
