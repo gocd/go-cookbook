@@ -2,6 +2,7 @@ default['gocd']['install_method'] = 'repository'
 
 default['gocd']['repository']['apt']['uri'] = 'http://dl.bintray.com/gocd/gocd-deb/'
 default['gocd']['repository']['apt']['components'] = [ '/' ]
+default['gocd']['repository']['apt']['distribution'] = nil
 default['gocd']['repository']['apt']['package_options'] = '--force-yes'
 default['gocd']['repository']['apt']['keyserver'] = 'pgp.mit.edu'
 default['gocd']['repository']['apt']['key'] = '0x9149B0A6173454C7'
