@@ -10,6 +10,11 @@ describe 'gocd_test::single_agent_lwrp' do
     end
     run.converge(described_recipe)
   end
+  before do
+    stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
+    stub_command("grep -q '# Provides: go-agent$' /etc/init.d/my-go-agent").and_return(false)
+  end
+
   it_behaves_like :agent_linux_install
 
   it 'creates my-go-agent chef resource' do

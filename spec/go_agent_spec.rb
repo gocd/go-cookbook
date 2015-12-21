@@ -54,6 +54,9 @@ describe 'gocd::agent' do
       end
       run.converge(described_recipe)
     end
+    before do
+      stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
+    end
     it_behaves_like :agent_recipe
     it_behaves_like :apt_repository_recipe
     it 'installs go-agent package' do
@@ -69,6 +72,9 @@ describe 'gocd::agent' do
         node.normal['gocd']['agent']['go_server_host'] = 'localhost'
       end
       run.converge(described_recipe)
+    end
+    before do
+      stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
     end
     it_behaves_like :agent_recipe
     it_behaves_like :yum_repository_recipe
@@ -90,6 +96,10 @@ describe 'gocd::agent' do
       end
       run.converge(described_recipe)
     end
+    before do
+      stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
+      stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent-1").and_return(true)
+    end
     it_behaves_like :agent_recipe
     it_behaves_like :apt_repository_recipe
     it 'installs go-agent package' do
@@ -100,9 +110,7 @@ describe 'gocd::agent' do
       expect(chef_run).to create_gocd_agent('go-agent-1')
     end
     it 'creates init.d script to start additional agent' do
-      expect(chef_run).to create_link('/etc/init.d/go-agent-1').with(
-        to: '/etc/init.d/go-agent'
-      )
+      expect(chef_run).to run_bash('setup init.d for go-agent-1')
     end
     it 'links /usr/share/go-agent script' do
       expect(chef_run).to create_link('/usr/share/go-agent-1').with(
@@ -152,6 +160,9 @@ describe 'gocd::agent' do
       end
       run.converge(described_recipe)
     end
+    before do
+      stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
+    end
     it_behaves_like :agent_recipe
     it 'downloads go-agent .deb from remote URL' do
       expect(chef_run).to create_remote_file('go-agent-15.2.0-2248.deb').with(
@@ -171,6 +182,9 @@ describe 'gocd::agent' do
         node.normal['gocd']['install_method'] = 'package_file'
       end
       run.converge(described_recipe)
+    end
+    before do
+      stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
     end
     it_behaves_like :agent_recipe
     it 'downloads go-agent .rpm from remote URL' do
@@ -199,6 +213,9 @@ describe 'gocd::agent' do
       end
       run.converge(described_recipe)
     end
+    before do
+      stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
+    end
     it_behaves_like :agent_recipe
     it 'includes apt recipe' do
       expect(chef_run).to include_recipe('apt')
@@ -225,6 +242,9 @@ describe 'gocd::agent' do
         node.normal['gocd']['repository']['yum']['baseurl'] = 'http://mycustom/gocd-rpm'
       end
       run.converge(described_recipe)
+    end
+    before do
+      stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
     end
     it_behaves_like :agent_recipe
     it 'includes yum recipe' do

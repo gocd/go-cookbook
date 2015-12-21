@@ -17,10 +17,13 @@ action :create do
     owner    new_resource.user
     group    new_resource.group
   end
-  # package manages the init.d script so we will not
-  # and we will expect that init.d scripts are already installed
-  link "/etc/init.d/#{agent_name}" do
-    to "/etc/init.d/go-agent"
+  # package manages the init.d/go-agent script so cookbook should not.
+  bash "setup init.d for #{agent_name}" do
+    code <<-EOH
+    cp /etc/init.d/go-agent /etc/init.d/#{agent_name}
+    sed -i 's/# Provides: go-agent$/# Provides: #{agent_name}/g' /etc/init.d/#{agent_name}
+    EOH
+    only_if "grep -q '# Provides: go-agent$' /etc/init.d/#{agent_name}"
     not_if { agent_name == 'go-agent' }
   end
   link "/usr/share/#{agent_name}" do

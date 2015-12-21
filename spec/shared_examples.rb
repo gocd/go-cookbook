@@ -1,4 +1,7 @@
 shared_examples_for :apt_repository_recipe do
+  before do
+    stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
+  end
   it 'includes apt recipe' do
     expect(chef_run).to include_recipe('apt')
   end
@@ -11,6 +14,9 @@ shared_examples_for :apt_repository_recipe do
   end
 end
 shared_examples_for :yum_repository_recipe do
+  before do
+    stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
+  end
   it 'includes yum recipe' do
     expect(chef_run).to include_recipe('yum')
   end
@@ -22,6 +28,9 @@ shared_examples_for :yum_repository_recipe do
   end
 end
 shared_examples_for :agent_linux_install do
+  before do
+    stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
+  end
   it 'includes java recipe' do
     expect(chef_run).to include_recipe('java::default')
   end
