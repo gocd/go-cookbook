@@ -12,7 +12,7 @@ describe 'gocd_test::single_agent_lwrp' do
   end
   before do
     stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
-    stub_command("grep -q '# Provides: go-agent$' /etc/init.d/my-go-agent").and_return(false)
+    stub_command("grep -q '# Provides: my-go-agent$' /etc/init.d/my-go-agent").and_return(false)
   end
 
   it_behaves_like :agent_linux_install

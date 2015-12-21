@@ -98,7 +98,7 @@ describe 'gocd::agent' do
     end
     before do
       stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
-      stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent-1").and_return(true)
+      stub_command("grep -q '# Provides: go-agent-1$' /etc/init.d/go-agent-1").and_return(false)
     end
     it_behaves_like :agent_recipe
     it_behaves_like :apt_repository_recipe

@@ -23,8 +23,8 @@ action :create do
     cp /etc/init.d/go-agent /etc/init.d/#{agent_name}
     sed -i 's/# Provides: go-agent$/# Provides: #{agent_name}/g' /etc/init.d/#{agent_name}
     EOH
-    only_if "grep -q '# Provides: go-agent$' /etc/init.d/#{agent_name}"
-    not_if { agent_name == 'go-agent' }
+    not_if "grep -q '# Provides: #{agent_name}$' /etc/init.d/#{agent_name}"
+    only_if { agent_name != 'go-agent' }
   end
   link "/usr/share/#{agent_name}" do
     to "/usr/share/go-agent"
