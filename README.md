@@ -10,7 +10,16 @@ This cookbook has been tested on the following platforms:
 * Debian
 * CentOS >= 6
 * RedHat >= 6
-* Windows - primitive support, but enhancements welcome :)
+* Windows - no support yet, but PRs welcome :)
+
+## 1.0 release notes
+
+This cookbook has gone major rewrite and has little to do with pre-`1.0` versions.
+If you have been using go-cookbook previously then please note that:
+
+ * cookbook has been renamed to `gocd`, just like root namespace of attributes.
+ * Windows support has been dropped temporarily
+
 
 ### Java
 
