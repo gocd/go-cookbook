@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'gocd::agent' do
-  shared_examples_for :agent_recipe do
+  shared_examples_for :agent_recipe_linux do
     it_behaves_like :agent_linux_install
     it 'creates go agent configuration in /etc/default/go-agent' do
       expect(chef_run).to render_file('/etc/default/go-agent').with_content { |content|
@@ -57,7 +57,7 @@ describe 'gocd::agent' do
     before do
       stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
     end
-    it_behaves_like :agent_recipe
+    it_behaves_like :agent_recipe_linux
     it_behaves_like :apt_repository_recipe
     it 'installs go-agent package' do
       expect(chef_run).to install_package('go-agent')
@@ -76,13 +76,12 @@ describe 'gocd::agent' do
     before do
       stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
     end
-    it_behaves_like :agent_recipe
+    it_behaves_like :agent_recipe_linux
     it_behaves_like :yum_repository_recipe
     it 'installs go-agent package' do
       expect(chef_run).to install_package('go-agent')
     end
   end
-  #TODO: agent on windows
 
   context 'When many agents and all attributes are default and platform is debian' do
     let(:chef_run) do
@@ -100,7 +99,7 @@ describe 'gocd::agent' do
       stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
       stub_command("grep -q '# Provides: go-agent-1$' /etc/init.d/go-agent-1").and_return(false)
     end
-    it_behaves_like :agent_recipe
+    it_behaves_like :agent_recipe_linux
     it_behaves_like :apt_repository_recipe
     it 'installs go-agent package' do
       expect(chef_run).to install_package('go-agent')
@@ -163,10 +162,10 @@ describe 'gocd::agent' do
     before do
       stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
     end
-    it_behaves_like :agent_recipe
+    it_behaves_like :agent_recipe_linux
     it 'downloads go-agent .deb from remote URL' do
-      expect(chef_run).to create_remote_file('go-agent-15.2.0-2248.deb').with(
-        source: 'http://download.go.cd/gocd-deb/go-agent-15.2.0-2248.deb')
+      expect(chef_run).to create_remote_file('go-agent-16.1.0-2855.deb').with(
+        source: 'https://download.go.cd/binaries/16.1.0-2855/deb/go-agent-16.1.0-2855.deb')
     end
     it 'installs go-agent package from file' do
       expect(chef_run).to install_dpkg_package('go-agent')
@@ -186,10 +185,10 @@ describe 'gocd::agent' do
     before do
       stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
     end
-    it_behaves_like :agent_recipe
+    it_behaves_like :agent_recipe_linux
     it 'downloads go-agent .rpm from remote URL' do
-      expect(chef_run).to create_remote_file('go-agent-15.2.0-2248.noarch.rpm').with(
-        source: 'http://download.go.cd/gocd-rpm/go-agent-15.2.0-2248.noarch.rpm')
+      expect(chef_run).to create_remote_file('go-agent-16.1.0-2855.noarch.rpm').with(
+        source: 'https://download.go.cd/binaries/16.1.0-2855/rpm/go-agent-16.1.0-2855.noarch.rpm')
     end
     it 'installs go-agent package from file' do
       expect(chef_run).to install_rpm_package('go-agent')
@@ -216,7 +215,7 @@ describe 'gocd::agent' do
     before do
       stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
     end
-    it_behaves_like :agent_recipe
+    it_behaves_like :agent_recipe_linux
     it 'includes apt recipe' do
       expect(chef_run).to include_recipe('apt')
     end
@@ -246,14 +245,14 @@ describe 'gocd::agent' do
     before do
       stub_command("grep -q '# Provides: go-agent$' /etc/init.d/go-agent").and_return(false)
     end
-    it_behaves_like :agent_recipe
+    it_behaves_like :agent_recipe_linux
     it 'includes yum recipe' do
       expect(chef_run).to include_recipe('yum')
     end
     it 'adds my custom gocd yum repository' do
       expect(chef_run).to create_yum_repository('gocd').with(
         baseurl: 'http://mycustom/gocd-rpm',
-        gpgcheck: false
+        gpgcheck: true
       )
     end
     it 'installs go-agent package' do

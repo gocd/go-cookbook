@@ -14,7 +14,9 @@ when 'rhel', 'fedora'
   include_recipe 'yum'
 
   yum_repository 'gocd' do
+    description "GoCD YUM Repository"
     baseurl node['gocd']['repository']['yum']['baseurl']
     gpgcheck node['gocd']['repository']['yum']['gpgcheck']
+    gpgkey node['gocd']['repository']['yum']['gpgkey']
   end
 end

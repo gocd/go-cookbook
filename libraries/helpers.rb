@@ -33,8 +33,17 @@ module Gocd
       values[:workspace]    = node['gocd']['agent']['workspace']
       values
     end
+
+    def go_server_config_file
+      if platform?('windows')
+        'C:\Program Files\Go Server\config\cruise-config.xml'
+      else
+        '/etc/go/cruise-config.xml'
+      end
+    end
   end
 end
+
 Chef::Recipe.send(:include, ::Gocd::Helpers)
 Chef::Resource.send(:include, ::Gocd::Helpers)
 Chef::Provider.send(:include, ::Gocd::Helpers)
