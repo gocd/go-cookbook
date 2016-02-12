@@ -9,3 +9,6 @@ Berksfile.lock
 .kitchen.local.yml
 
 .bundle
+# installed with `bundle install --binstubs`
+bin/
+

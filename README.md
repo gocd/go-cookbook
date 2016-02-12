@@ -35,17 +35,22 @@ is to set java version in node attributes (in a role or environment).
 By default installation source is done from apt or yum repositories from official sources at http://www.go.cd/download/.
 
 The **apt** repository can be overriden by changing any these attributes:
+
 ```ruby
-default['gocd']['repository']['apt']['uri'] = 'http://download.go.cd/gocd-deb/'
+default['gocd']['repository']['apt']['uri'] = 'https://download.go.cd/'
 default['gocd']['repository']['apt']['components'] = [ '/' ]
-default['gocd']['repository']['apt']['package_options'] = '--force-yes'
+default['gocd']['repository']['apt']['distribution'] = ''
+default['gocd']['repository']['apt']['package_options'] = ''
 default['gocd']['repository']['apt']['keyserver'] = 'pgp.mit.edu'
-default['gocd']['repository']['apt']['key'] = '0x9149B0A6173454C7'
+default['gocd']['repository']['apt']['key'] = '0xd8843f288816c449'
 ```
+
 The **yum** repository can be overriden by changing any these attributes:
+
 ```ruby
-default['gocd']['repository']['yum']['baseurl'] = 'http://download.go.cd/gocd-rpm'
-default['gocd']['repository']['yum']['gpgcheck'] = false
+default['gocd']['repository']['yum']['baseurl'] = 'https://download.go.cd'
+default['gocd']['repository']['yum']['gpgcheck'] = true
+default['gocd']['repository']['yum']['gpgkey'] = 'https://download.go.cd/GOCD-GPG-KEY.asc'
 ```
 
 ### From remote file
@@ -53,16 +58,18 @@ default['gocd']['repository']['yum']['gpgcheck'] = false
 Cookbook can skip adding repository and install Go server or agent by downloading a remote file and install it directly via `dpkg` or `rpm`.
 
 Change install method to 'package_file':
+
 ```ruby
 node['gocd']['install_method'] = 'package_file'
 ```
 
 And assign base url where packages are available for download
+
 ```ruby
 node['gocd']['package_file']['baseurl'] = 'http://my/custom/url'
 ```
-The final download URL of file is built based on platform and `node['gocd']['version']`. E.g. `http://my/custom/url/go-agent-15.2.0-2520.deb`
 
+The final download URL of file is built based on platform and `node['gocd']['version']`. E.g. `http://my/custom/url/go-agent-15.2.0-2520.deb`
 
 # GoCD Server
 
@@ -77,18 +84,17 @@ The cookbook provides the following attributes to configure the GoCD server:
 * `node['gocd']['server']['max_mem']`      - The server maximum JVM heap space. Defaults to `2048m`.
 * `node['gocd']['server']['min_mem']`      - The server mimimum JVM heap space. Defaults to `1024m`.
 * `node['gocd']['server']['max_perm_gen']` - The server maximum JVM permgen space. Defaults to `400m`.
-* `node['gocd']['server']['work_dir']` - The server working directory. Defaults to `/var/lib/go-server`.
+* `node['gocd']['server']['work_dir']`     - The server working directory. Defaults to `/var/lib/go-server`.
 
 Chef cookbook waits for server to become responsive after restarting service.
 These attributes can be used to tune it:
 
 * `node['gocd']['server']['wait_up']['retry_delay']` - pause in seconds between failed attempts.
-* `node['gocd']['server']['wait_up']['retries']` - number of attempts before giving up.
-Set 0 to disable waiting at all. Defaults to 10
+* `node['gocd']['server']['wait_up']['retries']`     - number of attempts before giving up. Set 0 to disable waiting at all. Defaults to 10
 
 # GoCD Agent
 
-gocd::agent will install and start a GoCD agent.
+`gocd::agent` will install and start a GoCD agent.
 You can change the number of agents in `node['gocd']['agent']['count']` - first
 agent is called `go-agent`, next ones are `go-agent-#`.
 
@@ -98,17 +104,17 @@ agent is called `go-agent`, next ones are `go-agent-#`.
 
 The cookbook provides the following attributes to configure the GoCD agent:
 
-* `node['gocd']['agent']['go_server_host']`               - The hostname of the go server (if left alone, will be autodetected). Defaults to `nil`.
+* `node['gocd']['agent']['go_server_host']`               - The hostname of the go server (if left alone, will be auto-detected). Defaults to `nil`.
 * `node['gocd']['agent']['go_server_port']`               - The port of the go server. Defaults to `8153`.
 * `node['gocd']['agent']['daemon']`                       - Whether the agent should be daemonized. Defaults to `true`.
 * `node['gocd']['agent']['vnc']['enabled']`               - Whether the agent should start with VNC. (Uses `DISPLAY=:3`). Defaults to `false`.
-* `node['gocd']['agent']['autoregister']['key']`          - The [agent autoregister](http://www.go.cd/documentation/user/current/advanced_usage/agent_auto_register.html) key. If left alone, will be autodetected. Defaults to `nil`.
+* `node['gocd']['agent']['autoregister']['key']`          - The [agent autoregister](http://www.go.cd/documentation/user/current/advanced_usage/agent_auto_register.html) key. If left alone, will be auto-detected. Defaults to `nil`.
 * `node['gocd']['agent']['autoregister']['environments']` - The environments for the agent. Defaults to `[]`.
 * `node['gocd']['agent']['autoregister']['resources']`    - The resources for the agent. Defaults to `[]`.
 * `node['gocd']['agent']['autoregister']['hostname']`     - The agent autoregister hostname. Defaults to `node['fqdn']`.
-* `node['gocd']['agent']['server_search_query']`          - The chef search query to find a server node. Defaults to `chef_environment:#{node.chef_environment} AND recipes:go-server\\:\\:default`.
+* `node['gocd']['agent']['server_search_query']`          - The chef search query to find a server node. Defaults to `chef_environment:#{node.chef_environment} AND recipes:gocd\\:\\:server`.
 
-# GoCD Agent LWRP
+# GoCD Agent LWRP (currently only works on linux)
 
 If agent recipe + attributes is not flexible enough or if you prefer chef resources
 then you can add go-agent services with `gocd_agent` LWRP.

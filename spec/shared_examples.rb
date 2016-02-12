@@ -7,9 +7,9 @@ shared_examples_for :apt_repository_recipe do
   end
   it 'adds gocd apt repository' do
     expect(chef_run).to add_apt_repository('gocd').with(
-      uri: 'http://dl.bintray.com/gocd/gocd-deb/',
+      uri: 'https://download.go.cd',
       keyserver: "pgp.mit.edu",
-      key: "0x9149B0A6173454C7",
+      key: "0xd8843f288816c449",
       components: ['/'])
   end
 end
@@ -22,8 +22,10 @@ shared_examples_for :yum_repository_recipe do
   end
   it 'adds gocd yum repository' do
     expect(chef_run).to create_yum_repository('gocd').with(
-      baseurl: 'http://dl.bintray.com/gocd/gocd-rpm/',
-      gpgcheck: false
+      baseurl: 'https://download.go.cd',
+      description: 'GoCD YUM Repository',
+      gpgcheck: true,
+      gpgkey: 'https://download.go.cd/GOCD-GPG-KEY.asc'
     )
   end
 end
