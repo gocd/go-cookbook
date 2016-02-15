@@ -1,3 +1,8 @@
+# 1.1.0
+
+* Improve support for installing GoCD on windows
+* Use https://download.go.cd for all repositories
+
 # 1.0.0
 
 Rewrite from scratch.
