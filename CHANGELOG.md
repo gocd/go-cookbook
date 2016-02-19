@@ -1,3 +1,7 @@
+# 1.1.1
+
+* Default to using latest version, when using a platform that supports it
+
 # 1.1.0
 
 * Improve support for installing GoCD on windows

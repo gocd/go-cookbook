@@ -1,6 +1,6 @@
 name             "gocd"
 description      "Installs/Configures Go servers and agents"
-version          "1.1.0"
+version          "1.1.1"
 
 supports "ubuntu"
 supports "centos"
