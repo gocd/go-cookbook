@@ -12,7 +12,12 @@ default['gocd']['repository']['yum']['baseurl'] = node['gocd']['download']['base
 default['gocd']['repository']['yum']['gpgcheck'] = true
 default['gocd']['repository']['yum']['gpgkey'] = 'https://download.go.cd/GOCD-GPG-KEY.asc'
 
-default['gocd']['version'] = '16.1.0-2855'
+case node['gocd']['install_method']
+when 'repository'
+# version = nil so just pick latest available
+else
+  default['gocd']['version'] = '16.2.1-3027'
+end
 
 version = node['gocd']['version']
 os_dir = nil
