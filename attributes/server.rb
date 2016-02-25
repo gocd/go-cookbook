@@ -7,3 +7,4 @@ default['gocd']['server']['work_dir']     = "/var/lib/go-server"
 
 default['gocd']['server']['wait_up']['retry_delay'] = 10
 default['gocd']['server']['wait_up']['retries']     = 10
+default['gocd']['server']['default_extras']         = {}

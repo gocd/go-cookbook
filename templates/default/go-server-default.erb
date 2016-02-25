@@ -15,3 +15,6 @@ export JAVA_HOME=<%=            node['java']['java_home'] %>
 
 DAEMON=Y
 ENABLE_PLUGINS=Y
+<% node['gocd']['server']['default_extras'].each do |k, v| %>
+<%= k %>="<%= v %>"
+<% end %>

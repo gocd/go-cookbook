@@ -8,3 +8,6 @@ export JAVA_HOME=<%=      node['java']['java_home'] %>
 export AGENT_WORK_DIR=<%= @workspace %>
 DAEMON=<%=  @daemon ? 'Y' : 'N' %>
 VNC=<%=     @vnc ? 'Y' : 'N' %>
+<% node['gocd']['agent']['default_extras'].each do |k, v| %>
+<%= k %>="<%= v %>"
+<% end %>
