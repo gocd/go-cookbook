@@ -14,6 +14,19 @@ platforms:
         flavor: 'v.c1.m2048.d5.e0'
         server_create_timeout: 540
         server_active_timeout: 540
+  - name: windows
+    provisioner:
+      name: chef_solo
+      require_chef_omnibus: 12.4.2
+    driver:
+      name: vagrant
+    driver_config:
+      box:	'windows-7-net45-2.0-chef-12.4.2'
+      customize:
+        flavor: 'v.c1.m2048.d20.e0'
+        server_create_timeout: 1200
+        server_active_timeout: 1200
+        server_name: 'kt-go-win'
 
 suites:
 - name: default

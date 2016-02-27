@@ -16,13 +16,17 @@ describe 'gocd::agent' do
         node.automatic['platform'] = 'windows'
         node.automatic['os'] = 'windows'
       end
+      allow_any_instance_of(Chef::Resource::RemoteFile).to receive(:fetch_content)
+        .and_return('{"message": "{\"latest-version\": \"16.2.1-3027\"}"}')
       run.converge(described_recipe)
     end
 
+    it 'downloads official installer' do
+      expect(chef_run).to create_remote_file('go-agent-stable-setup.exe').with(
+        :source => 'https://download.go.cd/binaries/16.2.1-3027/win/go-agent-16.2.1-3027-setup.exe')
+    end
     it 'installs go-agent package' do
-      expect(chef_run).to install_package('Go Agent').with(
-        :source => 'https://download.go.cd/binaries/16.1.0-2855/win/go-agent-16.1.0-2855-setup.exe'
-      )
+      expect(chef_run).to install_package('Go Agent')
     end
   end
 
@@ -37,11 +41,12 @@ describe 'gocd::agent' do
       end
       run.converge(described_recipe)
     end
-
+    it 'downloads specified installer' do
+      expect(chef_run).to create_remote_file('go-agent-custom-setup.exe').with(
+        :source => 'https://example.com/go-agent.exe')
+    end
     it 'installs go-agent package' do
-      expect(chef_run).to install_package('Go Agent').with(
-        :source => 'https://example.com/go-agent.exe'
-      )
+      expect(chef_run).to install_package('Go Agent')
     end
   end
 end
