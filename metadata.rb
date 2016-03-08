@@ -1,5 +1,7 @@
 name             "gocd"
 description      "Installs/Configures Go servers and agents"
+maintainer       "GoCD Contributors"
+maintainer_email "go-cd@googlegroups.com" 
 version          "1.1.1"
 
 supports "ubuntu"
