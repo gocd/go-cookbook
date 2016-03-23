@@ -5,7 +5,7 @@ default_action :create if defined?(default_action)
 
 attribute :service_action, :kind_of => [ Symbol, Array ], :required => false, :default => [:enable,:start]
 
-attribute :agent_name, :name_attribute => true, :kind_of => String, :required => false, :default => 'go-agent'
+attribute :agent_name, :name_attribute => true, :kind_of => String, :required => false
 
 attribute :user, :kind_of => String, :required => false, :default => 'go'
 attribute :group, :kind_of => String, :required => false, :default => 'go'
