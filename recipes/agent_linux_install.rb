@@ -8,7 +8,6 @@ end
 case node['gocd']['install_method']
 when 'repository'
   include_recipe 'gocd::repository'
-  package_options = node['gocd']['repository']['apt']['package_options'] if node['platform_family'] == 'debian'
   package "go-agent" do
     notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately
     if latest_version?
