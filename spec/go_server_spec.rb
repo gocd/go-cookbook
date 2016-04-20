@@ -28,8 +28,15 @@ describe 'gocd::server' do
     end
     it_behaves_like :server_recipe
     it_behaves_like :apt_repository_recipe
+
     it 'installs go-server package' do
       expect(chef_run).to install_package('go-server')
+    end
+
+    it 'upgrades go-server package if version is set to `latest`' do
+      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.converge(described_recipe)
+      expect(chef_run).to upgrade_package('go-server')
     end
   end
   context 'When all attributes are default and platform is centos' do
@@ -46,6 +53,11 @@ describe 'gocd::server' do
     it 'installs go-server package' do
       expect(chef_run).to install_package('go-server')
     end
+    it 'upgrades go-server package if version is set to `latest`' do
+      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.converge(described_recipe)
+      expect(chef_run).to upgrade_package('go-server')
+    end
   end
   #TODO: server on windows
 
@@ -58,12 +70,14 @@ describe 'gocd::server' do
         node.automatic['os'] = 'linux'
         node.normal['gocd']['install_method'] = 'package_file'
       end
+      allow_any_instance_of(Chef::Resource::RemoteFile).to receive(:fetch_content)
+        .and_return('{"message": "{\"latest-version\": \"16.2.1-3027\"}"}')
       run.converge(described_recipe)
     end
     it_behaves_like :server_recipe
     it 'downloads go-server .deb from remote URL' do
-      expect(chef_run).to create_remote_file('go-server-16.1.0-2855.deb').with(
-        source: 'https://download.go.cd/binaries/16.1.0-2855/deb/go-server-16.1.0-2855.deb')
+      expect(chef_run).to create_remote_file('go-server-stable.deb').with(
+        source: 'https://download.go.cd/binaries/16.2.1-3027/deb/go-server-16.2.1-3027.deb')
     end
     it 'installs go-server package from file' do
       expect(chef_run).to install_dpkg_package('go-server')
@@ -77,12 +91,14 @@ describe 'gocd::server' do
         node.automatic['os'] = 'linux'
         node.normal['gocd']['install_method'] = 'package_file'
       end
+      allow_any_instance_of(Chef::Resource::RemoteFile).to receive(:fetch_content)
+        .and_return('{"message": "{\"latest-version\": \"16.2.1-3027\"}"}')
       run.converge(described_recipe)
     end
     it_behaves_like :server_recipe
     it 'downloads go-server .rpm from remote URL' do
-      expect(chef_run).to create_remote_file('go-server-16.1.0-2855.noarch.rpm').with(
-        source: 'https://download.go.cd/binaries/16.1.0-2855/rpm/go-server-16.1.0-2855.noarch.rpm')
+      expect(chef_run).to create_remote_file('go-server-stable.noarch.rpm').with(
+        source: 'https://download.go.cd/binaries/16.2.1-3027/rpm/go-server-16.2.1-3027.noarch.rpm')
     end
     it 'installs go-server package from file' do
       expect(chef_run).to install_rpm_package('go-server')
@@ -116,8 +132,15 @@ describe 'gocd::server' do
         key: nil,
         components: ['/'])
     end
+
     it 'installs go-server package' do
       expect(chef_run).to install_package('go-server')
+    end
+
+    it 'upgrades go-server package if version is set to `latest`' do
+      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.converge(described_recipe)
+      expect(chef_run).to upgrade_package('go-server')
     end
   end
   context 'When installing from custom repository and platform is centos' do
@@ -141,8 +164,16 @@ describe 'gocd::server' do
         gpgcheck: true
       )
     end
+
     it 'installs go-server package' do
       expect(chef_run).to install_package('go-server')
     end
+
+    it 'upgrades go-server package if version is set to `latest`' do
+      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.converge(described_recipe)
+      expect(chef_run).to upgrade_package('go-server')
+    end
+
   end
 end

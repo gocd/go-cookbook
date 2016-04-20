@@ -36,21 +36,26 @@ By default installation source is done from apt or yum repositories from officia
 
 The **apt** repository can be overriden by changing any these attributes:
 
-```ruby
-default['gocd']['repository']['apt']['uri'] = 'https://download.go.cd/'
-default['gocd']['repository']['apt']['components'] = [ '/' ]
-default['gocd']['repository']['apt']['distribution'] = ''
-default['gocd']['repository']['apt']['package_options'] = ''
-default['gocd']['repository']['apt']['keyserver'] = 'pgp.mit.edu'
-default['gocd']['repository']['apt']['key'] = '0xd8843f288816c449'
-```
+ * `node['gocd']['repository']['apt']['uri'] = 'https://download.go.cd/'`
+ * `node['gocd']['repository']['apt']['components'] = [ '/' ]`
+ * `node['gocd']['repository']['apt']['distribution'] = ''`
+ * `node['gocd']['repository']['apt']['package_options'] = ''`
+ * `node['gocd']['repository']['apt']['keyserver'] = 'pgp.mit.edu'`
+ * `node['gocd']['repository']['apt']['key'] = '0xd8843f288816c449'`
 
 The **yum** repository can be overriden by changing any these attributes:
 
-```ruby
-default['gocd']['repository']['yum']['baseurl'] = 'https://download.go.cd'
-default['gocd']['repository']['yum']['gpgcheck'] = true
-default['gocd']['repository']['yum']['gpgkey'] = 'https://download.go.cd/GOCD-GPG-KEY.asc'
+ * `node['gocd']['repository']['yum']['baseurl'] = 'https://download.go.cd'`
+ * `node['gocd']['repository']['yum']['gpgcheck'] = true`
+ * `node['gocd']['repository']['yum']['gpgkey'] = 'https://download.go.cd/GOCD-GPG-KEY.asc'`
+
+#### Experimental channel
+
+By default Go cookbook installs latest stable version.
+You can install gocd from experimental channel by setting
+
+```
+node['gocd']['use_experimental'] = true
 ```
 
 ### From remote file
@@ -69,7 +74,8 @@ And assign base url where packages are available for download
 node['gocd']['package_file']['baseurl'] = 'http://my/custom/url'
 ```
 
-The final download URL of file is built based on platform and `node['gocd']['version']`. E.g. `http://my/custom/url/go-agent-15.2.0-2520.deb`
+The final download URL of file is built based on platform and `node['gocd']['version']`.
+E.g. `http://my/custom/url/go-agent-15.2.0-2520.deb`
 
 # GoCD Server
 
