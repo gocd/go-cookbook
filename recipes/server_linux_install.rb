@@ -11,14 +11,12 @@ package 'unzip'
 case node['gocd']['install_method']
 when 'repository'
   include_recipe 'gocd::repository'
-  package_options = node['gocd']['repository']['apt']['package_options'] if node['platform_family'] == 'debian'
   package "go-server" do
     if latest_version?
       action :upgrade
     else
       version user_requested_version
     end
-    options package_options
     notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately
   end
 when 'package_file'

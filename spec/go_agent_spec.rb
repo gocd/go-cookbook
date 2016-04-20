@@ -230,7 +230,6 @@ describe 'gocd::agent' do
         node.normal['gocd']['install_method'] = 'repository'
         node.normal['gocd']['repository']['apt']['uri'] = 'http://mydeb/repo'
         node.normal['gocd']['repository']['apt']['components'] = [ '/' ]
-        node.normal['gocd']['repository']['apt']['package_options'] = '--force-yes'
         node.normal['gocd']['repository']['apt']['keyserver'] = false
         node.normal['gocd']['repository']['apt']['key'] = false
       end
