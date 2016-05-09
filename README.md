@@ -163,6 +163,10 @@ gocd_plugin 'github-pr-status' do
 end
 ```
 
+# Server Specification
+
+When using the cookbook please refer to the [server specification section](https://docs.go.cd/current/installation/system_requirements.html) of the go.cd website
+
 # License
 
 Apache License, Version 2.0
