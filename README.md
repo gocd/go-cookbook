@@ -163,6 +163,10 @@ gocd_plugin 'github-pr-status' do
 end
 ```
 
+# Packer
+
+When using this cookbook with Packer it is recommended to use a "t2.medium" instance.
+
 # License
 
 Apache License, Version 2.0
