@@ -163,9 +163,9 @@ gocd_plugin 'github-pr-status' do
 end
 ```
 
-# Packer
+# Server Specification
 
-When using this cookbook with Packer it is recommended to use a "t2.medium" instance.
+When using this cookbook you need an instance with at least 2-3GB of FREE memory for the server process to run.
 
 # License
 
