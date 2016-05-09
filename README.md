@@ -165,7 +165,7 @@ end
 
 # Server Specification
 
-When using this cookbook you need an instance with at least 2-3GB of FREE memory for the server process to run.
+When using the cookbook please refer to the [server specification section](https://docs.go.cd/current/installation/system_requirements.html) of the go.cd website
 
 # License
 
