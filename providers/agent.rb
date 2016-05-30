@@ -39,7 +39,7 @@ action :create do
   autoregister_values[:environments] = new_resource.environments || autoregister_values[:environments]
   autoregister_values[:resources] = new_resource.resources || autoregister_values[:resources]
   autoregister_values[:vnc] = new_resource.vnc || autoregister_values[:vnc]
-  autoregister_values[:daemon] = new_resource.vnc || autoregister_values[:daemon]
+  autoregister_values[:daemon] = new_resource.daemon || autoregister_values[:daemon]
   autoregister_values[:workspace] = workspace
   if autoregister_values[:go_server_host].nil?
     autoregister_values[:go_server_host] = '127.0.0.1'
