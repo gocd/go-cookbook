@@ -18,8 +18,7 @@ This cookbook has gone major rewrite and has little to do with pre-`1.0` version
 If you have been using go-cookbook previously then please note that:
 
  * cookbook has been renamed to `gocd`, just like root namespace of attributes.
- * Windows support has been dropped temporarily
-
+ * Windows support in on best-effort basis
 
 ### Java
 

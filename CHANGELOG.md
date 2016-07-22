@@ -1,3 +1,9 @@
+# 1.2.0
+
+ * Improved version handling and installing on windows #63 #67
+ * fixed autoregister value - `daemon` #88
+ * added maintainer and maintainer_email to metadata, #84
+
 # 1.1.1
 
 * Default to using latest version, when using a platform that supports it
