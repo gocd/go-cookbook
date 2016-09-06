@@ -10,7 +10,7 @@ property :user, :kind_of => String, :required => false, :default => 'go'
 property :group, :kind_of => String, :required => false, :default => 'go'
 property :go_server_url, :kind_of => String, :required => false, :default => nil
 property :go_server_host, :kind_of => String, :required => false, :default => nil # obsolete
-property :go_server_port, :kind_of => Integer, :required => false, :default => node['gocd']['agent'] # obsolete
+property :go_server_port, :kind_of => Integer, :required => false, :default => node['gocd']['agent']['go_server_port'] # obsolete
 property :daemon, :kind_of => [ TrueClass, FalseClass ], :required => false, :default => node['gocd']['agent']['daemon']
 property :vnc, :kind_of => [ TrueClass, FalseClass ], :required => false, :default => node['gocd']['agent']['vnc']['enabled']
 property :autoregister_key, :kind_of => String, :required => false, :default => nil
@@ -18,6 +18,8 @@ property :autoregister_hostname, :kind_of => String, :required => false, :defaul
 property :environments, :kind_of => [ String, Array ], :required => false, :default => nil
 property :resources, :kind_of => [ String, Array ], :required => false, :default => nil
 property :workspace, :kind_of => String, :required => false, :default => nil
+property :elastic_agent_id, :kind_of => [ String, nil ], :required => false, :default => nil
+property :elastic_agent_plugin_id, :kind_of => [ String, nil ], :required => false, :default => nil
 
 action :create do
   if node['gocd']['agent']['go_server_host'] != nil || node['gocd']['agent']['go_server_port'] != nil
@@ -58,11 +60,8 @@ action :create do
   end
 
   autoregister_values = get_agent_properties
-  autoregister_values[:go_server_url] = new_resource.go_server_url || autoregister_values[:go_server_url]
   autoregister_values[:key] =  new_resource.autoregister_key || autoregister_values[:key]
-  autoregister_values[:hostname] = new_resource.autoregister_hostname || autoregister_values[:hostname]
-  autoregister_values[:environments] = new_resource.environments || autoregister_values[:environments]
-  autoregister_values[:resources] = new_resource.resources || autoregister_values[:resources]
+  autoregister_values[:go_server_url] = new_resource.go_server_url || autoregister_values[:go_server_url]
   autoregister_values[:vnc] = new_resource.vnc || autoregister_values[:vnc]
   autoregister_values[:daemon] = new_resource.daemon || autoregister_values[:daemon]
   autoregister_values[:workspace] = workspace
@@ -83,15 +82,17 @@ action :create do
   end
 
   if autoregister_values[:key]
-    template "#{workspace}/config/autoregister.properties" do
-      source  'autoregister.properties.erb'
-      cookbook 'gocd'
-      mode     "0644"
+    gocd_agent_autoregister_file "#{workspace}/config/autoregister.properties" do
       owner    new_resource.user
       group    new_resource.group
-      not_if { ::File.exists? ("#{workspace}/config/agent.jks") }
+      autoregister_key new_resource.autoregister_key
+      autoregister_hostname new_resource.autoregister_hostname
+      environments new_resource.environments
+      resources new_resource.resources
+      elastic_agent_id new_resource.elastic_agent_id
+      elastic_agent_plugin_id new_resource.elastic_agent_plugin_id
+      not_if { ::File.exists? ("#{workspace}/config/guid.txt") }
       notifies :restart, "service[#{agent_name}]" if autoregister_values[:daemon]
-      variables autoregister_values
     end
   end
 

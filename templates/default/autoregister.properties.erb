@@ -21,3 +21,10 @@ agent.auto.register.resources    = <%= @resources %>
 agent.auto.register.resources    = <%= @resources.join(", ") %>
 <% end %>
 <% end %>
+
+<% if @elastic_agent_plugin_id %>
+agent.auto.register.elasticAgent.pluginId = <%= @elastic_agent_plugin_id %>
+<% end %>
+<% if @elastic_agent_id %>
+agent.auto.register.elasticAgent.agentId = <%= @elastic_agent_id %>
+<% end %>

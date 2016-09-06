@@ -117,6 +117,13 @@ The cookbook provides the following attributes to configure the GoCD agent:
 * `node['gocd']['agent']['autoregister']['hostname']`     - The agent autoregister hostname. Defaults to `node['fqdn']`.
 * `node['gocd']['agent']['server_search_query']`          - The chef search query to find a server node. Defaults to `chef_environment:#{node.chef_environment} AND recipes:gocd\\:\\:server`.
 
+### Beta
+
+Attributes for elastic agents:
+
+* `node['gocd']['agent']['elastic']['plugin_id']`
+* `node['gocd']['agent']['elastic']['agent_id']`
+
 ### Depreciated
 
 Please use `node['gocd']['agent']['go_server_url']` instead of:
@@ -153,6 +160,33 @@ gocd_agent 'my-go-agent' do
   environments 'production'
   resources     ['java-8','ruby-2.2']
   workspace     '/mnt/big_drive'
+end
+```
+
+# GoCD autoregister file resource
+
+If you want to setup agents *your-way* then this resource is helpful to **only**
+generate a valid `autoregister.properties` file:
+
+Example use:
+```ruby
+gocd_agent_autoregister_file '/var/mygo/autoregister.properties' do
+  autoregister_key 'bla-key'
+  autoregister_hostname 'mygo-agent'
+  environments 'stage'
+  resources     ['java-8','ruby']
+end
+```
+
+Can be used to prepare elastic agents too:
+```ruby
+gocd_agent_autoregister_file '/var/elastic/autoregister.properties' do
+  autoregister_key 'some-key'
+  autoregister_hostname 'elastic-agent'
+  environments 'testing'
+  resources     ['java-8']
+  elastic_agent_id 'agent-id'
+  elastic_agent_plugin_id 'elastic-agent-plugin-id'
 end
 ```
 

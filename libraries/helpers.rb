@@ -40,6 +40,8 @@ module Gocd
       values[:hostname]     = node['gocd']['agent']['autoregister']['hostname']
       values[:environments] = node['gocd']['agent']['autoregister']['environments']
       values[:resources]    = node['gocd']['agent']['autoregister']['resources']
+      values[:elastic_agent_plugin_id]  = node['gocd']['agent']['elastic']['plugin_id']
+      values[:elastic_agent_id]         = node['gocd']['agent']['elastic']['agent_id']
       values[:daemon]       = node['gocd']['agent']['daemon']
       values[:vnc]          = node['gocd']['agent']['vnc']['enabled']
       values[:workspace]    = node['gocd']['agent']['workspace']
