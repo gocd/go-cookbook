@@ -1,3 +1,12 @@
+# 1.3.0
+
+ * rewritten chef resources to use new custom resource syntax
+ * updated agent startup config files to use `GO_SERVER_URL` instead of host and port
+ * by default install java 8
+ * isolated gocd_agent_autoregister_file resource
+ * added golang agent support
+ * use apt cookbook >= 3.0
+
 # 1.2.0
 
  * Improved version handling and installing on windows #63 #67
