@@ -33,7 +33,8 @@ action :create do
 
   agent_name = new_resource.agent_name
   workspace = new_resource.workspace || "/var/lib/#{agent_name}"
-  [workspace, "/var/log/#{agent_name}"].each do |d|
+  log_directory = "/var/log/#{agent_name}"
+  [workspace, log_directory].each do |d|
     directory d do
       mode     0755
       owner    new_resource.user
@@ -45,19 +46,6 @@ action :create do
     owner    new_resource.user
     group    new_resource.group
   end
-  # package manages the init.d/go-agent script so cookbook should not.
-  bash "setup init.d for #{agent_name}" do
-    code <<-EOH
-    cp /etc/init.d/go-agent /etc/init.d/#{agent_name}
-    sed -i 's/# Provides: go-agent$/# Provides: #{agent_name}/g' /etc/init.d/#{agent_name}
-    EOH
-    not_if "grep -q '# Provides: #{agent_name}$' /etc/init.d/#{agent_name}"
-    only_if { agent_name != 'go-agent' }
-  end
-  link "/usr/share/#{agent_name}" do
-    to "/usr/share/go-agent"
-    not_if { agent_name == 'go-agent' }
-  end
 
   autoregister_values = get_agent_properties
   autoregister_values[:key] =  new_resource.autoregister_key || autoregister_values[:key]
@@ -65,10 +53,42 @@ action :create do
   autoregister_values[:vnc] = new_resource.vnc || autoregister_values[:vnc]
   autoregister_values[:daemon] = new_resource.daemon || autoregister_values[:daemon]
   autoregister_values[:workspace] = workspace
+  autoregister_values[:log_directory] = log_directory
   if autoregister_values[:go_server_url].nil?
     autoregister_values[:go_server_host] = new_resource.go_server_host || autoregister_values[:go_server_host] || 'localhost'
     autoregister_values[:go_server_url] = "https://#{autoregister_values[:go_server_host]}:8154/go"
     Chef::Log.warn("Go server not found on Chef server or not specifed via node['gocd']['agent']['go_server_url'] attribute, defaulting Go server to #{autoregister_values[:go_server_url]}")
+  end
+
+  case node['gocd']['agent']['type']
+  when 'java'
+    proof_of_registration = "#{workspace}/config/guid.txt"
+    autoregister_file_path = "#{workspace}/config/autoregister.properties"
+    # package manages the init.d/go-agent script so cookbook should not.
+    bash "setup init.d for #{agent_name}" do
+      code <<-EOH
+      cp /etc/init.d/go-agent /etc/init.d/#{agent_name}
+      sed -i 's/# Provides: go-agent$/# Provides: #{agent_name}/g' /etc/init.d/#{agent_name}
+      EOH
+      not_if "grep -q '# Provides: #{agent_name}$' /etc/init.d/#{agent_name}"
+      only_if { agent_name != 'go-agent' }
+    end
+    link "/usr/share/#{agent_name}" do
+      to "/usr/share/go-agent"
+      not_if { agent_name == 'go-agent' }
+    end
+  when 'golang'
+    proof_of_registration = "#{workspace}/config/agent-id"
+    autoregister_file_path = "#{workspace}/config/autoregister.sh" if autoregister_values[:key]
+
+    template "/etc/init.d/#{agent_name}" do
+      cookbook 'gocd'
+      source 'golang-agent-init.erb'
+      owner 'root'
+      group 'root'
+      mode 0755
+      variables(agent_name: agent_name, autoregister_file: autoregister_file_path)
+    end
   end
 
   template "/etc/default/#{agent_name}" do
@@ -82,7 +102,7 @@ action :create do
   end
 
   if autoregister_values[:key]
-    gocd_agent_autoregister_file "#{workspace}/config/autoregister.properties" do
+    gocd_agent_autoregister_file autoregister_file_path do
       owner    new_resource.user
       group    new_resource.group
       autoregister_key new_resource.autoregister_key
@@ -91,13 +111,21 @@ action :create do
       resources new_resource.resources
       elastic_agent_id new_resource.elastic_agent_id
       elastic_agent_plugin_id new_resource.elastic_agent_plugin_id
-      not_if { ::File.exists? ("#{workspace}/config/guid.txt") }
+      not_if { ::File.exists? (proof_of_registration) }
       notifies :restart, "service[#{agent_name}]" if autoregister_values[:daemon]
     end
   end
 
-  service agent_name do
-    supports :status => true, :restart => autoregister_values[:daemon], :start => true, :stop => true
-    action   new_resource.service_action
+  case node['gocd']['agent']['type']
+  when 'java'
+    service agent_name do
+      supports :status => true, :restart => autoregister_values[:daemon], :start => true, :stop => true
+      action   new_resource.service_action
+    end
+  when 'golang'
+    service agent_name do
+      supports :restart => true, :start => true, :stop => true
+      action   new_resource.service_action
+    end
   end
 end

@@ -124,6 +124,12 @@ Attributes for elastic agents:
 * `node['gocd']['agent']['elastic']['plugin_id']`
 * `node['gocd']['agent']['elastic']['agent_id']`
 
+#### Golang agent support
+
+By default `node['gocd']['agent']['type']` is set to `java`. Set it to `golang`
+to install [GoCD agent written in Go](https://github.com/gocd-contrib/gocd-golang-agent).
+Note that this agent has quite a few limitations.
+
 ### Depreciated
 
 Please use `node['gocd']['agent']['go_server_url']` instead of:
