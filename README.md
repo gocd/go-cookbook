@@ -108,8 +108,7 @@ agent is called `go-agent`, next ones are `go-agent-#`.
 
 The cookbook provides the following attributes to configure the GoCD agent:
 
-* `node['gocd']['agent']['go_server_host']`               - The hostname of the go server (if left alone, will be auto-detected). Defaults to `nil`.
-* `node['gocd']['agent']['go_server_port']`               - The port of the go server. Defaults to `8153`.
+* `node['gocd']['agent']['go_server_url']`                - URL of Go server that agent should connect to.
 * `node['gocd']['agent']['daemon']`                       - Whether the agent should be daemonized. Defaults to `true`.
 * `node['gocd']['agent']['vnc']['enabled']`               - Whether the agent should start with VNC. (Uses `DISPLAY=:3`). Defaults to `false`.
 * `node['gocd']['agent']['autoregister']['key']`          - The [agent autoregister](http://www.go.cd/documentation/user/current/advanced_usage/agent_auto_register.html) key. If left alone, will be auto-detected. Defaults to `nil`.
@@ -117,6 +116,13 @@ The cookbook provides the following attributes to configure the GoCD agent:
 * `node['gocd']['agent']['autoregister']['resources']`    - The resources for the agent. Defaults to `[]`.
 * `node['gocd']['agent']['autoregister']['hostname']`     - The agent autoregister hostname. Defaults to `node['fqdn']`.
 * `node['gocd']['agent']['server_search_query']`          - The chef search query to find a server node. Defaults to `chef_environment:#{node.chef_environment} AND recipes:gocd\\:\\:server`.
+
+### Depreciated
+
+Please use `node['gocd']['agent']['go_server_url']` instead of:
+
+* `node['gocd']['agent']['go_server_host']` - The hostname of the go server (if left alone, will be auto-detected). Defaults to `nil`.
+* `node['gocd']['agent']['go_server_port']` - The port of the go server. Defaults to `8153`.
 
 # GoCD Agent LWRP (currently only works on linux)
 

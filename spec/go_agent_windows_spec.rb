@@ -15,6 +15,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'windows'
         node.automatic['platform'] = 'windows'
         node.automatic['os'] = 'windows'
+        node.normal['gocd']['agent']['go_server_url'] = 'https://localhost:8154/go'
       end
       allow_any_instance_of(Chef::Resource::RemoteFile).to receive(:fetch_content)
         .and_return('{"message": "{\"latest-version\": \"16.2.1-3027\"}"}')
@@ -37,6 +38,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'windows'
         node.automatic['platform'] = 'windows'
         node.automatic['os'] = 'windows'
+        node.normal['gocd']['agent']['go_server_url'] = 'https://localhost:8154/go'
         node.normal['gocd']['agent']['package_file']['url'] = 'https://example.com/go-agent.exe'
       end
       run.converge(described_recipe)

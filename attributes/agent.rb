@@ -1,5 +1,4 @@
-default['gocd']['agent']['go_server_host'] = nil
-default['gocd']['agent']['go_server_port'] = 8153
+default['gocd']['agent']['go_server_url']  = nil
 default['gocd']['agent']['daemon']         = true
 
 default['gocd']['agent']['vnc']['enabled'] = false
