@@ -22,7 +22,7 @@ If you have been using go-cookbook previously then please note that:
 
 ### Java
 
-Please note that java (>= 7) is needed to run Go server and agents. This cookbook
+Please note that java 8 is recommended to run Go server and agents. This cookbook
 sets `node['java']['jdk_version']` at `force_default` level but it may not work properly
 when you include `java` in node run_list before `gocd` cookbook. The safest approach
 is to set java version in node attributes (in a role or environment).

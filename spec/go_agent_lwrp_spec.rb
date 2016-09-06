@@ -32,7 +32,7 @@ describe 'gocd_test::single_agent_lwrp' do
   it 'creates go agent configuration in /etc/default/my-go-agent' do
     expect(chef_run).to render_file('/etc/default/my-go-agent').with_content { |content|
       expect(content).to_not include('java-6')
-      expect(content).to     include('java-7')
+      expect(content).to     include('java-8')
       expect(content).to     include('GO_SERVER_URL=https://go.example.com:443/go')
       expect(content).to_not include('GO_SERVER_PORT')
       expect(content).to     include('AGENT_WORK_DIR=/mnt/big_drive')
