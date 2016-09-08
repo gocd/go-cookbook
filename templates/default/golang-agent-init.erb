@@ -11,6 +11,7 @@
 # Description: Start the GOCD Agent
 ### END INIT INFO
 NAME="<%= @agent_name %>"
+PIDDIRECTORY="/var/run/gocd-golang-agent"
 PIDFILE="/var/run/gocd-golang-agent/<%= @agent_name %>.pid"
 DAEMON="/usr/bin/gocd-golang-agent"
 
@@ -22,6 +23,7 @@ DAEMON="/usr/bin/gocd-golang-agent"
 case "$1" in
   start)
         echo -n "Starting daemon: "$NAME
+  mkdir -p $PIDDIRECTORY
 	/sbin/start-stop-daemon --start -c go:go -m --quiet --pidfile $PIDFILE --background --exec $DAEMON
         echo "."
 	;;
@@ -32,6 +34,7 @@ case "$1" in
 	;;
   restart)
         echo -n "Restarting daemon: "$NAME
+  mkdir -p $PIDDIRECTORY
 	/sbin/start-stop-daemon --stop -c go:go --quiet --oknodo --retry 30 --pidfile $PIDFILE
 	/sbin/start-stop-daemon --start -c go:go -m --quiet --pidfile $PIDFILE --background --exec $DAEMON -- $DAEMON_OPTS
 	echo "."
