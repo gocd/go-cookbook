@@ -1,6 +1,5 @@
 gocd_agent 'my-go-agent' do
-  go_server_host 'go.example.com'
-  go_server_port 80
+  go_server_url 'https://go.example.com:443/go'
   daemon true
   vnc    true
   autoregister_key 'bla-key'
