@@ -108,7 +108,7 @@ agent is called `go-agent`, next ones are `go-agent-#`.
 
 The cookbook provides the following attributes to configure the GoCD agent:
 
-* `node['gocd']['agent']['go_server_url']`                - URL of Go server that agent should connect to.
+* `node['gocd']['agent']['go_server_url']`                - URL of Go server that agent should connect to. It must start with `https://` and end with `/go`. For example `https://localhost:8154/go`.
 * `node['gocd']['agent']['daemon']`                       - Whether the agent should be daemonized. Defaults to `true`.
 * `node['gocd']['agent']['vnc']['enabled']`               - Whether the agent should start with VNC. (Uses `DISPLAY=:3`). Defaults to `false`.
 * `node['gocd']['agent']['autoregister']['key']`          - The [agent autoregister](http://www.go.cd/documentation/user/current/advanced_usage/agent_auto_register.html) key. If left alone, will be auto-detected. Defaults to `nil`.
