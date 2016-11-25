@@ -12,7 +12,7 @@ default['gocd']['updates']['url'] = nil
 default['gocd']['repository']['apt']['components'] = ['/']
 default['gocd']['repository']['apt']['distribution'] = ''
 default['gocd']['repository']['apt']['keyserver'] = 'pgp.mit.edu'
-default['gocd']['repository']['apt']['key'] = '0xd8843f288816c449'
+default['gocd']['repository']['apt']['key'] = 'https://download.go.cd/GOCD-GPG-KEY.asc'
 
 default['gocd']['repository']['yum']['gpgcheck'] = true
 default['gocd']['repository']['yum']['gpgkey'] = 'https://download.go.cd/GOCD-GPG-KEY.asc'
