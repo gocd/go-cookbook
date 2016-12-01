@@ -7,7 +7,7 @@ end
 
 opts = []
 opts << '/S'
-opts << '/D=C:\GoServer'
+opts << "/D=#{node['gocd']['server']['work_dir']}"
 
 if defined?(Chef::Provider::Package::Windows)
   package 'Go Server' do
