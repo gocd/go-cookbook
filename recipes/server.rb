@@ -34,4 +34,5 @@ ruby_block "publish_autoregister_key" do
   end
   action :create
   not_if { Chef::Config[:solo] }
+  retries 4
 end
