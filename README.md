@@ -88,7 +88,7 @@ The cookbook provides the following attributes to configure the GoCD server:
 * `node['gocd']['server']['max_mem']`      - The server maximum JVM heap space. Defaults to `2048m`.
 * `node['gocd']['server']['min_mem']`      - The server mimimum JVM heap space. Defaults to `1024m`.
 * `node['gocd']['server']['max_perm_gen']` - The server maximum JVM permgen space. Defaults to `400m`.
-* `node['gocd']['server']['work_dir']`     - The server working directory. Defaults to `/var/lib/go-server`.
+* `node['gocd']['server']['work_dir']`     - The server working directory. Defaults to `/var/lib/go-server` on linux, `C:\GoServer` on Windows.
 
 Chef cookbook waits for server to become responsive after restarting service.
 These attributes can be used to tune it:

@@ -50,7 +50,7 @@ module Gocd
 
     def go_server_config_file
       if platform?('windows')
-        'C:\Program Files\Go Server\config\cruise-config.xml'
+        "#{node['gocd']['server']['work_dir']}\\config\\cruise-config.xml"
       else
         '/etc/go/cruise-config.xml'
       end
