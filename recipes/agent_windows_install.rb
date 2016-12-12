@@ -13,7 +13,7 @@ if autoregister_values[:go_server_url].nil?
 end
 
 opts = []
-opts << "/SERVERURL=#{autoregister_values[:go_server_url]}"
+opts << "/SERVERURL='#{autoregister_values[:go_server_url]}'"
 opts << "/S"
 opts << '/D=C:\GoAgent'
 
