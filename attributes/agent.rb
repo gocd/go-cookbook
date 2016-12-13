@@ -18,8 +18,4 @@ default['gocd']['agent']['workspace']           = nil # '/var/lib/go-agent' on l
 default['gocd']['agent']['count']               = 1
 default['gocd']['agent']['default_extras']      = {}
 
-default['gocd']['agent']['golang']['repository']['uri'] = 'https://dl.bintray.com/alex-hal9000/gocd-golang-agent'
-default['gocd']['agent']['golang']['repository']['apt']['components'] = ['main']
-default['gocd']['agent']['golang']['repository']['apt']['distribution'] = 'master'
-default['gocd']['agent']['golang']['repository']['apt']['keyserver'] = 'hkp://keyserver.ubuntu.com:80'
-default['gocd']['agent']['golang']['repository']['apt']['key'] = '379CE192D401AB61'
+default['gocd']['agent']['golang']['version'] = '1.6'

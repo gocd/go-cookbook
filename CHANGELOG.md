@@ -1,3 +1,10 @@
+# 1.3.1
+
+ * #93 Fix GO_SERVER_URL not being set correctly on windows
+ * #92 fix several issues with installing server on windows
+ * replaced obsolete gpg key
+ * install golang agent as a binary from bintray
+
 # 1.3.0
 
  * rewritten chef resources to use new custom resource syntax

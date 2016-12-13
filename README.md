@@ -39,7 +39,7 @@ The **apt** repository can be overriden by changing any these attributes:
  * `node['gocd']['repository']['apt']['components'] = [ '/' ]`
  * `node['gocd']['repository']['apt']['distribution'] = ''`
  * `node['gocd']['repository']['apt']['keyserver'] = 'pgp.mit.edu'`
- * `node['gocd']['repository']['apt']['key'] = '0xd8843f288816c449'`
+ * `node['gocd']['repository']['apt']['key'] = 'https://download.go.cd/GOCD-GPG-KEY.asc'`
 
 The **yum** repository can be overriden by changing any these attributes:
 

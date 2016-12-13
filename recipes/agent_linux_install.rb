@@ -44,15 +44,12 @@ when'golang'
   case node['platform_family']
   when 'debian'
     include_recipe 'apt'
-    apt_repository 'gocd-golang-agent' do
-      uri node['gocd']['agent']['golang']['repository']['uri']
-      components node['gocd']['agent']['golang']['repository']['apt']['components']
-      distribution node['gocd']['agent']['golang']['repository']['apt']['distribution']
-      keyserver node['gocd']['agent']['golang']['repository']['apt']['keyserver'] unless node['gocd']['agent']['golang']['repository']['apt']['keyserver'] == false
-      key node['gocd']['agent']['golang']['repository']['apt']['key'] unless node['gocd']['agent']['golang']['repository']['apt']['key'] == false
-    end
-    apt_package 'gocd-golang-agent' do
-      options '--force-yes'
+    agent_version = node['gocd']['agent']['golang']['version']
+    remote_file '/usr/bin/gocd-golang-agent' do
+      source "https://bintray.com/gocd-contrib/gocd_golang_goagent/download_file?file_path=goagent%2F#{agent_version}%2Fgocd-golang-agent_#{os}_#{arch}_#{agent_version}"
+      mode 00755
+      owner 'root'
+      group 'root'
     end
   else
     fail 'golang agent installation is only supported on debian-based systems'

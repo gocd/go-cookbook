@@ -208,6 +208,13 @@ module Gocd
         "#{go_baseurl}/#{remote_version}/#{os_dir}/#{go_server_remote_package_name}"
       end
     end
+
+    def arch
+      node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : node['kernel']['machine']
+    end
+    def os
+      node['os']
+    end
   end
 end
 

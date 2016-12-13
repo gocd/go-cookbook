@@ -55,14 +55,6 @@ describe 'gocd_test::single_agent_lwrp' do
     it 'does not install java' do
       expect(chef_run).to_not include_recipe('java')
     end
-    it 'adds golang apt repository' do
-      expect(chef_run).to add_apt_repository 'gocd-golang-agent'
-    end
-    it 'installs gocd-golang-agent package' do
-      expect(chef_run).to install_apt_package('gocd-golang-agent').with(
-        options: '--force-yes'
-      )
-    end
     it 'creates init.d script for my-go-agent' do
       expect(chef_run).to render_file('/etc/init.d/my-go-agent').with_content { |content|
         expect(content).to include('Provides: my-go-agent')
@@ -90,11 +82,17 @@ describe 'gocd_test::single_agent_lwrp' do
         node.automatic['platform_family'] = 'debian'
         node.automatic['platform'] = 'debian'
         node.automatic['os'] = 'linux'
+        node.automatic['kernel']['machine'] = 'x86_64'
         node.normal['gocd']['agent']['type'] = 'golang'
       end
       run.converge('gocd_test::default_agent_lwrp')
     end
     it_behaves_like :my_golang_agent
+    it 'downloads linux binary' do
+      expect(chef_run).to create_remote_file('/usr/bin/gocd-golang-agent').with(
+        source: 'https://bintray.com/gocd-contrib/gocd_golang_goagent/download_file?file_path=goagent%2F1.6%2Fgocd-golang-agent_linux_amd64_1.6'
+      )
+    end
     it 'does not create autoregister.sh file' do
       expect(chef_run).to_not create_gocd_agent_autoregister_file('/mnt/big_drive/config/autoregister.sh')
     end
