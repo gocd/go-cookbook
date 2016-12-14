@@ -22,13 +22,21 @@ action :create do
   autoregister_values[:elastic_agent_id] = new_resource.elastic_agent_id || autoregister_values[:elastic_agent_id]
   autoregister_values[:elastic_agent_plugin_id] = new_resource.elastic_agent_plugin_id || autoregister_values[:elastic_agent_plugin_id]
 
-  template new_resource.path do
-    source  'autoregister.properties.erb'
-    cookbook 'gocd'
-    mode     '0644'
-    owner    new_resource.owner
-    group    new_resource.group
-    variables autoregister_values
+  if node[:platform_family].include?("windows")
+    template new_resource.path do
+      source  'autoregister.properties.erb'
+      cookbook 'gocd'
+      variables autoregister_values
+    end
+  else
+    template new_resource.path do
+      source  'autoregister.properties.erb'
+      cookbook 'gocd'
+      mode     '0644'
+      owner    new_resource.owner
+      group    new_resource.group
+      variables autoregister_values
+    end
   end
 end
 
