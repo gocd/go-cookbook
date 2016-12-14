@@ -5,7 +5,7 @@ set :backend, :exec
 
 describe 'golang agent package' do
   it 'should be installed' do
-    expect(package('gocd-golang-agent')).to be_installed
+    expect(file('/usr/bin/gocd-golang-agent')).to exist
   end
   it 'java agent should not be installed' do
     expect(package('go-agent')).to_not be_installed
