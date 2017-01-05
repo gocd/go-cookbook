@@ -207,7 +207,7 @@ describe 'gocd::agent' do
         node.normal['gocd']['install_method'] = 'package_file'
       end
       allow_any_instance_of(Chef::Resource::RemoteFile).to receive(:fetch_content)
-        .with('https://update.go.cd/channels/supported/latest.json')
+        .with('https://update.gocd.io/channels/supported/latest.json')
         .and_return('{"message": "{\"latest-version\": \"16.2.1-3027\"}"}')
       run.converge(described_recipe)
     end
@@ -217,7 +217,7 @@ describe 'gocd::agent' do
     it_behaves_like :agent_recipe_linux
     it 'downloads go-agent .deb from remote URL' do
       expect(chef_run).to create_remote_file('go-agent-stable.deb').with(
-        source: 'https://download.go.cd/binaries/16.2.1-3027/deb/go-agent-16.2.1-3027.deb')
+        source: 'https://download.gocd.io/binaries/16.2.1-3027/deb/go-agent-16.2.1-3027.deb')
     end
     it 'installs go-agent package from file' do
       expect(chef_run).to install_dpkg_package('go-agent')
@@ -242,7 +242,7 @@ describe 'gocd::agent' do
     it_behaves_like :agent_recipe_linux
     it 'downloads go-agent .rpm from remote URL' do
       expect(chef_run).to create_remote_file('go-agent-stable.noarch.rpm').with(
-        source: 'https://download.go.cd/binaries/16.2.1-3027/rpm/go-agent-16.2.1-3027.noarch.rpm')
+        source: 'https://download.gocd.io/binaries/16.2.1-3027/rpm/go-agent-16.2.1-3027.noarch.rpm')
     end
     it 'installs go-agent package from file' do
       expect(chef_run).to install_rpm_package('go-agent')

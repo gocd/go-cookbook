@@ -1,3 +1,7 @@
+# 1.3.2
+
+* Changes all URLs from go.cd to gocd.io.
+
 # 1.3.1
 
  * #93 Fix GO_SERVER_URL not being set correctly on windows
