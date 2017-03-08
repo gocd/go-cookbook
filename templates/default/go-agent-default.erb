@@ -7,12 +7,7 @@ export GOCD_AGENT_WORKING_DIR=<%= @workspace %>
 export GOCD_AGENT_LOG_DIR=<%= @log_directory %>
 # export DEBUG=1 # set this environment variable to any value will turn on debug log.
 <% else %>
-<% if @go_server_url %>
 export GO_SERVER_URL=<%=  @go_server_url %>
-<% else %>
-export GO_SERVER=<%=      @go_server_host %>
-export GO_SERVER_PORT=<%= @go_server_port %>
-<% end %>
 export JAVA_HOME=<%=      node['java']['java_home'] %>
 export AGENT_WORK_DIR=<%= @workspace %>
 DAEMON=<%=  @daemon ? 'Y' : 'N' %>

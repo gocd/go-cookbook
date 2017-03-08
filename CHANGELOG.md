@@ -1,3 +1,9 @@
+# Upcoming Release
+
+## Breaking changes
+
+* The attributes `go_server_host` and `go_server_port` are removed in favour of `go_server_url`
+
 # 1.3.2
 
 * Changes all URLs from go.cd to gocd.io.

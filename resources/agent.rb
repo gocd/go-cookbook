@@ -9,8 +9,6 @@ property :agent_name, :name_attribute => true, :kind_of => String, :required => 
 property :user, :kind_of => String, :required => false, :default => 'go'
 property :group, :kind_of => String, :required => false, :default => 'go'
 property :go_server_url, :kind_of => String, :required => false, :default => nil
-property :go_server_host, :kind_of => String, :required => false, :default => nil # obsolete
-property :go_server_port, :kind_of => Integer, :required => false, :default => node['gocd']['agent']['go_server_port'] # obsolete
 property :daemon, :kind_of => [ TrueClass, FalseClass ], :required => false, :default => node['gocd']['agent']['daemon']
 property :vnc, :kind_of => [ TrueClass, FalseClass ], :required => false, :default => node['gocd']['agent']['vnc']['enabled']
 property :autoregister_key, :kind_of => String, :required => false, :default => nil
@@ -22,9 +20,9 @@ property :elastic_agent_id, :kind_of => [ String, nil ], :required => false, :de
 property :elastic_agent_plugin_id, :kind_of => [ String, nil ], :required => false, :default => nil
 
 action :create do
-  if node['gocd']['agent']['go_server_host'] != nil || node['gocd']['agent']['go_server_port'] != nil
+  if !node['gocd']['agent']['go_server_host'].nil? || !node['gocd']['agent']['go_server_port'].nil?
     log "Warn obsolete attributes" do
-      message "Depreciation: node['gocd']['agent']['go_server_host'] and node['gocd']['agent']['go_server_port'] have been replaced by node['gocd']['agent']['go_server_url']"
+      message "Please note that node['gocd']['agent']['go_server_host'] and node['gocd']['agent']['go_server_port'] have been replaced by node['gocd']['agent']['go_server_url']"
       level :warn
     end
   end
@@ -55,8 +53,7 @@ action :create do
   autoregister_values[:workspace] = workspace
   autoregister_values[:log_directory] = log_directory
   if autoregister_values[:go_server_url].nil?
-    autoregister_values[:go_server_host] = new_resource.go_server_host || autoregister_values[:go_server_host] || 'localhost'
-    autoregister_values[:go_server_url] = "https://#{autoregister_values[:go_server_host]}:8154/go"
+    autoregister_values[:go_server_url] = "https://localhost:8154/go"
     Chef::Log.warn("Go server not found on Chef server or not specifed via node['gocd']['agent']['go_server_url'] attribute, defaulting Go server to #{autoregister_values[:go_server_url]}")
   end
 
