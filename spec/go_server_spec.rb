@@ -59,7 +59,7 @@ describe 'gocd::server' do
       expect(chef_run).to upgrade_package('go-server')
     end
   end
-  #TODO: server on windows
+  # TODO: server on windows
 
   context 'When installing from package_file and platform is debian' do
     let(:chef_run) do
@@ -114,8 +114,7 @@ describe 'gocd::server' do
         node.automatic['os'] = 'linux'
         node.normal['gocd']['install_method'] = 'repository'
         node.normal['gocd']['repository']['apt']['uri'] = 'http://mydeb/repo'
-        node.normal['gocd']['repository']['apt']['components'] = [ '/' ]
-        node.normal['gocd']['repository']['apt']['keyserver'] = false
+        node.normal['gocd']['repository']['apt']['components'] = ['/']
         node.normal['gocd']['repository']['apt']['key'] = false
       end
       run.converge(described_recipe)
@@ -127,7 +126,6 @@ describe 'gocd::server' do
     it 'adds my custom gocd apt repository' do
       expect(chef_run).to add_apt_repository('gocd').with(
         uri: 'http://mydeb/repo',
-        keyserver: nil,
         key: nil,
         components: ['/'])
     end
@@ -173,6 +171,5 @@ describe 'gocd::server' do
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-server')
     end
-
   end
 end

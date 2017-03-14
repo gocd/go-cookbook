@@ -1,23 +1,23 @@
-name             "gocd"
-description      "Installs/Configures Go servers and agents"
-maintainer       "GoCD Contributors"
-maintainer_email "go-cd@googlegroups.com"
-version          "1.3.2"
+name             'gocd'
+description      'Installs/Configures Go servers and agents'
+maintainer       'GoCD Contributors'
+maintainer_email 'go-cd@googlegroups.com'
+version          '1.3.2'
 
-supports "ubuntu"
-supports "centos"
-supports "redhat"
-supports "windows"
+supports 'ubuntu'
+supports 'centos'
+supports 'redhat'
+supports 'windows'
 
-recipe "gocd::server", "Installs and configures a Go server"
-recipe "gocd::agent", "Installs and configures a Go agent"
-recipe "gocd::repository", "Installs the go yum/apt repository"
-recipe "gocd::agent_windows", "Installs and configures Windows Go agent"
-recipe "gocd::server_windows", "Installs and configures Windows Go server"
-recipe "gocd::agent_linux", "Install and configures Linux Go agent"
-recipe "gocd::server_linux", "Install and configures Linux Go server"
+recipe 'gocd::server', 'Installs and configures a Go server'
+recipe 'gocd::agent', 'Installs and configures a Go agent'
+recipe 'gocd::repository', 'Installs the go yum/apt repository'
+recipe 'gocd::agent_windows', 'Installs and configures Windows Go agent'
+recipe 'gocd::server_windows', 'Installs and configures Windows Go server'
+recipe 'gocd::agent_linux', 'Install and configures Linux Go agent'
+recipe 'gocd::server_linux', 'Install and configures Linux Go server'
 
-depends "apt", ">= 3.0.0"
-depends "java"
-depends "yum"
-depends "windows"
+depends 'apt', '>= 3.0.0'
+depends 'java'
+depends 'yum'
+depends 'windows'

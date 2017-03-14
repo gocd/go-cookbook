@@ -19,7 +19,7 @@ describe 'gocd_test::single_agent_lwrp' do
     it_behaves_like :agent_linux_install
 
     it 'creates my-go-agent chef resource' do
-      expect(chef_run).to  create_gocd_agent('my-go-agent')
+      expect(chef_run).to create_gocd_agent('my-go-agent')
     end
     it 'does not create default go-agent chef resource' do
       expect(chef_run).to_not create_gocd_agent('go-agent')
@@ -47,7 +47,7 @@ describe 'gocd_test::single_agent_lwrp' do
         autoregister_key: 'bla-key',
         autoregister_hostname: 'my-lwrp-agent',
         environments: 'production',
-        resources: ['java-8','ruby-2.2']
+        resources: ['java-8', 'ruby-2.2']
       )
     end
   end

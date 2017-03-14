@@ -3,7 +3,6 @@ require 'serverspec'
 # Required by serverspec
 set :backend, :exec
 
-
 describe 'go server package' do
   it 'should be installed' do
     expect(package('go-server')).to be_installed

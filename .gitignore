@@ -12,3 +12,4 @@ Berksfile.lock
 # installed with `bundle install --binstubs`
 bin/
 
+.vendor/bundle/

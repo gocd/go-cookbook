@@ -11,8 +11,8 @@ shared_examples_for :apt_repository_recipe do
   it 'adds gocd apt repository' do
     expect(chef_run).to add_apt_repository('gocd').with(
       uri: 'https://download.gocd.io',
-      keyserver: "pgp.mit.edu",
-      key: "https://download.gocd.io/GOCD-GPG-KEY.asc",
+      keyserver: 'pgp.mit.edu',
+      key: 'https://download.gocd.io/GOCD-GPG-KEY.asc',
       components: ['/'])
   end
   it 'adds gocd experimental apt repository if experimental flag is turned on' do
@@ -20,8 +20,8 @@ shared_examples_for :apt_repository_recipe do
     chef_run.converge(described_recipe)
     expect(chef_run).to add_apt_repository('gocd').with(
       uri: 'https://download.gocd.io/experimental',
-      keyserver: "pgp.mit.edu",
-      key: "https://download.gocd.io/GOCD-GPG-KEY.asc",
+      keyserver: 'pgp.mit.edu',
+      key: 'https://download.gocd.io/GOCD-GPG-KEY.asc',
       components: ['/'])
   end
 end
