@@ -17,7 +17,7 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
         autoregister_key: 'bla-key',
         autoregister_hostname: 'mygo-agent',
         environments: 'stage',
-        resources:     ['java-8','ruby']
+        resources:     ['java-8', 'ruby']
       )
     end
 
@@ -99,7 +99,7 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
         autoregister_key: 'bla-key',
         autoregister_hostname: 'mygo-agent',
         environments: 'stage',
-        resources:     ['java-8','ruby']
+        resources:     ['java-8', 'ruby']
       )
     end
 

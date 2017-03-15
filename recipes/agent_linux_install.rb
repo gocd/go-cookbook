@@ -5,12 +5,12 @@ end
 
 case node['gocd']['agent']['type']
 when 'java'
-  include_recipe "gocd::java" if node['gocd']['agent']['type'] == 'java'
+  include_recipe 'gocd::java' if node['gocd']['agent']['type'] == 'java'
 
   case node['gocd']['install_method']
   when 'repository'
     include_recipe 'gocd::repository'
-    package "go-agent" do
+    package 'go-agent' do
       notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately
       if latest_version?
         action :upgrade
@@ -31,16 +31,16 @@ when 'java'
         source package_path
         notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately
       end
-    when 'rhel','fedora'
+    when 'rhel', 'fedora'
       rpm_package 'go-agent' do
         source package_path
         notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately
       end
     end
   else
-    fail "Unknown install method - '#{node['gocd']['install_method']}'"
+    raise "Unknown install method - '#{node['gocd']['install_method']}'"
   end
-when'golang'
+when 'golang'
   case node['platform_family']
   when 'debian'
     include_recipe 'apt'
@@ -52,8 +52,8 @@ when'golang'
       group 'root'
     end
   else
-    fail 'golang agent installation is only supported on debian-based systems'
+    raise 'golang agent installation is only supported on debian-based systems'
   end
 else
-  fail "Invalid go-agent type #{node['gocd']['agent']['type']}. Possible options are java, golang"
+  raise "Invalid go-agent type #{node['gocd']['agent']['type']}. Possible options are java, golang"
 end

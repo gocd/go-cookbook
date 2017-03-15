@@ -167,7 +167,7 @@ describe 'gocd::agent' do
     end
     it 'creates go-agent-1 configuration' do
       expect(chef_run).to render_file('/etc/default/go-agent-1')
-      #TODO check content
+      # TODO: check content
     end
     it 'creates additional go agent workspace directory' do
       expect(chef_run).to create_directory('/var/lib/go-agent-1').with(
@@ -259,8 +259,7 @@ describe 'gocd::agent' do
         node.normal['gocd']['agent']['go_server_url'] = 'https://localhost:8154/go'
         node.normal['gocd']['install_method'] = 'repository'
         node.normal['gocd']['repository']['apt']['uri'] = 'http://mydeb/repo'
-        node.normal['gocd']['repository']['apt']['components'] = [ '/' ]
-        node.normal['gocd']['repository']['apt']['keyserver'] = false
+        node.normal['gocd']['repository']['apt']['components'] = ['/']
         node.normal['gocd']['repository']['apt']['key'] = false
       end
       run.converge(described_recipe)
@@ -275,7 +274,6 @@ describe 'gocd::agent' do
     it 'adds my custom gocd apt repository' do
       expect(chef_run).to add_apt_repository('gocd').with(
         uri: 'http://mydeb/repo',
-        keyserver: nil,
         key: nil,
         components: ['/'])
     end
@@ -288,7 +286,6 @@ describe 'gocd::agent' do
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-agent')
     end
-
   end
   context 'When installing from custom repository and platform is centos' do
     let(:chef_run) do

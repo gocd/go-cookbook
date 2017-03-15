@@ -1,7 +1,6 @@
-include_recipe "gocd::agent_linux_install"
+include_recipe 'gocd::agent_linux_install'
 
-for i in 0..(node['gocd']['agent']['count'] -1)
-  name = "go-agent-#{i}"
-  name = "go-agent" if i == 0
+node['gocd']['agent']['count'].times do |i|
+  name = (i == 0) ? 'go-agent' : "go-agent-#{i}"
   gocd_agent name
 end

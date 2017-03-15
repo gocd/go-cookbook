@@ -1,4 +1,4 @@
-include_recipe "gocd::java"
+include_recipe 'gocd::java'
 
 ohai 'reload_passwd_for_go_user' do
   name 'reload_passwd'
@@ -11,7 +11,7 @@ package 'unzip'
 case node['gocd']['install_method']
 when 'repository'
   include_recipe 'gocd::repository'
-  package "go-server" do
+  package 'go-server' do
     if latest_version?
       action :upgrade
     else
@@ -32,12 +32,12 @@ when 'package_file'
       source package_path
       notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately
     end
-  when 'rhel','fedora'
+  when 'rhel', 'fedora'
     rpm_package 'go-server' do
       source package_path
       notifies :reload, 'ohai[reload_passwd_for_go_user]', :immediately
     end
   end
 else
-  fail "Unknown install method - '#{node['gocd']['install_method']}'"
+  raise "Unknown install method - '#{node['gocd']['install_method']}'"
 end
