@@ -9,16 +9,8 @@ opts = []
 opts << '/S'
 opts << "/D='#{node['gocd']['server']['work_dir'].tr('/', '\\')}'"
 
-if defined?(Chef::Provider::Package::Windows)
-  package 'Go Server' do
-    installer_type :nsis
-    source package_path
-    options opts.join(' ')
-  end
-else
-  windows_package 'Go Server' do
-    installer_type :nsis
-    source package_path
-    options opts.join(' ')
-  end
+windows_package 'Go Server' do
+  installer_type :nsis
+  source package_path
+  options opts.join(' ')
 end
