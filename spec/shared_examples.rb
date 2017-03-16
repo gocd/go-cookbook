@@ -5,9 +5,6 @@ shared_examples_for :apt_repository_recipe do
   it 'includes apt recipe' do
     expect(chef_run).to include_recipe('apt')
   end
-  it 'installs package apt-transport-https' do
-    expect(chef_run).to install_package('apt-transport-https')
-  end
   it 'adds gocd apt repository' do
     expect(chef_run).to add_apt_repository('gocd').with(
       uri: 'https://download.gocd.io',
