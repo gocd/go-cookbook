@@ -27,7 +27,7 @@ describe 'gocd::agent' do
         source: 'https://download.gocd.io/binaries/16.2.1-3027/win/go-agent-16.2.1-3027-setup.exe')
     end
     it 'installs go-agent package' do
-      expect(chef_run).to install_package('Go Agent')
+      expect(chef_run).to install_windows_package('Go Agent')
     end
   end
 
@@ -48,7 +48,7 @@ describe 'gocd::agent' do
         source: 'https://example.com/go-agent.exe')
     end
     it 'installs go-agent package' do
-      expect(chef_run).to install_package('Go Agent')
+      expect(chef_run).to install_windows_package('Go Agent')
     end
   end
 end

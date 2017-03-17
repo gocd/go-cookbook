@@ -27,7 +27,7 @@ describe 'gocd::server' do
     end
 
     it 'installs go-server package' do
-      expect(chef_run).to install_package('Go Server')
+      expect(chef_run).to install_windows_package('Go Server')
     end
   end
 
@@ -70,7 +70,7 @@ describe 'gocd::server' do
     end
 
     it 'installs go-server package' do
-      expect(chef_run).to install_package('Go Server')
+      expect(chef_run).to install_windows_package('Go Server')
     end
   end
 end
