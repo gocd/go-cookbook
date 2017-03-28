@@ -2,7 +2,7 @@
 driver_plugin: vagrant
 driver:
   customize:
-    memory: 2048
+    memory: 4096
 
 provisioner:
   name: chef_zero
