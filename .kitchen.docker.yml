@@ -2,6 +2,7 @@
 driver:
   name: docker
   privileged: true
+  use_sudo: false
 
 provisioner:
   name: chef_zero
@@ -9,7 +10,10 @@ provisioner:
 
 platforms:
 - name: centos-6.4
-# - name: centos-7
+- name: centos-7
+  driver:
+    provision_command:
+      - "yum install -y initscripts && yum clean all" #for starting services
 - name: ubuntu-12.04
   driver:
     provision_command:
@@ -46,7 +50,7 @@ suites:
   attributes:
     gocd:
       server:
-        max_mem: '1024m'
+        max_mem: '2048m'
         min_mem: '512m'
       agent:
         count: 2 # good test for agent lwrp
@@ -62,7 +66,7 @@ suites:
     gocd:
       install_method: 'package_file'
       server:
-        max_mem: '1024m'
+        max_mem: '2048m'
         min_mem: '512m'
       agent:
         autoregister:
