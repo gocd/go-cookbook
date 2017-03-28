@@ -217,7 +217,7 @@ describe 'gocd::agent' do
     it_behaves_like :agent_recipe_linux
     it 'downloads go-agent .deb from remote URL' do
       expect(chef_run).to create_remote_file('go-agent-stable.deb').with(
-        source: 'https://download.gocd.io/binaries/16.2.1-3027/deb/go-agent-16.2.1-3027.deb')
+        source: 'https://download.gocd.io/binaries/16.2.1-3027/deb/go-agent_16.2.1-3027_all.deb')
     end
     it 'installs go-agent package from file' do
       expect(chef_run).to install_dpkg_package('go-agent')
