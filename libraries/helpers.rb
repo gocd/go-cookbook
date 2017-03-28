@@ -126,11 +126,19 @@ module Gocd
     end
 
     def go_agent_remote_package_name
-      "go-agent-#{remote_version}#{package_extension}"
+      if os_dir == 'deb'
+        "go-agent_#{remote_version}_all#{package_extension}"
+      else
+        "go-agent-#{remote_version}#{package_extension}"
+      end
     end
 
     def go_server_remote_package_name
-      "go-server-#{remote_version}#{package_extension}"
+      if os_dir == 'deb'
+        "go-server_#{remote_version}_all#{package_extension}"
+      else
+        "go-server-#{remote_version}#{package_extension}"
+      end
     end
 
     def user_friendly_version(component)

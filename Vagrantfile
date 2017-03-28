@@ -52,7 +52,7 @@ Vagrant.configure(api_version) do |config|
       }
 
       chef.run_list = [
-        'recipe[go]',
+        'recipe[gocd]',
       ]
     end
   end
