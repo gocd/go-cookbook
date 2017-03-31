@@ -5,6 +5,8 @@ maintainer_email 'go-cd@googlegroups.com'
 version          '1.3.2'
 source_url       'https://github.com/gocd-contrib/go-cookbook' if respond_to?(:source_url)
 issues_url       'https://github.com/gocd-contrib/go-cookbook/issues' if respond_to?(:issues_url)
+chef_version     '~> 12'
+license          'Apache v2.0'
 
 supports 'ubuntu'
 supports 'centos'

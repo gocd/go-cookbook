@@ -6,6 +6,7 @@ else
 end
 
 service(platform?('windows') ? 'Go Server' : 'go-server') do
+  provider Chef::Provider::Service::Systemd if platform?('ubuntu') && node['platform_version'].to_f >= 16.04
   supports status: true, restart: true, start: true, stop: true
   action [:enable, :start]
   if node['gocd']['server']['wait_up']['retries'] != 0
