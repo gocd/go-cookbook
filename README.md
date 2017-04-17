@@ -11,6 +11,10 @@ This cookbook is here to help you setup Go servers and agents in an automated wa
 
 * chef >= 12.6
 
+* Chef 13 is unsupported upto and including release 1.3.2 and the upcoming release 
+
+### Certain resource properties are broken in Chef 13. They will be renamed in the next release so as to support chef 13. Check the deprecations in the [changelog](https://github.com/gocd/go-cookbook/blob/master/CHANGELOG.md)
+
 ## Dependencies
 
 * apt

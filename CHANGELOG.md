@@ -4,6 +4,11 @@
 
 * The attributes `go_server_host` and `go_server_port` are removed in favour of `go_server_url`
 
+## Deprecations
+
+* The `resources` property in our custom resources `agent` and `agent_autoregister_file` will be renamed in the next release to support Chef 13.
+
+
 # 1.3.2
 
 * Changes all URLs from go.cd to gocd.io.
