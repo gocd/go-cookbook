@@ -13,8 +13,10 @@ property :daemon, kind_of: [TrueClass, FalseClass], required: false, default: no
 property :vnc, kind_of: [TrueClass, FalseClass], required: false, default: node['gocd']['agent']['vnc']['enabled']
 property :autoregister_key, kind_of: String, required: false, default: nil
 property :autoregister_hostname, kind_of: String, required: false, default: nil
-property :environments, kind_of: [String, Array], required: false, default: nil
-property :resources, kind_of: [String, Array], required: false, default: nil
+property :environments, kind_of: [String, Array], required: false, default: nil # deprecated in favour of autoreigster_environments
+property :autoregister_environments, kind_of: [String, Array], required: false, default: nil
+property :resources, kind_of: [String, Array], required: false, default: nil # deprecated in favour of autoregister_resources
+property :autoregister_resources, kind_of: [String, Array], required: false, default: nil
 property :workspace, kind_of: String, required: false, default: nil
 property :elastic_agent_id, kind_of: [String, nil], required: false, default: nil
 property :elastic_agent_plugin_id, kind_of: [String, nil], required: false, default: nil
@@ -103,8 +105,8 @@ action :create do
       group new_resource.group
       autoregister_key new_resource.autoregister_key
       autoregister_hostname new_resource.autoregister_hostname
-      environments new_resource.environments
-      resources new_resource.resources
+      autoregister_environments new_resource.autoregister_environments || new_resource.environments
+      autoregister_resources new_resource.autoregister_resources || new_resource.resources
       elastic_agent_id new_resource.elastic_agent_id
       elastic_agent_plugin_id new_resource.elastic_agent_plugin_id
       not_if { ::File.exist? proof_of_registration }

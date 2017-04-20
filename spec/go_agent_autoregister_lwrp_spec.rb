@@ -108,7 +108,7 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
         expect(content).to     include('bla-key')
         expect(content).to     include('stage')
         # expect(content).to     include('mygo-agent') custom hostname not supported by golang agent
-        expect(content).to     include('java-8,ruby')
+        expect(content).to     include('java-8, ruby')
         expect(content).to_not include('GOCD_AGENT_AUTO_REGISTER_ELASTIC_AGENT_ID')
       }
     end
