@@ -1,4 +1,4 @@
-# Upcoming Release
+# 1.3.3 
 
 ## Breaking changes
 
@@ -7,6 +7,11 @@
 ## Deprecations
 
 * The `resources` property in our custom resources `agent` and `agent_autoregister_file` will be renamed in the next release to support Chef 13.
+
+## Bug Fixes
+
+* [236f6cd](https://github.com/gocd/go-cookbook/commit/236f6cd) - Explicitly specify provider to be systemd for ubuntu 16.04.
+* [d637543](https://github.com/gocd/go-cookbook/commit/d637543) - Change package name for debian to include substring '_all'.
 
 
 # 1.3.2
