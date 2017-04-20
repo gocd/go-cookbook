@@ -11,9 +11,9 @@ This cookbook is here to help you setup Go servers and agents in an automated wa
 
 * chef >= 12.6
 
-* Chef 13 is unsupported upto and including release 1.3.2 and the upcoming release 
+* Chef 13 is unsupported upto and including release 1.3.2 and the upcoming release. See [this]((https://github.com/gocd/go-cookbook/issues/113) issue.
 
-### Certain resource properties are broken in Chef 13. They will be renamed in the next release so as to support chef 13. Check the deprecations in the [changelog](https://github.com/gocd/go-cookbook/blob/master/CHANGELOG.md)
+### Certain resource properties are broken in Chef 13. Check the deprecations in the [changelog](https://github.com/gocd/go-cookbook/blob/master/CHANGELOG.md) for more details.
 
 ## Dependencies
 
@@ -182,20 +182,22 @@ The cookbook provides the following attributes to configure the GoCD agent:
 
   * Attributes:
 
-| Attribute Name          |    Default    | Description                                                                                                                                                                                                                                                                                                           |
-|:------------------------|:-------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| agent_name              |    create     | Name of the resource to be created or deleted.                                                                                                                                                                                                                                                                        |
-| service_action          | enable, start | The GoCD agent service supports `:status`, `:enable`, `:start`, `:restart`, `:stop`                                                                                                                                                                                                                                   |
-| user                    |      go       | The user that can start and configure the GoCD agents.                                                                                                                                                                                                                                                                |
-| group                   |      go       | The group of users that can configure the GoCD agents.                                                                                                                                                                                                                                                                |
-| go_server_url           |      nil      | The url of the GoCD server that the agent has to connect to. It should begin with `https`, should connect to the `GO_SERVER_SSL_PORT`, and end with `/go`. If this isn't set, then the go server ip is detected (provided go server is also installed using chef). The fallback option is `https://localhost:8154/go` |
-| daemon                  |     true      | Whether to start the GoCD agent as a daemon process.                                                                                                                                                                                                                                                                  |
-| autoregister_key        |      nil      | The autoregister key can be used to directly register the agent with the GoCD server without manual intervention.                                                                                                                                                                                                     |
-| autoregister_hostname   |      nil      | The name by which the agent will be known to the GoCD server                                                                                                                                                                                                                                                          |
-| environments            |      nil      | The GoCD environment to which the agent must belong to.                                                                                                                                                                                                                                                               |
-| resources               |      nil      | The resources available on the gocd agent node which can be used with specific pipeline(s).                                                                                                                                                                                                                           |
-| elastic_agent_id        |      nil      | The elastic profile id.                                                                                                                                                                                                                                                                                               |
-| elastic_agent_plugin_id |      nil      | The elastic agent plugin id.                                                                                                                                                                                                                                                                                          |
+| Attribute Name            |    Default    | Description                                                                                                                                                                                                                                                                                                           |
+|:--------------------------|:-------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| agent_name                |    create     | Name of the resource to be created or deleted.                                                                                                                                                                                                                                                                        |
+| service_action            | enable, start | The GoCD agent service supports `:status`, `:enable`, `:start`, `:restart`, `:stop`                                                                                                                                                                                                                                   |
+| user                      |      go       | The user that can start and configure the GoCD agents.                                                                                                                                                                                                                                                                |
+| group                     |      go       | The group of users that can configure the GoCD agents.                                                                                                                                                                                                                                                                |
+| go_server_url             |      nil      | The url of the GoCD server that the agent has to connect to. It should begin with `https`, should connect to the `GO_SERVER_SSL_PORT`, and end with `/go`. If this isn't set, then the go server ip is detected (provided go server is also installed using chef). The fallback option is `https://localhost:8154/go` |
+| daemon                    |     true      | Whether to start the GoCD agent as a daemon process.                                                                                                                                                                                                                                                                  |
+| autoregister_key          |      nil      | The autoregister key can be used to directly register the agent with the GoCD server without manual intervention.                                                                                                                                                                                                     |
+| autoregister_hostname     |      nil      | The name by which the agent will be known to the GoCD server                                                                                                                                                                                                                                                          |
+| autoregister_environments |      nil      | The GoCD environments to which the agent must belong to.                                                                                                                                                                                                                                                              |
+| environments              |      nil      | The GoCD environments to which the agent must belong to. This is DEPRECATED.                                                                                                                                                                                                                                          |
+| autoregister_resources    |      nil      | The resources available on the gocd agent node which can be used with specific pipeline(s).                                                                                                                                                                                                                           |
+| resources                 |      nil      | The resources available on the gocd agent node which can be used with specific pipeline(s). This is DEPRECATED.                                                                                                                                                                                                       |
+| elastic_agent_id          |      nil      | The elastic agent id used to set the autoregister property `agent.auto.register.elasticAgent.agentId`.                                                                                                                                                                                                                |
+| elastic_agent_plugin_id   |      nil      | The elastic agent plugin id.  This is used to set the autoregister property `agent.auto.register.elasticAgent.pluginId`                                                                                                                                                                                               |
 
 *Note:* All of the above attributes are optional.
 
@@ -209,16 +211,18 @@ This resource will create a file called `autoregister.properties` in the gocd ag
 
   * Attributes
 
-| Attribute Name          | Default | Description                                                                                 |
-|:------------------------|:-------:|:--------------------------------------------------------------------------------------------|
-| owner                   |   go    | owner of the autoregister.properties file                                                   |
-| group                   |   go    | group for the autoregister.properties file                                                  |
-| autoregister_key        |   nil   | The autogregister key from the go server config that can be used to register the agent      |
-| autoregister_hostname   |   nil   | The name by which the agent will be known to the GoCD server                                |
-| environments            |   nil   | The GoCD environment to which the agent must belong to.                                     |
-| resources               |   nil   | The resources available on the gocd agent node which can be used with specific pipeline(s). |
-| elastic_agent_id        |   nil   | The elastic profile id.                                                                     |
-| elastic_agent_plugin_id |   nil   | The elastic agent plugin id.                                                                |
+| Attribute Name            | Default | Description                                                                                                                         |
+|:--------------------------|:-------:|:------------------------------------------------------------------------------------------------------------------------------------|
+| owner                     |   go    | owner of the autoregister.properties file                                                                                           |
+| group                     |   go    | group for the autoregister.properties file                                                                                          |
+| autoregister_key          |   nil   | The autogregister key from the go server config that can be used to register the agent                                              |
+| autoregister_hostname     |   nil   | The name by which the agent will be known to the GoCD server                                                                        |
+| autoregister_environments |   nil   | The GoCD environments to which the agent must belong to.                                                                            |
+| environments              |   nil   | The GoCD environments to which the agent must belong to. This is DEPRECATED.                                                        |
+| autoregister_resources    |   nil   | The resources available on the gocd agent node which can be used with specific pipeline(s).                                         |
+| resources                 |   nil   | The resources available on the gocd agent node which can be used with specific pipeline(s). This is DEPRECATED.                     |
+| elastic_agent_id          |   nil   | The elastic agent id used to set the autoregister property `agent.auto.register.elasticAgent.agentId`.                              |
+| elastic_agent_plugin_id   |   nil   | The elastic agent plugin id.  This is used to set the autoregister property `agent.auto.register.elasticAgent.pluginId`             |
 
 3. `gocd_plugin`
 
@@ -233,8 +237,8 @@ This resource will create a file called `autoregister.properties` in the gocd ag
 
 Attributes for elastic agents:
 
-* `node['gocd']['agent']['elastic']['plugin_id']`
-* `node['gocd']['agent']['elastic']['agent_id']`
+* `node['gocd']['agent']['elastic']['plugin_id']` - The elastic agent plugin id. This is used to set the autoregister property `agent.auto.register.elasticAgent.pluginId`
+* `node['gocd']['agent']['elastic']['agent_id']`  - The elastic agent id used to set the autoregister property `agent.auto.register.elasticAgent.agentId`.
 
 #### Golang agent support
 
@@ -275,8 +279,8 @@ gocd_agent 'my-go-agent' do
   vnc    true
   autoregister_key 'bla-key'
   autoregister_hostname 'my-lwrp-agent'
-  environments 'production'
-  resources     ['java-8','ruby-2.2']
+  autoregister_environments 'production'
+  autoregister_resources     ['java-8','ruby-2.2']
   workspace     '/mnt/big_drive'
 end
 ```
@@ -291,8 +295,8 @@ Example use:
 gocd_agent_autoregister_file '/var/mygo/autoregister.properties' do
   autoregister_key 'bla-key'
   autoregister_hostname 'mygo-agent'
-  environments 'stage'
-  resources     ['java-8','ruby']
+  autoregister_environments 'stage'
+  autoregister_resources     ['java-8','ruby']
 end
 ```
 
@@ -301,8 +305,8 @@ Can be used to prepare elastic agents too:
 gocd_agent_autoregister_file '/var/elastic/autoregister.properties' do
   autoregister_key 'some-key'
   autoregister_hostname 'elastic-agent'
-  environments 'testing'
-  resources     ['java-8']
+  autoregister_environments 'testing'
+  autoregister_resources     ['java-8']
   elastic_agent_id 'agent-id'
   elastic_agent_plugin_id 'elastic-agent-plugin-id'
 end

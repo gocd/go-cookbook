@@ -46,8 +46,8 @@ describe 'gocd_test::single_agent_lwrp' do
       expect(chef_run).to create_gocd_agent_autoregister_file('/mnt/big_drive/config/autoregister.properties').with(
         autoregister_key: 'bla-key',
         autoregister_hostname: 'my-lwrp-agent',
-        environments: 'production',
-        resources: ['java-8', 'ruby-2.2']
+        autoregister_environments: 'production',
+        autoregister_resources: ['java-8', 'ruby-2.2']
       )
     end
   end

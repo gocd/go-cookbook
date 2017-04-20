@@ -3,19 +3,11 @@
 #
 <% if node['gocd']['agent']['type'] == 'golang' %>
 export GOCD_AGENT_AUTO_REGISTER_KEY="<%= @key %>"
-<% if @resources %>
-<% if @resources.kind_of? String %>
-export GOCD_AGENT_AUTO_REGISTER_RESOURCES="<%= @resources %>"
-<% elsif @resources.count > 0 %>
-export GOCD_AGENT_AUTO_REGISTER_RESOURCES="<%= @resources.join(",") %>"
+<% if @autoregister_resources %>
+export GOCD_AGENT_AUTO_REGISTER_RESOURCES="<%= [@autoregister_resources].flatten.join(', ') %>"
 <% end %>
-<% end %>
-<% if @environments %>
-<% if @environments.kind_of? String %>
-export GOCD_AGENT_AUTO_REGISTER_ENVIRONMENTS="<%= @environments %>"
-<% elsif @environments.count > 0 %>
-export GOCD_AGENT_AUTO_REGISTER_ENVIRONMENTS="<%= @environments.join(",") %>"
-<% end %>
+<% if @autoregister_environments %>
+export GOCD_AGENT_AUTO_REGISTER_ENVIRONMENTS="<%= [@autoregister_environments].flatten.join(', ') %>"
 <% end %>
 <% if @elastic_agent_plugin_id %>
 export GOCD_AGENT_AUTO_REGISTER_ELASTIC_PLUGIN_ID="<%= @elastic_agent_plugin_id %>"
@@ -27,20 +19,12 @@ export GOCD_AGENT_AUTO_REGISTER_ELASTIC_AGENT_ID="<%= @elastic_agent_id %>"
 agent.auto.register.key          = <%= @key %>
 agent.auto.register.hostname     = <%= @hostname %>
 
-<% if @environments %>
-<% if @environments.kind_of? String %>
-agent.auto.register.environments = <%= @environments %>
-<% elsif @environments.count > 0 %>
-agent.auto.register.environments = <%= @environments.join(", ") %>
-<% end %>
+<% if @autoregister_environments %>
+agent.auto.register.environments = <%= [@autoregister_environments].flatten.join(', ') %>
 <% end %>
 
-<% if @resources %>
-<% if @resources.kind_of? String %>
-agent.auto.register.resources    = <%= @resources %>
-<% elsif @resources.count > 0 %>
-agent.auto.register.resources    = <%= @resources.join(", ") %>
-<% end %>
+<% if @autoregister_resources %>
+agent.auto.register.resources    = <%= [@autoregister_resources].flatten.join(', ') %>
 <% end %>
 
 <% if @elastic_agent_plugin_id %>
