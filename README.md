@@ -48,7 +48,7 @@ This cookbook has been tested on the following platforms:
   OR
 
   Associate the recipes with the desired roles. Here's an example role with default recipes:
-  ```
+```
   name 'demo'
   description 'Sample role for using the go-cookbook'
 
