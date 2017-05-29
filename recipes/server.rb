@@ -44,8 +44,7 @@ ruby_block 'publish_autoregister_key' do
                                 s[0].to_s.match(/agentAutoRegisterKey="(\S+)"/)[1]
                               end
     Chef::Log.warn('Enabling automatic agent registration. Any configured agent will be configured to build without authorization.')
-    node.set['gocd']['server']['autoregister_key'] = server_autoregister_key
-    node.save
+    node.normal['gocd']['server']['autoregister_key'] = server_autoregister_key
   end
   action :create
   not_if { Chef::Config[:solo] }
