@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'chef'
+gem 'chef', '~> 12'
 gem 'chefspec'
 gem 'foodcritic'
 gem 'berkshelf'
