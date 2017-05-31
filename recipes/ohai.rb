@@ -14,5 +14,7 @@
 # limitations under the License.
 ##########################################################################
 
-include_recipe 'gocd::server'
-include_recipe 'gocd::agent'
+ohai 'reload_passwd_for_go_user' do
+  action :nothing
+  plugin 'etc'
+end

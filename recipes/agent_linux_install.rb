@@ -14,6 +14,8 @@
 # limitations under the License.
 ##########################################################################
 
+include_recipe 'gocd::ohai'
+
 case node['gocd']['agent']['type']
 when 'java'
   include_recipe 'gocd::java' if node['gocd']['agent']['type'] == 'java'

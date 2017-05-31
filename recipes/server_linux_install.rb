@@ -15,6 +15,7 @@
 ##########################################################################
 
 include_recipe 'gocd::java'
+include_recipe 'gocd::ohai'
 
 package 'unzip'
 
