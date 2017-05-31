@@ -32,8 +32,8 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
       expect(chef_run).to create_gocd_agent_autoregister_file('/var/mygo/autoregister.properties').with(
         autoregister_key: 'bla-key',
         autoregister_hostname: 'mygo-agent',
-        environments: 'stage',
-        resources:     ['java-8', 'ruby']
+        autoregister_environments: 'stage',
+        autoregister_resources:     ['java-8', 'ruby']
       )
     end
 
@@ -51,8 +51,8 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
       expect(chef_run).to create_gocd_agent_autoregister_file('/var/elastic/autoregister.properties').with(
         autoregister_key: 'some-key',
         autoregister_hostname: 'elastic-agent',
-        environments: 'testing',
-        resources:     ['java-8']
+        autoregister_environments: 'testing',
+        autoregister_resources:     ['java-8']
       )
     end
 
@@ -114,8 +114,8 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
       expect(chef_run).to create_gocd_agent_autoregister_file('/var/mygo/autoregister.properties').with(
         autoregister_key: 'bla-key',
         autoregister_hostname: 'mygo-agent',
-        environments: 'stage',
-        resources:     ['java-8', 'ruby']
+        autoregister_environments: 'stage',
+        autoregister_resources:     ['java-8', 'ruby']
       )
     end
 
@@ -133,8 +133,8 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
       expect(chef_run).to create_gocd_agent_autoregister_file('/var/elastic/autoregister.properties').with(
         autoregister_key: 'some-key',
         autoregister_hostname: 'elastic-agent',
-        environments: 'testing',
-        resources:     ['java-8']
+        autoregister_environments: 'testing',
+        autoregister_resources:     ['java-8']
       )
     end
 
