@@ -14,11 +14,6 @@
 # limitations under the License.
 ##########################################################################
 
-ohai 'reload_passwd_for_go_user' do
-  action :nothing
-  plugin 'etc'
-end
-
 case node['gocd']['agent']['type']
 when 'java'
   include_recipe 'gocd::java' if node['gocd']['agent']['type'] == 'java'
