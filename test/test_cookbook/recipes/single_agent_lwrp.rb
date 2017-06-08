@@ -21,6 +21,6 @@ gocd_agent 'my-go-agent' do
   autoregister_key 'bla-key'
   autoregister_hostname 'my-lwrp-agent'
   autoregister_environments 'production'
-  autoregister_resources     ['java-8', 'ruby-2.2']
-  workspace     '/mnt/big_drive'
+  autoregister_resources ['java-8', 'ruby-2.2']
+  workspace '/mnt/big_drive'
 end
