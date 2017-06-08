@@ -28,11 +28,11 @@ default['gocd']['updates']['url'] = nil
 default['gocd']['repository']['apt']['components'] = ['/']
 default['gocd']['repository']['apt']['distribution'] = ''
 default['gocd']['repository']['apt']['keyserver'] = 'pgp.mit.edu'
-default['gocd']['repository']['apt']['key'] = 'https://download.gocd.io/GOCD-GPG-KEY.asc'
+default['gocd']['repository']['apt']['key'] = 'https://download.gocd.org/GOCD-GPG-KEY.asc'
 
 default['gocd']['repository']['yum']['gpgcheck'] = true
-default['gocd']['repository']['yum']['gpgkey'] = 'https://download.gocd.io/GOCD-GPG-KEY.asc'
+default['gocd']['repository']['yum']['gpgkey'] = 'https://download.gocd.org/GOCD-GPG-KEY.asc'
 
-default['gocd']['package_file']['baseurl'] = nil # official - "https://download.gocd.io/binaries"
+default['gocd']['package_file']['baseurl'] = nil # official - "https://download.gocd.org/binaries"
 default['gocd']['agent']['package_file']['url'] = nil # official
 default['gocd']['server']['package_file']['url'] = nil # official

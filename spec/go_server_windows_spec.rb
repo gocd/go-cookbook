@@ -39,7 +39,7 @@ describe 'gocd::server' do
 
     it 'downloads official installer' do
       expect(chef_run).to create_remote_file('go-server-stable-setup.exe').with(
-        source: 'https://download.gocd.io/binaries/16.2.1-3027/win/go-server-16.2.1-3027-setup.exe')
+        source: 'https://download.gocd.org/binaries/16.2.1-3027/win/go-server-16.2.1-3027-setup.exe')
     end
 
     it 'installs go-server package' do
@@ -57,14 +57,14 @@ describe 'gocd::server' do
         node.normal['gocd']['use_experimental'] = true
       end
       allow_any_instance_of(Chef::Resource::RemoteFile).to receive(:fetch_content)
-        .with('https://update.gocd.io/channels/experimental/latest.json')
+        .with('https://update.gocd.org/channels/experimental/latest.json')
         .and_return('{"message": "{\"latest-version\": \"20.1.2-12345\"}"}')
       run.converge(described_recipe)
     end
 
     it 'downloads official experimental installer' do
       expect(chef_run).to create_remote_file('go-server-experimental-setup.exe').with(
-        source: 'https://download.gocd.io/binaries/20.1.2-12345/win/go-server-20.1.2-12345-setup.exe')
+        source: 'https://download.gocd.org/binaries/20.1.2-12345/win/go-server-20.1.2-12345-setup.exe')
     end
   end
 

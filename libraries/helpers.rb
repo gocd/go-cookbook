@@ -100,9 +100,9 @@ module Gocd
         # user provided updates url
         node['gocd']['updates']['url']
       elsif node['gocd']['use_experimental']
-        'https://update.gocd.io/channels/experimental/latest.json'
+        'https://update.gocd.org/channels/experimental/latest.json'
       else
-        'https://update.gocd.io/channels/supported/latest.json'
+        'https://update.gocd.org/channels/supported/latest.json'
       end
     end
 
@@ -183,9 +183,9 @@ module Gocd
         # user provided yum URI
         node['gocd']['repository']['yum']['baseurl']
       elsif node['gocd']['use_experimental']
-        'https://download.gocd.io/experimental'
+        'https://download.gocd.org/experimental'
       else
-        'https://download.gocd.io'
+        'https://download.gocd.org'
       end
     end
 
@@ -194,9 +194,9 @@ module Gocd
         # user provided apt URI
         node['gocd']['repository']['apt']['uri']
       elsif node['gocd']['use_experimental']
-        'https://download.gocd.io/experimental'
+        'https://download.gocd.org/experimental'
       else
-        'https://download.gocd.io'
+        'https://download.gocd.org'
       end
     end
 
@@ -206,7 +206,7 @@ module Gocd
         node['gocd']['package_file']['baseurl']
       else
         # use official source
-        'https://download.gocd.io/binaries'
+        'https://download.gocd.org/binaries'
       end
     end
 
