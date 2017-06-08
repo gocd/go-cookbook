@@ -23,18 +23,18 @@ shared_examples_for :apt_repository_recipe do
   end
   it 'adds gocd apt repository' do
     expect(chef_run).to add_apt_repository('gocd').with(
-      uri: 'https://download.gocd.io',
+      uri: 'https://download.gocd.org',
       keyserver: 'pgp.mit.edu',
-      key: 'https://download.gocd.io/GOCD-GPG-KEY.asc',
+      key: 'https://download.gocd.org/GOCD-GPG-KEY.asc',
       components: ['/'])
   end
   it 'adds gocd experimental apt repository if experimental flag is turned on' do
     chef_run.node.set['gocd']['use_experimental'] = true
     chef_run.converge(described_recipe)
     expect(chef_run).to add_apt_repository('gocd').with(
-      uri: 'https://download.gocd.io/experimental',
+      uri: 'https://download.gocd.org/experimental',
       keyserver: 'pgp.mit.edu',
-      key: 'https://download.gocd.io/GOCD-GPG-KEY.asc',
+      key: 'https://download.gocd.org/GOCD-GPG-KEY.asc',
       components: ['/'])
   end
 end
@@ -48,20 +48,20 @@ shared_examples_for :yum_repository_recipe do
   end
   it 'adds gocd yum repository' do
     expect(chef_run).to create_yum_repository('gocd').with(
-      baseurl: 'https://download.gocd.io',
+      baseurl: 'https://download.gocd.org',
       description: 'GoCD YUM Repository',
       gpgcheck: true,
-      gpgkey: 'https://download.gocd.io/GOCD-GPG-KEY.asc'
+      gpgkey: 'https://download.gocd.org/GOCD-GPG-KEY.asc'
     )
   end
   it 'adds gocd experimental yum repository if experimental flag is turned on' do
     chef_run.node.set['gocd']['use_experimental'] = true
     chef_run.converge(described_recipe)
     expect(chef_run).to create_yum_repository('gocd').with(
-      baseurl: 'https://download.gocd.io/experimental',
+      baseurl: 'https://download.gocd.org/experimental',
       description: 'GoCD YUM Repository',
       gpgcheck: true,
-      gpgkey: 'https://download.gocd.io/GOCD-GPG-KEY.asc'
+      gpgkey: 'https://download.gocd.org/GOCD-GPG-KEY.asc'
     )
   end
 end

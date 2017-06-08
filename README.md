@@ -83,21 +83,21 @@ is to set java version in node attributes (in a role or environment).
 
 ### Repository
 
-By default installation source is done from apt or yum repositories from official sources at https://www.gocd.io/download/.
+By default installation source is done from apt or yum repositories from official sources at https://www.gocd.org/download/.
 
 The **apt** repository can be overridden by changing any these attributes:
 
- * `node['gocd']['repository']['apt']['uri'] = 'https://download.gocd.io/'`
+ * `node['gocd']['repository']['apt']['uri'] = 'https://download.gocd.org/'`
  * `node['gocd']['repository']['apt']['components'] = [ '/' ]`
  * `node['gocd']['repository']['apt']['distribution'] = ''`
  * `node['gocd']['repository']['apt']['keyserver'] = 'pgp.mit.edu'`
- * `node['gocd']['repository']['apt']['key'] = 'https://download.gocd.io/GOCD-GPG-KEY.asc'`
+ * `node['gocd']['repository']['apt']['key'] = 'https://download.gocd.org/GOCD-GPG-KEY.asc'`
 
 The **yum** repository can be overridden by changing any these attributes:
 
- * `node['gocd']['repository']['yum']['baseurl'] = 'https://download.gocd.io'`
+ * `node['gocd']['repository']['yum']['baseurl'] = 'https://download.gocd.org'`
  * `node['gocd']['repository']['yum']['gpgcheck'] = true`
- * `node['gocd']['repository']['yum']['gpgkey'] = 'https://download.gocd.io/GOCD-GPG-KEY.asc'`
+ * `node['gocd']['repository']['yum']['gpgkey'] = 'https://download.gocd.org/GOCD-GPG-KEY.asc'`
 
 #### Experimental channel
 
@@ -145,7 +145,7 @@ The cookbook provides the following attributes to configure the GoCD agent:
 * `node['gocd']['agent']['go_server_url']`                - URL of Go server that agent should connect to. It must start with `https://` and end with `/go`. For example `https://localhost:8154/go`.
 * `node['gocd']['agent']['daemon']`                       - Whether the agent should be daemonized. Defaults to `true`.
 * `node['gocd']['agent']['vnc']['enabled']`               - Whether the agent should start with VNC. (Uses `DISPLAY=:3`). Defaults to `false`.
-* `node['gocd']['agent']['autoregister']['key']`          - The [agent autoregister](https://docs.gocd.io/current/advanced_usage/agent_auto_register.html) key. If left alone, will be auto-detected. Defaults to `nil`.
+* `node['gocd']['agent']['autoregister']['key']`          - The [agent autoregister](https://docs.gocd.org/current/advanced_usage/agent_auto_register.html) key. If left alone, will be auto-detected. Defaults to `nil`.
 * `node['gocd']['agent']['autoregister']['environments']` - The environments for the agent. Defaults to `[]`.
 * `node['gocd']['agent']['autoregister']['resources']`    - The resources for the agent. Defaults to `[]`.
 * `node['gocd']['agent']['autoregister']['hostname']`     - The agent autoregister hostname. Defaults to `node['fqdn']`.
@@ -304,7 +304,7 @@ end
 
 # Server Specification
 
-When using the cookbook please refer to the [server specification section](https://docs.gocd.io/current/installation/system_requirements.html) of the GoCD documentation.
+When using the cookbook please refer to the [server specification section](https://docs.gocd.org/current/installation/system_requirements.html) of the GoCD documentation.
 
 # License
 
