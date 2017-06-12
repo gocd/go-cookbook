@@ -14,13 +14,7 @@
 # limitations under the License.
 ##########################################################################
 
-gocd_agent 'my-go-agent' do
-  go_server_url 'https://go.example.com:443/go'
-  daemon true
-  vnc    true
-  autoregister_key 'bla-key'
-  autoregister_hostname 'my-lwrp-agent'
-  autoregister_environments 'production'
-  autoregister_resources ['java-8', 'ruby-2.2']
-  workspace '/mnt/big_drive'
+ohai 'reload_passwd_for_go_user' do
+  action :nothing
+  plugin 'etc'
 end

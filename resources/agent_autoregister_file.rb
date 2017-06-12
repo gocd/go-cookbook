@@ -24,9 +24,7 @@ property :owner, kind_of: String, required: false, default: 'go'
 property :group, kind_of: String, required: false, default: 'go'
 property :autoregister_key, kind_of: String, required: true, default: nil
 property :autoregister_hostname, kind_of: String, required: false, default: nil
-property :environments, kind_of: [String, Array], required: false, default: nil # deprecated in favour of autoreigster_environments
 property :autoregister_environments, kind_of: [String, Array], required: false, default: nil
-property :resources, kind_of: [String, Array], required: false, default: nil # deprecated in favour of autoreigster_resources
 property :autoregister_resources, kind_of: [String, Array], required: false, default: nil
 property :elastic_agent_id, kind_of: [String, nil], required: false, default: nil
 property :elastic_agent_plugin_id, kind_of: [String, nil], required: false, default: nil
@@ -35,8 +33,8 @@ action :create do
   autoregister_values = agent_properties
   autoregister_values[:key] = new_resource.autoregister_key || autoregister_values[:key]
   autoregister_values[:hostname] = new_resource.autoregister_hostname || autoregister_values[:hostname]
-  autoregister_values[:autoregister_environments] = new_resource.autoregister_environments || new_resource.environments || autoregister_values[:environments]
-  autoregister_values[:autoregister_resources] = new_resource.autoregister_resources || new_resource.resources || autoregister_values[:resources]
+  autoregister_values[:autoregister_environments] = new_resource.autoregister_environments || autoregister_values[:environments]
+  autoregister_values[:autoregister_resources] = new_resource.autoregister_resources || autoregister_values[:resources]
   autoregister_values[:elastic_agent_id] = new_resource.elastic_agent_id || autoregister_values[:elastic_agent_id]
   autoregister_values[:elastic_agent_plugin_id] = new_resource.elastic_agent_plugin_id || autoregister_values[:elastic_agent_plugin_id]
 

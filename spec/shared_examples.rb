@@ -75,6 +75,10 @@ shared_examples_for :agent_linux_install do
     expect(chef_run).to include_recipe('java::default')
   end
 
+  it 'includes the gocd::ohai recipe' do
+    expect(chef_run).to include_recipe('gocd::ohai')
+  end
+
   it 'includes gocd::agent_linux_install recipe' do
     expect(chef_run).to include_recipe('gocd::agent_linux_install')
   end
