@@ -1,3 +1,17 @@
+# 3.0.0
+
+* Supports Chef 13
+
+## Breaking Changes
+
+* [4f82f84](https://github.com/gocd/go-cookbook/commit/4f82f84) - The `resources` and `environments` properties in our custom resources `gocd_agent` and `gocd_agent_autoregister_file` are removed in favour of `autoregister_resources` and `autoregister_environments`.
+
+## Fixes
+
+* [607f3e8](https://github.com/gocd/go-cookbook/commit/607f3e8) - Change all URLs from gocd.io to gocd.org
+* [5fd066f](https://github.com/gocd/go-cookbook/commit/5fd066f) - Update foodcritic version to use the one used on supermarket.
+* [5fd066f](https://github.com/gocd/go-cookbook/commit/5fd066f) - Update foodcritic licensing format.
+
 # 2.0.0
 
 ## Breaking changes

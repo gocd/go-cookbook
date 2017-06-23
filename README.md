@@ -11,8 +11,6 @@ This cookbook is here to help you setup GoCD servers and agents in an automated 
 
 * chef >= 12.6
 
-* Chef 13 is unsupported upto and including release 1.3.2 and the upcoming release. See [this]((https://github.com/gocd/go-cookbook/issues/113) issue.
-
 ### Certain resource properties are broken in Chef 13. Check the deprecations in the [changelog](https://github.com/gocd/go-cookbook/blob/master/CHANGELOG.md) for more details.
 
 ## Dependencies
