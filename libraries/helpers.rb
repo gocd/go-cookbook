@@ -144,6 +144,13 @@ module Gocd
     def go_agent_remote_package_name
       if os_dir == 'deb'
         "go-agent_#{remote_version}_all#{package_extension}"
+      elsif os_dir == 'win'
+        case node['kernel']['os_info']['os_architecture']
+        when '32-bit'
+          "go-agent-#{remote_version}-jre-32bit#{package_extension}"
+        else
+          "go-agent-#{remote_version}-jre-64bit#{package_extension}"
+        end
       else
         "go-agent-#{remote_version}#{package_extension}"
       end
@@ -152,6 +159,13 @@ module Gocd
     def go_server_remote_package_name
       if os_dir == 'deb'
         "go-server_#{remote_version}_all#{package_extension}"
+      elsif os_dir == 'win'
+        case node['kernel']['os_info']['os_architecture']
+        when '32-bit'
+          "go-server-#{remote_version}-jre-32bit#{package_extension}"
+        else
+          "go-server-#{remote_version}-jre-64bit#{package_extension}"
+        end
       else
         "go-server-#{remote_version}#{package_extension}"
       end

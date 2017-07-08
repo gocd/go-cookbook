@@ -31,6 +31,7 @@ describe 'gocd::agent' do
         node.automatic['platform_family'] = 'windows'
         node.automatic['platform'] = 'windows'
         node.automatic['os'] = 'windows'
+        node.automatic['kernel']['os_info']['os_architecture'] = '64-bit'
         node.normal['gocd']['agent']['go_server_url'] = 'https://localhost:8154/go'
       end
       allow_any_instance_of(Chef::Resource::RemoteFile).to receive(:fetch_content)
@@ -40,7 +41,7 @@ describe 'gocd::agent' do
 
     it 'downloads official installer' do
       expect(chef_run).to create_remote_file('go-agent-stable-setup.exe').with(
-        source: 'https://download.gocd.org/binaries/16.2.1-3027/win/go-agent-16.2.1-3027-setup.exe')
+        source: 'https://download.gocd.org/binaries/16.2.1-3027/win/go-agent-16.2.1-3027-jre-64bit-setup.exe')
     end
     it 'installs go-agent package' do
       expect(chef_run).to install_windows_package('Go Agent')
