@@ -46,7 +46,7 @@ ruby_block 'publish_autoregister_key' do
     Chef::Log.warn('Enabling automatic agent registration. Any configured agent will be configured to build without authorization.')
     node.normal['gocd']['server']['autoregister_key'] = server_autoregister_key
   end
-  action :create
+  action :run
   not_if { Chef::Config[:solo] }
   retries 4
 end
