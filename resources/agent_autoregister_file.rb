@@ -14,8 +14,6 @@
 # limitations under the License.
 ##########################################################################
 
-actions :create, :delete
-
 default_action :create if defined?(default_action)
 
 property :path, name_attribute: true, kind_of: String
