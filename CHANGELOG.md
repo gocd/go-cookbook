@@ -1,3 +1,8 @@
+# 3.0.1
+
+* [8f34eb6](https://github.com/gocd/go-cookbook/commit/8f34eb6) - Set correct package name for Windows based on arch
+* [ea191db](https://github.com/gocd/go-cookbook/commit/ea191db) - Update foodcritic version to 12.2.1
+
 # 3.0.0
 
 * Supports Chef 13
