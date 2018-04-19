@@ -16,9 +16,9 @@
 
 default_action :create if defined?(default_action)
 
-property :plugin_name, name_attribute: true, kind_of: String, required: true
-property :plugin_uri, kind_of: String, required: true
-property :server_work_dir, kind_of: String, required: false, default: node['gocd']['server']['work_dir']
+property :plugin_name, String, name_property: true, required: true
+property :plugin_uri, String, required: true
+property :server_work_dir, String, required: false, default: node['gocd']['server']['work_dir']
 
 action :create do
   include_recipe 'gocd::server_linux_install'

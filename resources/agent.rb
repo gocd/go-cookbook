@@ -16,22 +16,22 @@
 
 default_action :create if defined?(default_action)
 
-property :service_action, kind_of: [Symbol, Array], required: false, default: [:enable, :start]
+property :service_action, [Symbol, Array], required: false, default: [:enable, :start]
 
-property :agent_name, name_attribute: true, kind_of: String, required: false
+property :agent_name, String, name_property: true, required: false
 
-property :user, kind_of: String, required: false, default: 'go'
-property :group, kind_of: String, required: false, default: 'go'
-property :go_server_url, kind_of: String, required: false, default: nil
-property :daemon, kind_of: [TrueClass, FalseClass], required: false, default: node['gocd']['agent']['daemon']
-property :vnc, kind_of: [TrueClass, FalseClass], required: false, default: node['gocd']['agent']['vnc']['enabled']
-property :autoregister_key, kind_of: String, required: false, default: nil
-property :autoregister_hostname, kind_of: String, required: false, default: nil
-property :autoregister_environments, kind_of: [String, Array], required: false, default: nil
-property :autoregister_resources, kind_of: [String, Array], required: false, default: nil
-property :workspace, kind_of: String, required: false, default: nil
-property :elastic_agent_id, kind_of: [String, nil], required: false, default: nil
-property :elastic_agent_plugin_id, kind_of: [String, nil], required: false, default: nil
+property :user, String, required: false, default: 'go'
+property :group, String, required: false, default: 'go'
+property :go_server_url, String, required: false, default: nil
+property :daemon, [TrueClass, FalseClass], required: false, default: node['gocd']['agent']['daemon']
+property :vnc, [TrueClass, FalseClass], required: false, default: node['gocd']['agent']['vnc']['enabled']
+property :autoregister_key, String, required: false, default: nil
+property :autoregister_hostname, String, required: false, default: nil
+property :autoregister_environments, [String, Array], required: false, default: nil
+property :autoregister_resources, [String, Array], required: false, default: nil
+property :workspace, String, required: false, default: nil
+property :elastic_agent_id, [String, nil], required: false, default: nil
+property :elastic_agent_plugin_id, [String, nil], required: false, default: nil
 
 action :create do
   log 'Warn obsolete attributes' do
