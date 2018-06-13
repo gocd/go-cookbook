@@ -16,7 +16,7 @@
 
 default_action :create if defined?(default_action)
 
-property :plugin_name, String, name_property: true, required: true
+property :plugin_name, String, name_property: true
 property :plugin_uri, String, required: true
 property :server_work_dir, String, required: false, default: node['gocd']['server']['work_dir']
 
