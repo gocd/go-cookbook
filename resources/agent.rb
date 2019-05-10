@@ -22,14 +22,14 @@ property :agent_name, String, name_property: true, required: false
 
 property :user, String, required: false, default: 'go'
 property :group, String, required: false, default: 'go'
-property :go_server_url, String, required: false, default: nil
+property :go_server_url, String, required: false
 property :daemon, [TrueClass, FalseClass], required: false, default: node['gocd']['agent']['daemon']
 property :vnc, [TrueClass, FalseClass], required: false, default: node['gocd']['agent']['vnc']['enabled']
-property :autoregister_key, String, required: false, default: nil
-property :autoregister_hostname, String, required: false, default: nil
-property :autoregister_environments, [String, Array], required: false, default: nil
-property :autoregister_resources, [String, Array], required: false, default: nil
-property :workspace, String, required: false, default: nil
+property :autoregister_key, [String, nil], required: false, default: nil
+property :autoregister_hostname, [String, nil], required: false, default: nil
+property :autoregister_environments, required: false, default: nil
+property :autoregister_resources, required: false, default: nil
+property :workspace, [String, nil], required: false, default: nil
 property :elastic_agent_id, [String, nil], required: false, default: nil
 property :elastic_agent_plugin_id, [String, nil], required: false, default: nil
 

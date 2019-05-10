@@ -30,4 +30,6 @@ gocd_agent_autoregister_file '/var/elastic/autoregister.properties' do
   elastic_agent_plugin_id 'elastic-agent-plugin-id'
 end
 
-gocd_agent_autoregister_file '/var/attrs/autoregister.properties'
+gocd_agent_autoregister_file '/var/attrs/autoregister.properties' do
+  autoregister_key 'some-key'
+end

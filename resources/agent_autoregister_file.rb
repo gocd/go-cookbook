@@ -20,10 +20,10 @@ property :path, String, name_property: true
 
 property :owner, String, required: false, default: 'go'
 property :group, String, required: false, default: 'go'
-property :autoregister_key, String, required: true, default: nil
-property :autoregister_hostname, required: false, default: nil
-property :autoregister_environments, [String, Array], required: false, default: nil
-property :autoregister_resources, [String, Array], required: false, default: nil
+property :autoregister_key, [String, nil], required: true, default: nil
+property :autoregister_hostname, [String, nil], required: false, default: nil
+property :autoregister_environments, required: false, default: nil
+property :autoregister_resources, required: false, default: nil
 property :elastic_agent_id, [String, nil], required: false, default: nil
 property :elastic_agent_plugin_id, [String, nil], required: false, default: nil
 
