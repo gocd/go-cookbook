@@ -145,7 +145,7 @@ describe 'gocd::server' do
     it 'adds my custom gocd apt repository' do
       expect(chef_run).to add_apt_repository('gocd').with(
         uri: 'http://mydeb/repo',
-        key: nil,
+        key: [],
         components: ['/'])
     end
 

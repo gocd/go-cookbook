@@ -33,7 +33,7 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
         autoregister_key: 'bla-key',
         autoregister_hostname: 'mygo-agent',
         autoregister_environments: 'stage',
-        autoregister_resources:     ['java-8', 'ruby']
+        autoregister_resources: ['java-8', 'ruby']
       )
     end
 
@@ -52,7 +52,7 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
         autoregister_key: 'some-key',
         autoregister_hostname: 'elastic-agent',
         autoregister_environments: 'testing',
-        autoregister_resources:     ['java-8']
+        autoregister_resources: ['java-8']
       )
     end
 
@@ -115,7 +115,7 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
         autoregister_key: 'bla-key',
         autoregister_hostname: 'mygo-agent',
         autoregister_environments: 'stage',
-        autoregister_resources:     ['java-8', 'ruby']
+        autoregister_resources: ['java-8', 'ruby']
       )
     end
 
@@ -134,7 +134,7 @@ describe 'gocd_test::agent_autoregister_file_lwrp' do
         autoregister_key: 'some-key',
         autoregister_hostname: 'elastic-agent',
         autoregister_environments: 'testing',
-        autoregister_resources:     ['java-8']
+        autoregister_resources: ['java-8']
       )
     end
 

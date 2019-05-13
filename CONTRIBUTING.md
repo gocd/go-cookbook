@@ -12,3 +12,13 @@ Thanks for your interest in our GoCD cookbook! If you'd like to help out please:
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Push to the branch (`git push origin my-new-feature`)
 6. Create a new Pull Request
+
+
+## Testing
+
+```
+bundle install && chef exec rake -T
+```
+
+The above command indicates all the tests that can be run.
+

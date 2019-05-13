@@ -40,21 +40,21 @@ describe 'gocd::agent' do
       expect(chef_run).to create_directory('/var/lib/go-agent').with(
         owner: 'go',
         group: 'go',
-        mode:  0755
+        mode: 0755
       )
     end
     it 'creates go agent log directory' do
       expect(chef_run).to create_directory('/var/log/go-agent').with(
         owner: 'go',
         group: 'go',
-        mode:  0755
+        mode: 0755
       )
     end
     it 'creates go agent config directory' do
       expect(chef_run).to create_directory('/var/lib/go-agent/config').with(
         owner: 'go',
         group: 'go',
-        mode:  0700
+        mode: 0700
       )
     end
   end
@@ -189,21 +189,21 @@ describe 'gocd::agent' do
       expect(chef_run).to create_directory('/var/lib/go-agent-1').with(
         owner: 'go',
         group: 'go',
-        mode:  0755
+        mode: 0755
       )
     end
     it 'creates additional go agent log directory' do
       expect(chef_run).to create_directory('/var/log/go-agent-1').with(
         owner: 'go',
         group: 'go',
-        mode:  0755
+        mode: 0755
       )
     end
     it 'creates additional go agent config directory' do
       expect(chef_run).to create_directory('/var/lib/go-agent-1/config').with(
         owner: 'go',
         group: 'go',
-        mode:  0700
+        mode: 0700
       )
     end
     it 'configures additional go-agent service' do
@@ -290,7 +290,7 @@ describe 'gocd::agent' do
     it 'adds my custom gocd apt repository' do
       expect(chef_run).to add_apt_repository('gocd').with(
         uri: 'http://mydeb/repo',
-        key: nil,
+        key: [],
         components: ['/'])
     end
     it 'installs go-agent package' do

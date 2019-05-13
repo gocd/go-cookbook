@@ -215,31 +215,15 @@ module Gocd
     end
 
     def go_baseurl
-      if node['gocd']['package_file']['baseurl']
-        # user specifed url to download packages from
-        node['gocd']['package_file']['baseurl']
-      else
-        # use official source
-        'https://download.gocd.org/binaries'
-      end
+      node['gocd']['package_file']['baseurl'] || 'https://download.gocd.org/binaries'
     end
 
     def go_agent_package_url
-      if node['gocd']['agent']['package_file']['url']
-        # user specifed explictly the URL to download from
-        node['gocd']['agent']['package_file']['url']
-      else
-        "#{go_baseurl}/#{remote_version}/#{os_dir}/#{go_agent_remote_package_name}"
-      end
+      node['gocd']['agent']['package_file']['url'] || "#{go_baseurl}/#{remote_version}/#{os_dir}/#{go_agent_remote_package_name}"
     end
 
     def go_server_package_url
-      if node['gocd']['server']['package_file']['url']
-        # user specifed explictly the URL to download from
-        node['gocd']['server']['package_file']['url']
-      else
-        "#{go_baseurl}/#{remote_version}/#{os_dir}/#{go_server_remote_package_name}"
-      end
+      node['gocd']['server']['package_file']['url'] || "#{go_baseurl}/#{remote_version}/#{os_dir}/#{go_server_remote_package_name}"
     end
 
     def arch
