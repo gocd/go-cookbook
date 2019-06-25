@@ -31,7 +31,7 @@ service(platform?('windows') ? 'Go Server' : 'go-server') do
 end
 
 http_request 'verify_go-server_comes_up' do
-  url         "http://localhost:#{node['gocd']['server']['http_port']}/go/home"
+  url         "http://localhost:#{node['gocd']['server']['http_port']}/go/api/v1/health"
   retry_delay node['gocd']['server']['wait_up']['retry_delay']
   retries     node['gocd']['server']['wait_up']['retries']
   action      :nothing

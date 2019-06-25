@@ -20,10 +20,11 @@ require 'serverspec'
 set :backend, :exec
 
 describe 'go server agents tab' do
-  describe command('curl -L localhost:8153/go') do
-    its(:stdout) { should contain('/go/home') }
+  describe command('curl -L http://localhost:8153/go/api/v1/health') do
+    its(:stdout) { should contain('"health": "OK"') }
   end
-  describe command('curl -H \'Accept: application/vnd.go.cd.v5+json\' localhost:8153/go/api/agents') do
+
+  describe command('curl -H \'Accept: application/vnd.go.cd.v5+json\' http://localhost:8153/go/api/agents') do
     its(:stdout) { should contain('/var/lib/go-agent') }
     its(:stdout) { should contain('Idle') }
   end
