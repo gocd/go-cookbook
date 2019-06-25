@@ -15,15 +15,17 @@
 ##########################################################################
 
 package_path = File.join(Chef::Config[:file_cache_path], go_server_package_name)
-
+server_directory_path = node['gocd']['server']['work_dir'].tr('/', '\\')
 remote_file go_server_package_name do
   path package_path
   source go_server_package_url
 end
 
+log "Installing server to: #{server_directory_path}"
+
 opts = []
 opts << '/S'
-opts << "/D='#{node['gocd']['server']['work_dir'].tr('/', '\\')}'"
+opts << "/D=#{server_directory_path}"
 
 windows_package 'Go Server' do
   installer_type :nsis
