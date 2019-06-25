@@ -20,7 +20,7 @@ require 'serverspec'
 set :backend, :exec
 
 describe 'go server agents tab' do
-  describe command('curl -H \'Accept: application/vnd.go.cd.v4+json\' localhost:8153/go/api/agents') do
+  describe command('curl -H \'Accept: application/vnd.go.cd.v5+json\' localhost:8153/go/api/agents') do
     its(:stdout) { should contain('/var/lib/go-agent') }
     its(:stdout) { should contain('Idle') }
   end
