@@ -1,5 +1,7 @@
 # GoCD Cookbook
 
+# This cookbook is no longer maintained. Please log a GitHub issue if you're looking to maintain it.
+
 This cookbook is here to help you setup GoCD servers and agents in an automated way.
 
 ## Scope
