@@ -29,7 +29,7 @@ shared_examples_for :apt_repository_recipe do
       components: ['/'])
   end
   it 'adds gocd experimental apt repository if experimental flag is turned on' do
-    chef_run.node.set['gocd']['use_experimental'] = true
+    chef_run.node.normal['gocd']['use_experimental'] = true
     chef_run.converge(described_recipe)
     expect(chef_run).to add_apt_repository('gocd').with(
       uri: 'https://download.gocd.org/experimental',
@@ -55,7 +55,7 @@ shared_examples_for :yum_repository_recipe do
     )
   end
   it 'adds gocd experimental yum repository if experimental flag is turned on' do
-    chef_run.node.set['gocd']['use_experimental'] = true
+    chef_run.node.normal['gocd']['use_experimental'] = true
     chef_run.converge(described_recipe)
     expect(chef_run).to create_yum_repository('gocd').with(
       baseurl: 'https://download.gocd.org/experimental',

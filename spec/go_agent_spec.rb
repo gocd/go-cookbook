@@ -21,7 +21,6 @@ describe 'gocd::agent' do
     it_behaves_like :agent_linux_install
     it 'creates go agent configuration in /etc/default/go-agent' do
       expect(chef_run).to render_file('/etc/default/go-agent').with_content { |content|
-        expect(content).to_not include('java-6')
         expect(content).to     include('GO_SERVER_URL=https://localhost:8154/go')
         expect(content).to_not include('GO_SERVER_PORT=8153')
         expect(content).to     include('AGENT_WORK_DIR=/var/lib/go-agent')
@@ -83,7 +82,7 @@ describe 'gocd::agent' do
     end
 
     it 'upgrades go-agent package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-agent')
     end
@@ -110,7 +109,7 @@ describe 'gocd::agent' do
     end
 
     it 'upgrades go-agent package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-agent')
     end
@@ -135,7 +134,7 @@ describe 'gocd::agent' do
     end
 
     it 'upgrades go-agent package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-agent')
     end
@@ -164,7 +163,7 @@ describe 'gocd::agent' do
     end
 
     it 'upgrades go-agent package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-agent')
     end
@@ -298,7 +297,7 @@ describe 'gocd::agent' do
     end
 
     it 'upgrades go-agent package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-agent')
     end
@@ -334,7 +333,7 @@ describe 'gocd::agent' do
     end
 
     it 'upgrades go-agent package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-agent')
     end

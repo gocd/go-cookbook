@@ -25,9 +25,7 @@ describe 'gocd::server' do
       expect(chef_run).to include_recipe('gocd::ohai')
     end
     it 'creates go server configuration in /etc/default/go-server' do
-      expect(chef_run).to render_file('/etc/default/go-server').with_content { |content|
-        expect(content).to_not include('java-6')
-      }
+      expect(chef_run).to render_file('/etc/default/go-server')
     end
     it 'configures go-server service' do
       expect(chef_run).to enable_service('go-server')
@@ -53,7 +51,7 @@ describe 'gocd::server' do
     end
 
     it 'upgrades go-server package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-server')
     end
@@ -73,7 +71,7 @@ describe 'gocd::server' do
       expect(chef_run).to install_package('go-server')
     end
     it 'upgrades go-server package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-server')
     end
@@ -154,7 +152,7 @@ describe 'gocd::server' do
     end
 
     it 'upgrades go-server package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-server')
     end
@@ -186,7 +184,7 @@ describe 'gocd::server' do
     end
 
     it 'upgrades go-server package if version is set to `latest`' do
-      chef_run.node.set['gocd']['version'] = 'latest'
+      chef_run.node.normal['gocd']['version'] = 'latest'
       chef_run.converge(described_recipe)
       expect(chef_run).to upgrade_package('go-server')
     end
