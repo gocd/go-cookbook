@@ -24,9 +24,9 @@ issues_url       'https://github.com/gocd/go-cookbook/issues' if respond_to?(:is
 chef_version     '>= 12'
 license          'Apache-2.0'
 
-supports 'ubuntu'
-supports 'centos'
-supports 'redhat'
+supports 'ubuntu', '>= 16.04'
+supports 'centos', '>= 6'
+supports 'redhat', '>= 6'
 supports 'windows'
 
 recipe 'gocd::server', 'Installs and configures a Go server'

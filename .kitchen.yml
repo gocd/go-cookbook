@@ -25,24 +25,16 @@ provisioner:
   require_chef_omnibus: 12.19.36
 
 platforms:
-- name: ubuntu-12.04
-  driver:
-    box: ubuntu/precise64
-    network:
-      - [ 'private_network', { ip: '33.33.33.10' } ]
-
-- name: ubuntu-14.04
-  driver:
-    box: ubuntu/trusty64
-    network:
-      - [ 'private_network', { ip: '33.33.33.13' } ]
-
 - name: ubuntu-16.04
   driver:
     box: ubuntu/xenial64
     network:
       - [ 'private_network', { ip: '33.33.33.11' } ]
-
+- name: ubuntu-18.04
+  driver:
+    box: ubuntu/bionic64
+    network:
+      - [ 'private_network', { ip: '33.33.33.11' } ]
 - name: centos-6.8
   driver:
     network:
