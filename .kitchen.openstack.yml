@@ -66,25 +66,3 @@ suites:
           environments: ['staging', 'perf']
           resources: ['foo', 'bar', 'baz']
           hostname: 'example-host'
-- name: golangagent
-  run_list:
-  - recipe[gocd]
-  - recipe[gocd_test::plugin_lwrp]
-  attributes:
-    apt:
-      compile_time_update: true
-    java:
-      jdk_version: 8
-    gocd:
-      server:
-        wait_up:
-          retries: 120
-        max_mem: '1024m'
-        min_mem: '512m'
-      agent:
-        type: golang
-        autoregister:
-          key: 'auto-register-key'
-          environments: ['staging', 'perf']
-          resources: ['foo', 'bar', 'baz']
-          hostname: 'example-host'

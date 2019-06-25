@@ -216,12 +216,6 @@ Attributes for elastic agents:
 * `node['gocd']['agent']['elastic']['plugin_id']` - The elastic agent plugin id. This is used to set the autoregister property `agent.auto.register.elasticAgent.pluginId`
 * `node['gocd']['agent']['elastic']['agent_id']`  - The elastic agent id used to set the autoregister property `agent.auto.register.elasticAgent.agentId`.
 
-#### Golang agent support
-
-By default `node['gocd']['agent']['type']` is set to `java`. Set it to `golang`
-to install [GoCD agent written in Go](https://github.com/gocd-contrib/gocd-golang-agent).
-Note that this agent has quite a few limitations.
-
 ### Deprecated
 
 Please use `node['gocd']['agent']['go_server_url']` instead of the following deprecated attributes:

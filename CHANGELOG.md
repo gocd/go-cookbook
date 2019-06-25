@@ -26,7 +26,7 @@
 ## Deprecations
 
 * The `resources` and `environments` properties in our custom resources `gocd_agent` and `gocd_agent_autoregister_file` are deprecated in favour of `autoregister_resources` and `autoregister_environments`.
-They will be removed in one of the upcoming releases. Please use `autoregister_resources` and `autoregister_environments` henceforth. 
+They will be removed in one of the upcoming releases. Please use `autoregister_resources` and `autoregister_environments` henceforth.
 
 ## Bug Fixes
 
